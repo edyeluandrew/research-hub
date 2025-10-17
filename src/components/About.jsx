@@ -1,6 +1,5 @@
 import React from 'react';
 import { 
-  // Flask, 
   Search, 
   Settings, 
   Eye, 
@@ -27,7 +26,7 @@ const About = () => {
             {/* Main Research Hub Graphic */}
             <div className="card p-8 transform hover:scale-105 transition-transform duration-500">
               <div className="bg-gradient-to-br from-gold-500 to-gold-300 rounded-2xl p-8 text-dark-200 text-center">
-                <Flask className="mx-auto mb-6" size={64} />
+                <Cpu className="mx-auto mb-6" size={64} />
                 <h3 className="text-2xl font-bold mb-4">Research First</h3>
                 <p className="text-lg opacity-90">Building Solutions from Research</p>
               </div>
