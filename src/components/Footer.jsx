@@ -48,13 +48,13 @@ const Footer = () => {
     },
     {
       icon: Mail,
-      text: 'hello@techresearchhub.ug',
-      link: 'mailto:hello@techresearchhub.ug'
+      text: 'betatechlabs10@gmail.com',
+      link: 'mailto:betatechlabs10@gmail.com'
     },
     {
       icon: Phone,
-      text: '+256 XXX XXX XXX',
-      link: 'tel:+256XXXXXXXXX'
+      text: '+256 791018086',
+      link: 'tel:+256791018086'
     },
     {
       icon: Clock,

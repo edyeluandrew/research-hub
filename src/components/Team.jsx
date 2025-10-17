@@ -142,23 +142,23 @@ const Team = () => {
                 {member.role.includes('Web3') && (
                   <>
                     <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">Rust</span>
-                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">Solana</span>
+                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">React js</span>
                     <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">Stellar</span>
-                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">Smart Contracts</span>
-                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">MERN Stack</span>
+                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">NodeJs</span>
+                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">UI/UX</span>
                   </>
                 )}
                 {member.role.includes('AI Engineer') && member.name.includes('Ahmed') && (
                   <>
-                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">Neuroscience</span>
-                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">Machine Learning</span>
-                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">Software Engineering</span>
+                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">Django</span>
+                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">Adruino</span>
+                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">Research Lead</span>
                   </>
                 )}
                 {member.role.includes('AI Engineer') && member.name.includes('Aliho') && (
                   <>
-                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">Computer Vision</span>
-                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">Explainable AI</span>
+                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">Django</span>
+                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">React</span>
                     <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">Backend Engineering</span>
                   </>
                 )}

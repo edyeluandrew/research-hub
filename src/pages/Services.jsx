@@ -14,7 +14,8 @@ import {
   Link, 
   BookOpen,
   Check,
-  Star
+  Star,
+  Calendar
 } from 'lucide-react';
 
 const Services = () => {
@@ -113,12 +114,17 @@ const Services = () => {
         'Blockchain Development Training',
         'Research Methodology Sessions',
         'Tech Skill Building'
-      ]
+      ],
+      hasEvents: true
     }
   ];
 
   const handleBackHome = () => {
     navigate('/');
+  };
+
+  const handleViewEvents = () => {
+    navigate('/events');
   };
 
   return (
@@ -242,6 +248,20 @@ const Services = () => {
                       </li>
                     ))}
                   </ul>
+
+                  {/* Events Button for Tech Workshops */}
+                  {service.hasEvents && (
+                    <div className="mt-4 pt-4 border-t border-gray-700">
+                      <button
+                        onClick={handleViewEvents}
+                        className="w-full bg-gold-500/20 hover:bg-gold-500/30 text-gold-400 hover:text-gold-300 py-2 px-4 rounded-lg transition-all duration-300 flex items-center justify-center text-sm font-medium group"
+                      >
+                        <Calendar className="mr-2" size={16} />
+                        Check Events
+                        <Check className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300" size={14} />
+                      </button>
+                    </div>
+                  )}
                 </div>
               );
             })}
