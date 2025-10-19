@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   Search, 
   Settings, 
@@ -12,6 +13,18 @@ import {
 } from 'lucide-react';
 
 const About = () => {
+  const navigate = useNavigate();
+
+  // Function to handle "View Our Research" click
+  const handleResearchClick = () => {
+    navigate('/research');
+  };
+
+  // Function to handle "View Other Services" click
+  const handleServicesClick = () => {
+    navigate('/services');
+  };
+
   return (
     <section id="about" className="py-20 bg-dark-100 relative overflow-hidden">
       {/* Background Elements */}
@@ -121,11 +134,17 @@ const About = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 pt-6">
-              <button className="btn-primary flex items-center justify-center">
+              <button 
+                onClick={handleResearchClick}
+                className="btn-primary flex items-center justify-center"
+              >
                 <Eye className="mr-2" size={18} />
                 View Our Research
               </button>
-              <button className="btn-secondary flex items-center justify-center">
+              <button 
+                onClick={handleServicesClick}
+                className="btn-secondary flex items-center justify-center"
+              >
                 <ArrowRight className="mr-2" size={18} />
                 View Other Services
               </button>

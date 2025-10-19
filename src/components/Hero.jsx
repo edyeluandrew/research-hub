@@ -1,6 +1,13 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
+  const navigate = useNavigate();
+
+  const handleExploreResearch = () => {
+    navigate('/research');
+  };
+
   return (
     <section id="home" className="min-h-screen pt-16 flex items-center bg-gold-gradient relative overflow-hidden">
       {/* Background Pattern */}
@@ -31,13 +38,12 @@ const Hero = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-              <button className="btn-primary">
+              <button 
+                onClick={handleExploreResearch}
+                className="btn-primary"
+              >
                 <i className="fas fa-rocket mr-2"></i>
-                Explore Projects
-              </button>
-              <button className="btn-secondary">
-                <i className="fas fa-users mr-2"></i>
-                Join Our Team
+                Explore Our Research
               </button>
             </div>
 

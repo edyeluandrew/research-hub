@@ -245,17 +245,17 @@ const Contact = () => {
                     value={formData.subject}
                     onChange={handleChange}
                     required
-                    className="form-input pl-12 appearance-none"
+                    className="form-input pl-12 appearance-none bg-dark-100 border border-white/10 text-white rounded-xl py-4 px-4 focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20 transition-all duration-300 backdrop-blur-sm cursor-pointer"
                   >
-                    <option value="">Select a subject</option>
-                    <option value="research">Research Collaboration</option>
-                    <option value="software">Software Development</option>
-                    <option value="internship">Internship Program</option>
-                    <option value="project">Final Year Project</option>
-                    <option value="partnership">Partnership</option>
-                    <option value="other">Other</option>
+                    <option value="" className="bg-dark-100 text-gray-400">Select a subject</option>
+                    <option value="research" className="bg-dark-100 text-white">Research Collaboration</option>
+                    <option value="software" className="bg-dark-100 text-white">Software Development</option>
+                    <option value="internship" className="bg-dark-100 text-white">Internship Program</option>
+                    <option value="project" className="bg-dark-100 text-white">Final Year Project</option>
+                    <option value="partnership" className="bg-dark-100 text-white">Partnership</option>
+                    <option value="other" className="bg-dark-100 text-white">Other</option>
                   </select>
-                  <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gold-500" size={16} />
+                  <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gold-500 pointer-events-none" size={16} />
                 </div>
               </div>
 

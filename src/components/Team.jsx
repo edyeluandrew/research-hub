@@ -1,12 +1,28 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Twitter, Linkedin, Github, Crown, Star } from 'lucide-react';
 
 const Team = () => {
+  const navigate = useNavigate();
+
+  const handleApplyForInternship = () => {
+    navigate('/');
+    setTimeout(() => {
+      const contactSection = document.getElementById('contact');
+      if (contactSection) {
+        contactSection.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    }, 100);
+  };
+
   const teamMembers = [
     {
       name: 'Edyelu Andrew',
       role: 'CEO & Web3 Developer',
-      image: '/api/placeholder/300/300',
+      image: '/images/team/edyelu-andrew.jpg',
       description: 'Full-stack Web3 developer specializing in Rust, Solana, Stellar, smart contracts, and MERN stack. Leads our blockchain initiatives and overall strategy.',
       handles: {
         x: 'edyelu_andrew',
@@ -17,7 +33,7 @@ const Team = () => {
     {
       name: 'Ahmed Umar Khemis',
       role: 'Co-Founder & AI Engineer',
-      image: '/api/placeholder/300/300',
+      image: '/images/team/ahmed-umar-khemis.jpg',
       description: 'AI Engineer and Neuroscientist with expertise in machine learning, neural networks, and software engineering. Drives our AI research forward.',
       handles: {
         x: 'ahmedumar_khemis',
@@ -28,7 +44,7 @@ const Team = () => {
     {
       name: 'Aliho Gilbert',
       role: 'Co-Founder & AI Engineer',
-      image: '/api/placeholder/300/300',
+      image: '/images/team/aliho-gilbert.jpg',
       description: 'Specializes in Computer Vision, Explainable AI, and Backend Engineering. Focuses on making AI systems transparent and reliable.',
       handles: {
         x: 'aliho_gilbert',
@@ -39,7 +55,7 @@ const Team = () => {
     {
       name: 'Muhereza Alouzious',
       role: 'Co-Founder & Blockchain Developer',
-      image: '/api/placeholder/300/300',
+      image: '/images/team/muhereza-alouzious.jpg',
       description: 'Blockchain expert in Rust engineering, NFTs, DeFi, and dApps. Builds secure and scalable decentralized applications.',
       handles: {
         x: 'muhereza_alouzious',
@@ -111,16 +127,32 @@ const Team = () => {
             >
               {/* Member Image */}
               <div className="relative mb-6">
-                <div className="w-36 h-36 mx-auto bg-gradient-to-br from-gold-500 to-gold-300 rounded-full flex items-center justify-center text-4xl text-dark-200 font-bold mb-4 group-hover:scale-110 transition-transform duration-500">
-                  {member.name.split(' ').map(n => n[0]).join('')}
+                <div className="w-36 h-36 mx-auto rounded-full overflow-hidden border-4 border-gold-500/30 group-hover:border-gold-500/50 transition-all duration-500 mb-4 group-hover:scale-110 transition-transform duration-500">
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      // Fallback to initials if image fails to load
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'flex';
+                    }}
+                  />
+                  {/* Fallback with initials */}
+                  <div 
+                    className="w-full h-full bg-gradient-to-br from-gold-500 to-gold-300 rounded-full flex items-center justify-center text-4xl text-dark-200 font-bold hidden"
+                    style={{ display: 'none' }}
+                  >
+                    {member.name.split(' ').map(n => n[0]).join('')}
+                  </div>
                 </div>
                 {index === 0 && (
-                  <div className="absolute -top-2 -right-2 w-10 h-10 bg-gold-500 rounded-full flex items-center justify-center">
+                  <div className="absolute -top-2 -right-2 w-10 h-10 bg-gold-500 rounded-full flex items-center justify-center shadow-lg">
                     <Crown size={16} className="text-dark-200" />
                   </div>
                 )}
                 {index !== 0 && (
-                  <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-gold-500 rounded-full flex items-center justify-center">
+                  <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-gold-500 rounded-full flex items-center justify-center shadow-lg">
                     <Star size={12} className="text-dark-200" />
                   </div>
                 )}
@@ -195,14 +227,13 @@ const Team = () => {
               We're always looking for passionate computing students who want to make an impact 
               in AI and Blockchain research. Join us in shaping the future of technology in Uganda.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="btn-primary">
+            <div className="flex justify-center">
+              <button 
+                onClick={handleApplyForInternship}
+                className="btn-primary"
+              >
                 <i className="fas fa-user-plus mr-2"></i>
                 Apply for Internship
-              </button>
-              <button className="btn-secondary">
-                <i className="fas fa-envelope mr-2"></i>
-                Contact Team Lead
               </button>
             </div>
           </div>

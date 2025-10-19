@@ -45,7 +45,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   }
 }
 
-/* ===== SCROLLBAR FIXES ===== */
+/* ===== SCROLLBAR STYLES ===== */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -171,7 +171,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   }
 }
 
-/* ===== ANIMATIONS ===== */
+/* ===== CORE ANIMATIONS ===== */
 @keyframes float {
   0%, 100% { 
     transform: translate3d(0, 0, 0); 
@@ -181,12 +181,6 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   }
 }
 
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-}
-
 @keyframes spin {
   0% { 
     transform: rotate(0deg) translate3d(0, 0, 0); 
@@ -194,6 +188,145 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   100% { 
     transform: rotate(360deg) translate3d(0, 0, 0); 
   }
+}
+
+@keyframes float-simple {
+  0%, 100% {
+    transform: translateY(0px) rotate(12deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(12deg);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+.animate-float-simple {
+  animation: float-simple 4s ease-in-out infinite;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+/* ===== 3D CAT ANIMATIONS ===== */
+@keyframes float-3d {
+  0%, 100% { 
+    transform: translateY(0px) rotate(12deg) rotateX(5deg); 
+  }
+  25% { 
+    transform: translateY(-8px) rotate(14deg) rotateX(3deg); 
+  }
+  50% { 
+    transform: translateY(-12px) rotate(12deg) rotateX(5deg); 
+  }
+  75% { 
+    transform: translateY(-8px) rotate(10deg) rotateX(7deg); 
+  }
+}
+
+@keyframes gentle-sway {
+  0%, 100% { 
+    transform: translateX(0px) rotate(-6deg); 
+  }
+  50% { 
+    transform: translateX(4px) rotate(-4deg); 
+  }
+}
+
+@keyframes blink {
+  0%, 90%, 100% { 
+    height: 2px; 
+    top: -1px; 
+  }
+  95% { 
+    height: 8px; 
+    top: -4px; 
+  }
+}
+
+@keyframes pulse-slow {
+  0%, 100% { 
+    opacity: 1; 
+  }
+  50% { 
+    opacity: 0.8; 
+  }
+}
+
+@keyframes eye-glow {
+  0%, 100% { 
+    box-shadow: 0 0 15px #10B981, 0 0 30px #10B981, inset 0 0 10px #10B981;
+  }
+  50% { 
+    box-shadow: 0 0 20px #10B981, 0 0 40px #10B981, inset 0 0 15px #10B981;
+  }
+}
+
+.animate-float-3d {
+  animation: float-3d 6s ease-in-out infinite;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+.animate-gentle-sway {
+  animation: gentle-sway 3s ease-in-out infinite;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+.animate-blink {
+  animation: blink 4s ease-in-out infinite;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 2s ease-in-out infinite;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+.animate-eye-glow {
+  animation: eye-glow 3s ease-in-out infinite;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+.shadow-glow {
+  box-shadow: 0 0 15px #10B981, 0 0 30px #10B981, inset 0 0 10px #10B981;
+}
+
+/* 3D Transform Utilities */
+.transform-3d {
+  transform-style: preserve-3d;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+.rotate-x-5 {
+  transform: rotateX(5deg) translate3d(0, 0, 0);
+}
+
+.rotate-y-5 {
+  transform: rotateY(5deg) translate3d(0, 0, 0);
+}
+
+/* Cat-specific shadows */
+.cat-shadow {
+  filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.3));
+}
+
+.sign-glow {
+  filter: drop-shadow(0 5px 15px rgba(212, 175, 55, 0.4));
 }
 
 /* ===== LAYOUT FIXES ===== */
@@ -266,9 +399,20 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
     transform: translate3d(0, 0, 0);
     -webkit-overflow-scrolling: touch;
   }
+  
+  /* Mobile-specific button adjustments */
+  .btn-primary,
+  .btn-secondary {
+    @apply py-4 px-8 text-base;
+  }
+  
+  /* Mobile form adjustments */
+  .form-input {
+    @apply py-4 px-4 text-base;
+  }
 }
 
-/* ===== REDUCE MOTION ===== */
+/* ===== REDUCE MOTION SUPPORT ===== */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -278,27 +422,120 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+  
+  /* Disable all animations for reduced motion */
+  .animate-float,
+  .animate-float-simple,
+  .animate-float-3d,
+  .animate-gentle-sway,
+  .animate-blink,
+  .animate-pulse-slow,
+  .animate-eye-glow,
+  .loading-spinner {
+    animation: none !important;
+  }
 }
 
-/* ===== IMPORTANT OVERRIDES ===== */
-/* Remove any browser default margins/padding that might cause shaking */
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-  margin: 0;
+/* ===== HIGH CONTRAST MODE SUPPORT ===== */
+@media (prefers-contrast: high) {
+  .btn-primary {
+    @apply border-2 border-white;
+  }
+  
+  .btn-secondary {
+    @apply border-2 border-white;
+  }
+  
+  .card {
+    @apply border-2 border-gray-400;
+  }
+}
+
+/* ===== DARK MODE ENHANCEMENTS ===== */
+@media (prefers-color-scheme: dark) {
+  .glass-card {
+    @apply bg-black/20 backdrop-blur-lg;
+  }
+  
+  .glass-card-inner {
+    @apply bg-black/10 backdrop-blur-md;
+  }
+}
+
+/* ===== PERFORMANCE OPTIMIZATIONS ===== */
+/* Hardware acceleration for smooth animations */
+.gpu-accelerate,
+.animate-float,
+.animate-float-3d,
+.animate-gentle-sway,
+.cat-shadow,
+.sign-glow {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: transform;
+}
+
+/* ===== ACCESSIBILITY ENHANCEMENTS ===== */
+/* Focus styles for keyboard navigation */
+.focus-visible {
+  @apply outline-2 outline-offset-2 outline-gold-500;
+}
+
+/* Screen reader only text */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
   padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
   border: 0;
-  font-size: 100%;
-  font: inherit;
-  vertical-align: baseline;
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  .btn-primary,
+  .btn-secondary,
+  .glass-card,
+  .glass-card-inner {
+    background: white !important;
+    color: black !important;
+    border: 1px solid black !important;
+  }
+  
+  .animate-float,
+  .animate-float-3d,
+  .animate-gentle-sway {
+    animation: none !important;
+  }
+}
+
+/* ===== BROWSER SPECIFIC FIXES ===== */
+/* Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+  .min-h-screen {
+    min-height: -webkit-fill-available;
+  }
+}
+
+/* Firefox specific scrollbar fix */
+@-moz-document url-prefix() {
+  .glass-card {
+    backdrop-filter: blur(10px);
+  }
+}
+
+/* ===== LEGACY BROWSER SUPPORT ===== */
+/* Fallback for browsers that don't support backdrop-filter */
+@supports not (backdrop-filter: blur(10px)) {
+  .glass-card {
+    background: rgba(26, 26, 26, 0.95);
+  }
+  
+  .glass-card-inner {
+    background: rgba(26, 26, 26, 0.9);
+  }
 }
