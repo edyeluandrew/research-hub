@@ -25,9 +25,9 @@ const Team = () => {
       image: '/images/team/edyelu-andrew.jpg',
       description: 'Full-stack Web3 developer specializing in Rust, Solana, Stellar, smart contracts, and MERN stack. Leads our blockchain initiatives and overall strategy.',
       handles: {
-        x: 'edyelu_andrew',
-        linkedin: 'edyelu-andrew',
-        github: 'edyeluandrew'
+        x: 'https://x.com/edyeluandrew1?t=JQ1KHN-CaMk6rACTnaJNWg&s=09',
+        linkedin: 'https://www.linkedin.com/in/edyelu-andrew-118992330?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
+        github: 'https://github.com/edyeluandrew/'
       }
     },
     {
@@ -37,8 +37,8 @@ const Team = () => {
       description: 'AI Engineer and Neuroscientist with expertise in machine learning, neural networks, and software engineering. Drives our AI research forward.',
       handles: {
         x: 'ahmedumar_khemis',
-        linkedin: 'ahmed-umar-khemis',
-        github: 'ahmedumarkhemis'
+        linkedin: 'http://linkedin.com/in/ahmed-umar-khemis',
+        github: 'http://github.com/umarkhemis'
       }
     },
     {
@@ -47,9 +47,9 @@ const Team = () => {
       image: '/images/team/aliho-gilbert.jpg',
       description: 'Specializes in Computer Vision, Explainable AI, and Backend Engineering. Focuses on making AI systems transparent and reliable.',
       handles: {
-        x: 'aliho_gilbert',
-        linkedin: 'aliho-gilbert',
-        github: 'aliho-gilbert'
+        x: 'https://x.com/GilbertAliho',
+        linkedin: 'https://www.linkedin.com/in/aliho-gilbert-a0b5b5292/',
+        github: 'https://github.com/Gibsdevops'
       }
     },
     {
@@ -58,9 +58,9 @@ const Team = () => {
       image: '/images/team/muhereza-alouzious.jpg',
       description: 'Blockchain expert in Rust engineering, NFTs, DeFi, and dApps. Builds secure and scalable decentralized applications.',
       handles: {
-        x: 'muhereza_alouzious',
-        linkedin: 'muhereza-alouzious',
-        github: 'muhereza-alouzious'
+        x: 'https://x.com/alouzious?t=yDaksnt2IIunL6IJ97RjTg&s=09',
+        linkedin: 'https://www.linkedin.com/in/alouzious-muhereza-89116b328?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
+        github: 'https://Github.com/Alouzious'
       }
     }
   ];

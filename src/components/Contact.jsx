@@ -50,13 +50,13 @@ const Contact = () => {
     {
       icon: Mail,
       title: 'Email Us',
-      details: 'hello@techresearchhub.ug',
+      details: 'betatechlabs10@gmail.com',
       description: 'Send us an email anytime'
     },
     {
       icon: Phone,
       title: 'Call Us',
-      details: '+256 XXX XXX XXX',
+      details: '+256 791018086',
       description: 'Mon to Fri, 9am to 5pm'
     },
     {
