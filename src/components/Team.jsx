@@ -130,7 +130,9 @@ const Team = () => {
                 <div className="w-36 h-36 mx-auto rounded-full overflow-hidden border-4 border-gold-500/30 group-hover:border-gold-500/50 transition-all duration-500 mb-4 group-hover:scale-110 transition-transform duration-500">
                   <img
                     src={member.image}
-                    alt={member.name}
+                    alt={`${member.name} - ${member.role} at Beta Tech Labs`}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       // Fallback to initials if image fails to load

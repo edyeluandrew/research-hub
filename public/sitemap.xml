@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://www.beta-techlabs.com/</loc>
+    <lastmod>2025-12-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://www.beta-techlabs.com/images/og-home.svg</image:loc>
+      <image:title>Beta Tech Labs - AI and Blockchain Research Hub Uganda</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.beta-techlabs.com/services</loc>
+    <lastmod>2025-12-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://www.beta-techlabs.com/images/og-services.svg</image:loc>
+      <image:title>Beta Tech Labs Services - Research, Development, Education</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.beta-techlabs.com/research</loc>
+    <lastmod>2025-12-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://www.beta-techlabs.com/images/og-research.svg</image:loc>
+      <image:title>AI and Blockchain Research at Beta Tech Labs</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.beta-techlabs.com/events</loc>
+    <lastmod>2025-12-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.beta-techlabs.com/images/og-events.svg</image:loc>
+      <image:title>Tech Workshops and Events in Kabale, Uganda</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.beta-techlabs.com/contact</loc>
+    <lastmod>2025-12-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.beta-techlabs.com/privacy</loc>
+    <lastmod>2025-12-22</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.beta-techlabs.com/terms</loc>
+    <lastmod>2025-12-22</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.beta-techlabs.com/cookies</loc>
+    <lastmod>2025-12-22</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+</urlset>

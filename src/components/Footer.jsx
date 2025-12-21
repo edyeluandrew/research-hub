@@ -69,33 +69,38 @@ const Footer = () => {
   const socialLinks = [
     {
       icon: Twitter,
-      name: 'Twitter',
-      href: '#',
-      color: 'hover:text-white hover:bg-black'
+      name: 'Twitter/X',
+      href: 'https://twitter.com/betatechlabs',
+      color: 'hover:text-white hover:bg-black',
+      ariaLabel: 'Follow us on Twitter/X'
     },
     {
       icon: Linkedin,
       name: 'LinkedIn',
-      href: '#',
-      color: 'hover:text-white hover:bg-blue-600'
+      href: 'https://www.linkedin.com/company/betatechlabs',
+      color: 'hover:text-white hover:bg-blue-600',
+      ariaLabel: 'Connect with us on LinkedIn'
     },
     {
       icon: Github,
       name: 'GitHub',
-      href: '#',
-      color: 'hover:text-white hover:bg-gray-800'
+      href: 'https://github.com/betatechlabs',
+      color: 'hover:text-white hover:bg-gray-800',
+      ariaLabel: 'View our projects on GitHub'
     },
     {
       icon: MessageSquare,
       name: 'Discord',
-      href: '#',
-      color: 'hover:text-white hover:bg-indigo-600'
+      href: 'https://discord.gg/betatechlabs',
+      color: 'hover:text-white hover:bg-indigo-600',
+      ariaLabel: 'Join our Discord community'
     },
     {
       icon: Youtube,
       name: 'YouTube',
-      href: '#',
-      color: 'hover:text-white hover:bg-red-600'
+      href: 'https://www.youtube.com/@betatechlabs',
+      color: 'hover:text-white hover:bg-red-600',
+      ariaLabel: 'Subscribe to our YouTube channel'
     },
   ];
 
@@ -174,8 +179,10 @@ const Footer = () => {
                     <a
                       key={social.name}
                       href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className={`w-10 h-10 bg-dark-100 rounded-lg flex items-center justify-center text-gray-400 border border-gray-700 transition-all duration-300 hover:border-gold-500 hover:scale-110 ${social.color}`}
-                      aria-label={social.name}
+                      aria-label={social.ariaLabel}
                     >
                       <SocialIcon size={18} />
                     </a>
@@ -306,13 +313,13 @@ const Footer = () => {
 
               {/* Legal Links */}
               <div className="flex space-x-6">
-                <a href="#" className="text-gray-500 hover:text-gold-500 transition-colors duration-300 text-sm">
+                <a href="/privacy" className="text-gray-500 hover:text-gold-500 transition-colors duration-300 text-sm">
                   Privacy Policy
                 </a>
-                <a href="#" className="text-gray-500 hover:text-gold-500 transition-colors duration-300 text-sm">
+                <a href="/terms" className="text-gray-500 hover:text-gold-500 transition-colors duration-300 text-sm">
                   Terms of Service
                 </a>
-                <a href="#" className="text-gray-500 hover:text-gold-500 transition-colors duration-300 text-sm">
+                <a href="/cookies" className="text-gray-500 hover:text-gold-500 transition-colors duration-300 text-sm">
                   Cookies
                 </a>
               </div>

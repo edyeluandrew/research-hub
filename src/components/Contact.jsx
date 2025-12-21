@@ -70,27 +70,27 @@ const Contact = () => {
   const socialLinks = [
     {
       icon: Twitter,
-      href: '#',
+      href: 'https://twitter.com/betatechlabs',
       name: 'Twitter'
     },
     {
       icon: Linkedin,
-      href: '#',
+      href: 'https://www.linkedin.com/company/betatechlabs',
       name: 'LinkedIn'
     },
     {
       icon: Github,
-      href: '#',
+      href: 'https://github.com/betatechlabs',
       name: 'GitHub'
     },
     {
       icon: MessageSquare,
-      href: '#',
+      href: 'https://discord.gg/betatechlabs',
       name: 'Discord'
     },
     {
       icon: Youtube,
-      href: '#',
+      href: 'https://www.youtube.com/@betatechlabs',
       name: 'YouTube'
     }
   ];

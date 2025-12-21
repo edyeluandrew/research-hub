@@ -1,0 +1,32 @@
+# Robots.txt for Beta Tech Labs
+# https://www.beta-techlabs.com
+
+User-agent: *
+Allow: /
+Allow: /services
+Allow: /research
+Allow: /events
+Allow: /contact
+Allow: /privacy
+Allow: /terms
+Allow: /cookies
+Disallow: /labs
+Disallow: /api/
+Disallow: /*.json$
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
+
+# Sitemaps
+Sitemap: https://www.beta-techlabs.com/sitemap.xml
+
+# Google specific
+User-agent: Googlebot
+Allow: /
+Disallow: /labs
+
+# Bing specific
+User-agent: Bingbot
+Allow: /
+Disallow: /labs
+Crawl-delay: 1
