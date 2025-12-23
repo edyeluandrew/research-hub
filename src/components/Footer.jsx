@@ -70,37 +70,23 @@ const Footer = () => {
     {
       icon: Twitter,
       name: 'Twitter/X',
-      href: 'https://twitter.com/betatechlabs',
+      href: 'https://x.com/betatechlabs',
       color: 'hover:text-white hover:bg-black',
       ariaLabel: 'Follow us on Twitter/X'
     },
     {
       icon: Linkedin,
       name: 'LinkedIn',
-      href: 'https://www.linkedin.com/company/betatechlabs',
+      href: 'https://www.linkedin.com/in/betatech-labs-06398039b',
       color: 'hover:text-white hover:bg-blue-600',
       ariaLabel: 'Connect with us on LinkedIn'
     },
     {
       icon: Github,
       name: 'GitHub',
-      href: 'https://github.com/betatechlabs',
+      href: 'https://github.com/beta-techlabs',
       color: 'hover:text-white hover:bg-gray-800',
       ariaLabel: 'View our projects on GitHub'
-    },
-    {
-      icon: MessageSquare,
-      name: 'Discord',
-      href: 'https://discord.gg/betatechlabs',
-      color: 'hover:text-white hover:bg-indigo-600',
-      ariaLabel: 'Join our Discord community'
-    },
-    {
-      icon: Youtube,
-      name: 'YouTube',
-      href: 'https://www.youtube.com/@betatechlabs',
-      color: 'hover:text-white hover:bg-red-600',
-      ariaLabel: 'Subscribe to our YouTube channel'
     },
   ];
 

@@ -1,16 +1,62 @@
-# React + Vite
+# 🚀 Beta Tech Labs
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<div align="center">
 
-Currently, two official plugins are available:
+![Beta Tech Labs](https://img.shields.io/badge/Beta%20Tech%20Labs-AI%20%26%20Blockchain-gold?style=for-the-badge)
+![Location](https://img.shields.io/badge/📍-Kabale,%20Uganda-green?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Live-brightgreen?style=for-the-badge)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**Uganda's Premier AI & Blockchain Research Hub**
 
-## React Compiler
+[🌐 Visit Website](https://www.beta-techlabs.com) • [𝕏 Twitter](https://x.com/betatechlabs) • [💼 LinkedIn](https://www.linkedin.com/in/betatech-labs-06398039b) • [🐙 GitHub](https://github.com/beta-techlabs)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+</div>
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## ✨ What We Do
+
+**Beta Tech Labs** is a student-led research hub based in Kabale, Uganda, dedicated to pushing the boundaries of technology through AI and Blockchain innovation.
+
+🔬 **Research** — Cutting-edge AI/ML and Blockchain research projects  
+🛠️ **Development** — Building real-world decentralized applications and AI solutions  
+📚 **Education** — Training the next generation of tech leaders in Uganda  
+🤝 **Community** — Fostering a vibrant tech ecosystem in Western Uganda  
+
+---
+
+## 🎯 Our Mission
+
+To democratize access to emerging technologies and empower African developers to build the future of Web3 and Artificial Intelligence.
+
+---
+
+## 💡 Tech Stack
+
+| Frontend | Styling | Build | Deployment |
+|----------|---------|-------|------------|
+| React.js | Tailwind CSS | Vite | Vercel |
+
+---
+
+## 👥 The Team
+
+A passionate team of **5 core members** — developers, AI engineers, and strategists — all driven by innovation.
+
+---
+
+## 📬 Get In Touch
+
+- 📧 **Email:** betatechlabs10@gmail.com
+- 📱 **WhatsApp:** +256 764 331 334
+- 📍 **Location:** Kabale, Uganda
+
+---
+
+<div align="center">
+
+**Built with 💛 in Uganda**
+
+*Forging the future of technology, one innovation at a time.*
+
+</div>

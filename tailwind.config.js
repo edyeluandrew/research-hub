@@ -28,7 +28,8 @@ module.exports = {
         }
       },
       fontFamily: {
-        'sans': ['Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif'],
+        'sans': ['Inter', 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif'],
+        'heading': ['Exo 2', 'Orbitron', 'Segoe UI', 'sans-serif'],
       },
       backgroundImage: {
         'gold-gradient': 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',

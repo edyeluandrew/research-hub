@@ -38,9 +38,9 @@ const StructuredData = () => {
       "Software Development"
     ],
     "sameAs": [
-      "https://twitter.com/betatechlabs",
-      "https://www.linkedin.com/company/betatechlabs",
-      "https://github.com/betatechlabs"
+      "https://x.com/betatechlabs",
+      "https://www.linkedin.com/in/betatech-labs-06398039b",
+      "https://github.com/beta-techlabs"
     ]
   };
 

@@ -18,18 +18,22 @@ const Team = () => {
     }, 100);
   };
 
-  const teamMembers = [
-    {
-      name: 'Edyelu Andrew',
-      role: 'CEO & Web3 Developer',
-      image: '/images/team/edyelu-andrew.jpg',
-      description: 'Full-stack Web3 developer specializing in Rust, Solana, Stellar, smart contracts, and MERN stack. Leads our blockchain initiatives and overall strategy.',
-      handles: {
-        x: 'https://x.com/edyeluandrew1?t=JQ1KHN-CaMk6rACTnaJNWg&s=09',
-        linkedin: 'https://www.linkedin.com/in/edyelu-andrew-118992330?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
-        github: 'https://github.com/edyeluandrew/'
-      }
+  // CEO (center)
+  const ceo = {
+    name: 'Edyelu Andrew',
+    role: 'CEO & Web3 Developer',
+    image: '/images/team/edyelu-andrew.jpg',
+    description: 'Full-stack Web3 developer specializing in Rust, Solana, Stellar, smart contracts, and MERN stack. Leads our blockchain initiatives and overall strategy.',
+    handles: {
+      x: 'https://x.com/edyeluandrew1?t=JQ1KHN-CaMk6rACTnaJNWg&s=09',
+      linkedin: 'https://www.linkedin.com/in/edyelu-andrew-118992330?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
+      github: 'https://github.com/edyeluandrew/'
     },
+    skills: ['Rust', 'React js', 'Stellar', 'NodeJs', 'UI/UX']
+  };
+
+  // Top row (2 members)
+  const topRow = [
     {
       name: 'Ahmed Umar Khemis',
       role: 'Co-Founder & AI Engineer',
@@ -39,7 +43,8 @@ const Team = () => {
         x: 'ahmedumar_khemis',
         linkedin: 'http://linkedin.com/in/ahmed-umar-khemis',
         github: 'http://github.com/umarkhemis'
-      }
+      },
+      skills: ['Django', 'Arduino', 'Research Lead']
     },
     {
       name: 'Aliho Gilbert',
@@ -50,8 +55,13 @@ const Team = () => {
         x: 'https://x.com/GilbertAliho',
         linkedin: 'https://www.linkedin.com/in/aliho-gilbert-a0b5b5292/',
         github: 'https://github.com/Gibsdevops'
-      }
-    },
+      },
+      skills: ['Django', 'React', 'Backend Engineering']
+    }
+  ];
+
+  // Bottom row (2 members)
+  const bottomRow = [
     {
       name: 'Muhereza Alouzious',
       role: 'Co-Founder & Blockchain Developer',
@@ -61,7 +71,20 @@ const Team = () => {
         x: 'https://x.com/alouzious?t=yDaksnt2IIunL6IJ97RjTg&s=09',
         linkedin: 'https://www.linkedin.com/in/alouzious-muhereza-89116b328?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
         github: 'https://Github.com/Alouzious'
-      }
+      },
+      skills: ['Rust', 'NFTs', 'DeFi', 'dApps']
+    },
+    {
+      name: 'Kyomugisha Evelyn',
+      role: 'Marketing Director & Project Manager',
+      image: '/images/team/kyomugisha-evelyn.jpg',
+      description: 'Strategic marketing leader and project manager driving brand growth, community engagement, and ensuring seamless project execution.',
+      handles: {
+        x: 'https://x.com/EvelynK2486',
+        linkedin: 'https://www.linkedin.com/in/kyomugisha-evelyn-2877722b4',
+        github: '#'
+      },
+      skills: ['Marketing', 'Project Management', 'Strategy']
     }
   ];
 
@@ -103,6 +126,78 @@ const Team = () => {
     );
   };
 
+  // Team Card Component
+  const TeamCard = ({ member, SocialHandle, isCeo = false }) => (
+    <div 
+      className={`card p-8 group hover:transform hover:scale-105 transition-all duration-500 relative ${isCeo ? 'border-2 border-gold-500/50' : ''}`}
+    >
+      {/* Member Image */}
+      <div className="relative mb-6">
+        <div className={`${isCeo ? 'w-44 h-44' : 'w-36 h-36'} mx-auto rounded-full overflow-hidden border-4 ${isCeo ? 'border-gold-500' : 'border-gold-500/30'} group-hover:border-gold-500/50 transition-all duration-500 mb-4 group-hover:scale-110`}>
+          <img
+            src={member.image}
+            alt={`${member.name} - ${member.role} at Beta Tech Labs`}
+            loading="lazy"
+            decoding="async"
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              e.target.style.display = 'none';
+              e.target.nextSibling.style.display = 'flex';
+            }}
+          />
+          {/* Fallback with initials */}
+          <div 
+            className="w-full h-full bg-gradient-to-br from-gold-500 to-gold-300 rounded-full flex items-center justify-center text-4xl text-dark-200 font-bold"
+            style={{ display: 'none' }}
+          >
+            {member.name.split(' ').map(n => n[0]).join('')}
+          </div>
+        </div>
+        {isCeo ? (
+          <div className="absolute -top-2 -right-2 w-12 h-12 bg-gold-500 rounded-full flex items-center justify-center shadow-lg">
+            <Crown size={20} className="text-dark-200" />
+          </div>
+        ) : (
+          <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-gold-500 rounded-full flex items-center justify-center shadow-lg">
+            <Star size={12} className="text-dark-200" />
+          </div>
+        )}
+      </div>
+
+      {/* Member Info */}
+      <div className="text-center mb-6">
+        <h3 className={`${isCeo ? 'text-3xl' : 'text-2xl'} font-bold font-heading text-gold-500 mb-2 group-hover:text-gold-400 transition-colors duration-300`}>
+          {member.name}
+        </h3>
+        <p className="text-gold-300 font-medium mb-4 text-lg">{member.role}</p>
+        <p className="text-gray-400 leading-relaxed">
+          {member.description}
+        </p>
+      </div>
+
+      {/* Skills Tags */}
+      <div className="flex flex-wrap justify-center gap-2 mb-6">
+        {member.skills?.map((skill, i) => (
+          <span key={i} className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">
+            {skill}
+          </span>
+        ))}
+      </div>
+
+      {/* Social Handles */}
+      <div className="flex justify-center space-x-4 pt-6 border-t border-gray-700">
+        <SocialHandle platform="x" url={member.handles.x} />
+        <SocialHandle platform="linkedin" url={member.handles.linkedin} />
+        {member.handles.github !== '#' && (
+          <SocialHandle platform="github" url={member.handles.github} />
+        )}
+      </div>
+
+      {/* Hover Effect Border */}
+      <div className="absolute inset-0 border-2 border-transparent group-hover:border-gold-500/30 rounded-xl transition-all duration-500 pointer-events-none"></div>
+    </div>
+  );
+
   return (
     <section id="team" className="py-20 bg-dark-100 relative overflow-hidden">
       {/* Background Elements */}
@@ -112,111 +207,35 @@ const Team = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="section-title">Meet Our Team</h2>
+          <h2 className="section-title font-heading">Meet Our Team</h2>
           <p className="section-subtitle">
             Passionate computing students driving innovation in AI and Blockchain from Kabale, Uganda.
           </p>
         </div>
 
-        {/* Team Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-          {teamMembers.map((member, index) => (
-            <div 
-              key={index}
-              className="card p-8 group hover:transform hover:scale-105 transition-all duration-500"
-            >
-              {/* Member Image */}
-              <div className="relative mb-6">
-                <div className="w-36 h-36 mx-auto rounded-full overflow-hidden border-4 border-gold-500/30 group-hover:border-gold-500/50 transition-all duration-500 mb-4 group-hover:scale-110 transition-transform duration-500">
-                  <img
-                    src={member.image}
-                    alt={`${member.name} - ${member.role} at Beta Tech Labs`}
-                    loading="lazy"
-                    decoding="async"
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      // Fallback to initials if image fails to load
-                      e.target.style.display = 'none';
-                      e.target.nextSibling.style.display = 'flex';
-                    }}
-                  />
-                  {/* Fallback with initials */}
-                  <div 
-                    className="w-full h-full bg-gradient-to-br from-gold-500 to-gold-300 rounded-full flex items-center justify-center text-4xl text-dark-200 font-bold hidden"
-                    style={{ display: 'none' }}
-                  >
-                    {member.name.split(' ').map(n => n[0]).join('')}
-                  </div>
-                </div>
-                {index === 0 && (
-                  <div className="absolute -top-2 -right-2 w-10 h-10 bg-gold-500 rounded-full flex items-center justify-center shadow-lg">
-                    <Crown size={16} className="text-dark-200" />
-                  </div>
-                )}
-                {index !== 0 && (
-                  <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-gold-500 rounded-full flex items-center justify-center shadow-lg">
-                    <Star size={12} className="text-dark-200" />
-                  </div>
-                )}
-              </div>
+        {/* Team Layout: 2 up, CEO center, 2 down */}
+        <div className="max-w-6xl mx-auto">
+          
+          {/* Top Row - 2 Members */}
+          <div className="grid md:grid-cols-2 gap-8 mb-8">
+            {topRow.map((member, index) => (
+              <TeamCard key={`top-${index}`} member={member} SocialHandle={SocialHandle} />
+            ))}
+          </div>
 
-              {/* Member Info */}
-              <div className="text-center mb-6">
-                <h3 className="text-2xl font-bold text-gold-500 mb-2 group-hover:text-gold-400 transition-colors duration-300">
-                  {member.name}
-                </h3>
-                <p className="text-gold-300 font-medium mb-4 text-lg">{member.role}</p>
-                <p className="text-gray-400 leading-relaxed">
-                  {member.description}
-                </p>
-              </div>
-
-              {/* Skills Tags */}
-              <div className="flex flex-wrap justify-center gap-2 mb-6">
-                {member.role.includes('Web3') && (
-                  <>
-                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">Rust</span>
-                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">React js</span>
-                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">Stellar</span>
-                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">NodeJs</span>
-                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">UI/UX</span>
-                  </>
-                )}
-                {member.role.includes('AI Engineer') && member.name.includes('Ahmed') && (
-                  <>
-                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">Django</span>
-                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">Adruino</span>
-                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">Research Lead</span>
-                  </>
-                )}
-                {member.role.includes('AI Engineer') && member.name.includes('Aliho') && (
-                  <>
-                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">Django</span>
-                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">React</span>
-                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">Backend Engineering</span>
-                  </>
-                )}
-                {member.role.includes('Blockchain') && member.name.includes('Muhereza') && (
-                  <>
-                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">Rust</span>
-                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">NFTs</span>
-                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">DeFi</span>
-                    <span className="px-3 py-1 bg-gold-500/20 text-gold-400 rounded-full text-xs font-medium">dApps</span>
-                  </>
-                )}
-              </div>
-
-              {/* Social Handles */}
-              <div className="flex justify-center space-x-4 pt-6 border-t border-gray-700">
-                <SocialHandle platform="x" username={member.handles.x} />
-                <SocialHandle platform="linkedin" username={member.handles.linkedin} />
-                <SocialHandle platform="github" username={member.handles.github} />
-              </div>
-
-              {/* Hover Effect Border */}
-              <div className="absolute inset-0 border-2 border-transparent group-hover:border-gold-500/30 rounded-xl transition-all duration-500 pointer-events-none"></div>
+          {/* Middle Row - CEO */}
+          <div className="flex justify-center mb-8">
+            <div className="w-full md:w-1/2 lg:w-2/5">
+              <TeamCard member={ceo} SocialHandle={SocialHandle} isCeo={true} />
             </div>
-          ))}
+          </div>
+
+          {/* Bottom Row - 2 Members */}
+          <div className="grid md:grid-cols-2 gap-8">
+            {bottomRow.map((member, index) => (
+              <TeamCard key={`bottom-${index}`} member={member} SocialHandle={SocialHandle} />
+            ))}
+          </div>
         </div>
 
         {/* Join Team CTA */}
@@ -244,19 +263,19 @@ const Team = () => {
         {/* Team Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16 pt-12 border-t border-gray-700">
           <div className="text-center">
-            <div className="text-3xl font-bold text-gold-500 mb-2">4</div>
+            <div className="text-3xl font-bold font-heading text-gold-500 mb-2">5</div>
             <div className="text-gray-400">Core Team Members</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-gold-500 mb-2">100%</div>
+            <div className="text-3xl font-bold font-heading text-gold-500 mb-2">100%</div>
             <div className="text-gray-400">Student-Led</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-gold-500 mb-2">AI & Blockchain</div>
+            <div className="text-3xl font-bold font-heading text-gold-500 mb-2">AI & Blockchain</div>
             <div className="text-gray-400">Specialized</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-gold-500 mb-2">Kabale</div>
+            <div className="text-3xl font-bold font-heading text-gold-500 mb-2">Kabale</div>
             <div className="text-gray-400">Based</div>
           </div>
         </div>
