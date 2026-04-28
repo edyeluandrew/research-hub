@@ -44,8 +44,13 @@ const Admin = () => {
         const teamData = await getTeamData();
         const eventsData = await getEventsData();
         
-        if (teamData?.topRow) {
-          setTeamMembers(teamData.topRow);
+        if (teamData) {
+          // Load ALL team members (CEO + topRow + bottomRow)
+          const allMembers = [];
+          if (teamData.ceo) allMembers.push(teamData.ceo);
+          if (teamData.topRow) allMembers.push(...teamData.topRow);
+          if (teamData.bottomRow) allMembers.push(...teamData.bottomRow);
+          setTeamMembers(allMembers);
         }
         if (eventsData) {
           setEvents(Array.isArray(eventsData) ? eventsData : []);
@@ -76,8 +81,9 @@ const Admin = () => {
         const currentTeamData = await getTeamData();
         const updatedTeamData = {
           ...currentTeamData,
-          topRow: teamMembers.slice(0, 2),
-          bottomRow: teamMembers.slice(2, 4)
+          ceo: teamMembers[0], // First member is CEO
+          topRow: teamMembers.slice(1, 3), // Next 2 are top row
+          bottomRow: teamMembers.slice(3) // Rest are bottom row
         };
         await saveTeamData(updatedTeamData);
       };
@@ -152,6 +158,7 @@ const Admin = () => {
       id: Date.now(),
       name: 'New Member',
       role: 'Team Member',
+      image: '/images/team/placeholder.jpg',
       description: 'Member description',
       handles: {
         x: 'username',
@@ -556,6 +563,13 @@ const Admin = () => {
                         className="form-input text-sm"
                         placeholder="Role"
                       />
+                      <input
+                        type="text"
+                        value={editData.image || ''}
+                        onChange={(e) => handleEditChange('image', e.target.value)}
+                        className="form-input text-sm"
+                        placeholder="Image URL (e.g., /images/team/name.jpg)"
+                      />
                       <textarea
                         value={editData.description || ''}
                         onChange={(e) => handleEditChange('description', e.target.value)}
@@ -605,13 +619,25 @@ const Admin = () => {
                     </div>
                   ) : (
                     <>
-                      <h3 className="text-lg font-bold text-gold-500 mb-2">{member.name}</h3>
+                      {member.image && (
+                        <div className="mb-4 rounded-lg overflow-hidden h-48">
+                          <img 
+                            src={member.image} 
+                            alt={member.name}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              e.target.style.display = 'none';
+                            }}
+                          />
+                        </div>
+                      )}
+                      <h3 className="text-lg font-bold text-gold-500 mb-1">{member.name}</h3>
                       <p className="text-gold-300 text-sm mb-2">{member.role}</p>
-                      <p className="text-gray-400 text-sm mb-4">{member.description}</p>
-                      <div className="text-gray-400 text-sm space-y-1">
-                        <p>X: @{member.handles.x}</p>
-                        <p>LinkedIn: {member.handles.linkedin}</p>
-                        <p>GitHub: {member.handles.github}</p>
+                      <p className="text-gray-400 text-sm mb-3">{member.description}</p>
+                      <div className="text-gray-400 text-xs space-y-1 mb-4">
+                        <p>X: {member.handles?.x || 'N/A'}</p>
+                        <p>LinkedIn: {member.handles?.linkedin || 'N/A'}</p>
+                        {member.handles?.github && <p>GitHub: {member.handles.github}</p>}
                       </div>
                       <div className="flex space-x-2 mt-4">
                         <button
