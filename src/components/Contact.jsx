@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import emailjs from '@emailjs/browser';
 import { 
   MapPin, 
   Mail, 
@@ -14,7 +15,10 @@ import {
   Linkedin,
   Github,
   MessageSquare,
-  Youtube
+  Youtube,
+  CheckCircle,
+  AlertCircle,
+  Loader
 } from 'lucide-react';
 
 const Contact = () => {
@@ -25,6 +29,17 @@ const Contact = () => {
     message: ''
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [status, setStatus] = useState(null); // 'success', 'error', or null
+  const [statusMessage, setStatusMessage] = useState('');
+
+  // Initialize EmailJS on component mount
+  useEffect(() => {
+    // Initialize EmailJS with your public key
+    // Create an account at https://www.emailjs.com/ if you haven't already
+    emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'YOUR_PUBLIC_KEY');
+  }, []);
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -32,12 +47,48 @@ const Contact = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log('Form submitted:', formData);
-    alert('Thank you for your message! We will get back to you soon.');
-    setFormData({ name: '', email: '', subject: '', message: '' });
+    setIsLoading(true);
+    setStatus(null);
+
+    try {
+      // Prepare email template parameters
+      const emailParams = {
+        to_email: 'betatechlabs10@gmail.com',
+        from_name: formData.name,
+        from_email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+        reply_to: formData.email
+      };
+
+      // Send email using EmailJS
+      // Replace 'YOUR_SERVICE_ID' and 'YOUR_TEMPLATE_ID' with actual IDs from EmailJS
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID || 'YOUR_SERVICE_ID',
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'YOUR_TEMPLATE_ID',
+        emailParams
+      );
+
+      setStatus('success');
+      setStatusMessage('Message sent successfully! We will get back to you within 24 hours.');
+      
+      // Reset form
+      setFormData({ name: '', email: '', subject: '', message: '' });
+      
+      // Clear success message after 5 seconds
+      setTimeout(() => setStatus(null), 5000);
+    } catch (error) {
+      console.error('Email sending error:', error);
+      setStatus('error');
+      setStatusMessage('Failed to send message. Please try again or contact us directly at betatechlabs10@gmail.com');
+      
+      // Clear error message after 5 seconds
+      setTimeout(() => setStatus(null), 5000);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const contactMethods = [
@@ -280,11 +331,46 @@ const Contact = () => {
 
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-gold-500 to-gold-300 hover:from-gold-600 hover:to-gold-400 text-dark-200 font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-gold-lg focus:outline-none focus:ring-2 focus:ring-gold-400 focus:ring-opacity-50 flex items-center justify-center"
+                disabled={isLoading}
+                className={`w-full font-bold py-4 px-6 rounded-xl transition-all duration-300 transform flex items-center justify-center ${
+                  isLoading
+                    ? 'bg-gray-500 text-gray-300 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-gold-500 to-gold-300 hover:from-gold-600 hover:to-gold-400 text-dark-200 hover:scale-105 hover:shadow-gold-lg focus:outline-none focus:ring-2 focus:ring-gold-400 focus:ring-opacity-50'
+                }`}
               >
-                <Send className="mr-2" size={18} />
-                Send Message
+                {isLoading ? (
+                  <>
+                    <Loader className="mr-2 animate-spin" size={18} />
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    <Send className="mr-2" size={18} />
+                    Send Message
+                  </>
+                )}
               </button>
+
+              {/* Status Messages */}
+              {status === 'success' && (
+                <div className="bg-green-500/20 border border-green-500/50 rounded-xl p-4 flex items-start space-x-3">
+                  <CheckCircle className="text-green-400 mt-0.5 flex-shrink-0" size={20} />
+                  <div>
+                    <p className="text-green-400 font-semibold">Message Sent!</p>
+                    <p className="text-green-300 text-sm">{statusMessage}</p>
+                  </div>
+                </div>
+              )}
+
+              {status === 'error' && (
+                <div className="bg-red-500/20 border border-red-500/50 rounded-xl p-4 flex items-start space-x-3">
+                  <AlertCircle className="text-red-400 mt-0.5 flex-shrink-0" size={20} />
+                  <div>
+                    <p className="text-red-400 font-semibold">Error Sending Message</p>
+                    <p className="text-red-300 text-sm">{statusMessage}</p>
+                  </div>
+                </div>
+              )}
 
               <p className="text-gray-400 text-sm text-center">
                 By submitting this form, you agree to our privacy policy and terms of service.
