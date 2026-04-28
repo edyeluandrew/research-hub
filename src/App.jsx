@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Services from './pages/Services';
 import Events from './pages/Events';
+import Projects from './pages/Projects';
 import Admin from './pages/Admin';
 import Research from './pages/Research';
 import NotFound from './pages/NotFound';
@@ -27,6 +28,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/services" element={<Services />} />
         <Route path="/events" element={<Events />} />
+        <Route path="/projects" element={<Projects />} />
         <Route path="/labs" element={<Admin />} />
         <Route path="/research" element={<Research />} />
         <Route path="/contact" element={<Contact />} />

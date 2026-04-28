@@ -391,7 +391,7 @@ const Footer = () => {
       )}
 
       {/* Add the scale-in animation to your CSS */}
-      <style jsx>{`
+      <style>{`
         @keyframes scale-in {
           0% {
             transform: scale(0.9);

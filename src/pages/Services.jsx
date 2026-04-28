@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SEO from '../components/SEO';
 import Footer from '../components/Footer';
+import { getServicesData } from '../data/dataStore';
 import { 
   ArrowLeft, 
   Home, 
@@ -16,109 +17,53 @@ import {
   BookOpen,
   Check,
   Star,
-  Calendar
+  Calendar,
+  Brain,
+  Rocket,
+  Globe,
+  Shield
 } from 'lucide-react';
+
+// Icon mapping for dynamic icons
+const iconMap = {
+  Search, Settings, Code, GraduationCap, Projector, Cpu, Link, BookOpen,
+  Brain, Rocket, Globe, Shield
+};
 
 const Services = () => {
   const navigate = useNavigate();
+  const [servicesData, setServicesData] = useState(null);
 
-  const coreServices = [
-    {
-      icon: Search,
-      title: 'Research & Development',
-      description: 'Our primary focus. We conduct cutting-edge research studies in AI and Blockchain to identify industry gaps and develop innovative solutions.',
-      features: [
-        'AI Model Research & Development',
-        'Blockchain Protocol Studies',
-        'Academic Research Publications',
-        'Industry Problem Analysis',
-        'Solution Feasibility Studies'
-      ],
-      isCore: true
-    },
-    {
-      icon: Settings,
-      title: 'Solution Engineering',
-      description: 'Building practical software solutions based on our research findings to address real-world problems.',
-      features: [
-        'Research-Based Software Development',
-        'Proof of Concept Implementation',
-        'Prototype Development',
-        'Solution Scaling & Deployment'
-      ],
-      isCore: true
-    }
-  ];
+  // Listen for updates from admin panel
+  useEffect(() => {
+    const loadData = async () => {
+      const data = await getServicesData();
+      setServicesData(data);
+    };
+    loadData();
+  }, []);
 
-  const additionalServices = [
-    {
-      icon: Code,
-      title: 'Software Engineering',
-      description: 'End-to-end software development services leveraging our research expertise.',
-      features: [
-        'Web Application Development',
-        'Mobile App Development (iOS & Android)',
-        'Desktop Software Solutions',
-        'API & Backend Development'
-      ]
-    },
-    {
-      icon: GraduationCap,
-      title: 'Student Internships',
-      description: 'Hands-on internship programs for computing students to gain research and development experience.',
-      features: [
-        'Research Methodology Training',
-        'Practical Tech Skill Development',
-        'Project-Based Learning',
-        'Career Mentorship'
-      ]
-    },
-    {
-      icon: Projector,
-      title: 'Final Year Projects',
-      description: 'Comprehensive support for students working on research-focused final year projects.',
-      features: [
-        'Research Project Guidance',
-        'Technical Implementation Support',
-        'Academic Writing Assistance',
-        'Project Documentation'
-      ]
-    },
-    {
-      icon: Cpu,
-      title: 'AI Consulting',
-      description: 'Expert consulting services for AI implementation based on our research findings.',
-      features: [
-        'AI Strategy Development',
-        'Machine Learning Solutions',
-        'Computer Vision Systems',
-        'Natural Language Processing'
-      ]
-    },
-    {
-      icon: Link,
-      title: 'Blockchain Solutions',
-      description: 'Blockchain development services informed by our ongoing research.',
-      features: [
-        'Smart Contract Development',
-        'dApp Architecture',
-        'Blockchain Integration',
-        'Token System Design'
-      ]
-    },
-    {
-      icon: BookOpen,
-      title: 'Tech Workshops',
-      description: 'Educational workshops and training sessions based on our research insights.',
-      features: [
-        'AI & ML Workshops',
-        'Blockchain Development Training',
-        'Research Methodology Sessions',
-        'Tech Skill Building'
-      ],
-      hasEvents: true
-    }
-  ];
+  // Real-time listener for Firebase updates
+  useEffect(() => {
+    const handleUpdate = () => {
+      getServicesData().then(data => setServicesData(data));
+    };
+    window.addEventListener('servicesDataUpdated', handleUpdate);
+    return () => window.removeEventListener('servicesDataUpdated', handleUpdate);
+  }, []);
+
+  // Map stored services to component format with icons
+  const coreServices = (servicesData?.core || []).map(service => ({
+    ...service,
+    icon: iconMap[service.icon] || Settings,
+    isCore: true
+  }));
+
+  const additionalServices = (servicesData?.additional || []).map(service => ({
+    ...service,
+    icon: iconMap[service.icon] || Settings,
+    hasEvents: service.title.includes('Workshop')
+  }));
 
   const handleBackHome = () => {
     navigate('/');
