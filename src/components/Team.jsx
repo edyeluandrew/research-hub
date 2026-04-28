@@ -1,9 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Twitter, Linkedin, Github, Crown, Star } from 'lucide-react';
+import { getTeamData } from '../data/dataStore';
 
 const Team = () => {
   const navigate = useNavigate();
+  const [teamData, setTeamData] = useState(null);
+
+  // Listen for updates from admin panel
+  useEffect(() => {
+    const loadData = async () => {
+      const data = await getTeamData();
+      setTeamData(data);
+    };
+    loadData();
+  }, []);
+
+  // Real-time listener for Firebase updates
+  useEffect(() => {
+    const handleUpdate = () => {
+      getTeamData().then(data => setTeamData(data));
+    };
+    window.addEventListener('teamDataUpdated', handleUpdate);
+    return () => window.removeEventListener('teamDataUpdated', handleUpdate);
+  }, []);
 
   const handleApplyForInternship = () => {
     navigate('/');
@@ -18,75 +38,8 @@ const Team = () => {
     }, 100);
   };
 
-  // CEO (center)
-  const ceo = {
-    name: 'Edyelu Andrew',
-    role: 'CEO & Web3 Developer',
-    image: '/images/team/edyelu-andrew.jpg',
-    description: 'Full-stack Web3 developer specializing in Rust, Solana, Stellar, smart contracts, and MERN stack. Leads our blockchain initiatives and overall strategy.',
-    handles: {
-      x: 'https://x.com/edyeluandrew1?t=JQ1KHN-CaMk6rACTnaJNWg&s=09',
-      linkedin: 'https://www.linkedin.com/in/edyelu-andrew-118992330?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
-      github: 'https://github.com/edyeluandrew/'
-    },
-    skills: ['Rust', 'React js', 'Stellar', 'NodeJs', 'UI/UX']
-  };
-
-  // Top row (2 members)
-  const topRow = [
-    {
-      name: 'Ahmed Umar Khemis',
-      role: 'Co-Founder & AI Engineer',
-      image: '/images/team/ahmed-umar-khemis.jpg',
-      description: 'AI Engineer and Neuroscientist with expertise in machine learning, neural networks, and software engineering. Drives our AI research forward.',
-      handles: {
-        x: 'ahmedumar_khemis',
-        linkedin: 'http://linkedin.com/in/ahmed-umar-khemis',
-        github: 'http://github.com/umarkhemis'
-      },
-      skills: ['Django', 'Arduino', 'Research Lead']
-    },
-    {
-      name: 'Aliho Gilbert',
-      role: 'Co-Founder & AI Engineer',
-      image: '/images/team/aliho-gilbert.jpg',
-      description: 'Specializes in Computer Vision, Explainable AI, and Backend Engineering. Focuses on making AI systems transparent and reliable.',
-      handles: {
-        x: 'https://x.com/GilbertAliho',
-        linkedin: 'https://www.linkedin.com/in/aliho-gilbert-a0b5b5292/',
-        github: 'https://github.com/Gibsdevops'
-      },
-      skills: ['Django', 'React', 'Backend Engineering']
-    }
-  ];
-
-  // Bottom row (2 members)
-  const bottomRow = [
-    {
-      name: 'Muhereza Alouzious',
-      role: 'Co-Founder & Blockchain Developer',
-      image: '/images/team/muhereza-alouzious.jpg',
-      description: 'Blockchain expert in Rust engineering, NFTs, DeFi, and dApps. Builds secure and scalable decentralized applications.',
-      handles: {
-        x: 'https://x.com/alouzious?t=yDaksnt2IIunL6IJ97RjTg&s=09',
-        linkedin: 'https://www.linkedin.com/in/alouzious-muhereza-89116b328?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
-        github: 'https://Github.com/Alouzious'
-      },
-      skills: ['Rust', 'NFTs', 'DeFi', 'dApps']
-    },
-    {
-      name: 'Kyomugisha Evelyn',
-      role: 'Marketing Director & Project Manager',
-      image: '/images/team/kyomugisha-evelyn.jpg',
-      description: 'Strategic marketing leader and project manager driving brand growth, community engagement, and ensuring seamless project execution.',
-      handles: {
-        x: 'https://x.com/EvelynK2486',
-        linkedin: 'https://www.linkedin.com/in/kyomugisha-evelyn-2877722b4',
-        github: '#'
-      },
-      skills: ['Marketing', 'Project Management', 'Strategy']
-    }
-  ];
+  // Get data from store with defaults
+  const { ceo, topRow, bottomRow } = teamData || { ceo: {}, topRow: [], bottomRow: [] };
 
   const SocialHandle = ({ platform, username, url }) => {
     const getPlatformInfo = (platform) => {
@@ -126,7 +79,7 @@ const Team = () => {
     );
   };
 
-  // Team Card Component
+  // Team Card Comonent
   const TeamCard = ({ member, SocialHandle, isCeo = false }) => (
     <div 
       className={`card p-8 group hover:transform hover:scale-105 transition-all duration-500 relative ${isCeo ? 'border-2 border-gold-500/50' : ''}`}
@@ -136,7 +89,7 @@ const Team = () => {
         <div className={`${isCeo ? 'w-44 h-44' : 'w-36 h-36'} mx-auto rounded-full overflow-hidden border-4 ${isCeo ? 'border-gold-500' : 'border-gold-500/30'} group-hover:border-gold-500/50 transition-all duration-500 mb-4 group-hover:scale-110`}>
           <img
             src={member.image}
-            alt={`${member.name} - ${member.role} at Beta Tech Labs`}
+            alt={`${member.name || 'Team Member'} - ${member.role || 'Beta Tech Labs'} at Beta Tech Labs`}
             loading="lazy"
             decoding="async"
             className="w-full h-full object-cover"
@@ -150,7 +103,7 @@ const Team = () => {
             className="w-full h-full bg-gradient-to-br from-gold-500 to-gold-300 rounded-full flex items-center justify-center text-4xl text-dark-200 font-bold"
             style={{ display: 'none' }}
           >
-            {member.name.split(' ').map(n => n[0]).join('')}
+            {(member.name || 'BT').split(' ').map(n => n[0]).join('')}
           </div>
         </div>
         {isCeo ? (
@@ -167,11 +120,11 @@ const Team = () => {
       {/* Member Info */}
       <div className="text-center mb-6">
         <h3 className={`${isCeo ? 'text-3xl' : 'text-2xl'} font-bold font-heading text-gold-500 mb-2 group-hover:text-gold-400 transition-colors duration-300`}>
-          {member.name}
+          {member.name || 'Team Member'}
         </h3>
-        <p className="text-gold-300 font-medium mb-4 text-lg">{member.role}</p>
+        <p className="text-gold-300 font-medium mb-4 text-lg">{member.role || 'Team Member'}</p>
         <p className="text-gray-400 leading-relaxed">
-          {member.description}
+          {member.description || 'Contributing to innovation in computing'}
         </p>
       </div>
 
@@ -186,9 +139,9 @@ const Team = () => {
 
       {/* Social Handles */}
       <div className="flex justify-center space-x-4 pt-6 border-t border-gray-700">
-        <SocialHandle platform="x" url={member.handles.x} />
-        <SocialHandle platform="linkedin" url={member.handles.linkedin} />
-        {member.handles.github !== '#' && (
+        <SocialHandle platform="x" url={(member.handles?.x) || '#'} />
+        <SocialHandle platform="linkedin" url={(member.handles?.linkedin) || '#'} />
+        {(member.handles?.github) && member.handles.github !== '#' && (
           <SocialHandle platform="github" url={member.handles.github} />
         )}
       </div>
