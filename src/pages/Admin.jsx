@@ -240,7 +240,13 @@ const Admin = () => {
 
   const startEditing = (type, id, data) => {
     setIsEditing(`${type}-${id}`);
-    setEditData(data);
+    setEditData({ ...data }); // Create a copy to avoid reference issues
+    // Initialize imagePreview - only set for URLs, not base64 (to avoid stale preview)
+    if (data.image && typeof data.image === 'string' && !data.image.startsWith('data:')) {
+      setImagePreview(data.image);
+    } else {
+      setImagePreview(null);
+    }
   };
 
   const stopEditing = () => {
@@ -618,10 +624,8 @@ const Admin = () => {
                           value={typeof editData.image === 'string' && editData.image.startsWith('http') ? editData.image : ''}
                           onChange={(e) => {
                             const url = e.target.value;
-                            if (url) {
-                              setImagePreview(url);
-                              handleEditChange('image', url);
-                            }
+                            setImagePreview(url || null);
+                            handleEditChange('image', url);
                           }}
                           className="form-input text-sm"
                           placeholder="Paste image URL (e.g., https://example.com/image.jpg)"
