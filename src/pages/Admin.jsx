@@ -17,7 +17,9 @@ import {
   GraduationCap,
   Projector,
   Cpu,
-  Link
+  Link,
+  Upload,
+  Image as ImageIcon
 } from 'lucide-react';
 import { 
   getTeamData, 
@@ -36,6 +38,7 @@ const Admin = () => {
   const [isEditing, setIsEditing] = useState(null);
   const [editData, setEditData] = useState({});
   const [loading, setLoading] = useState(true);
+  const [imagePreview, setImagePreview] = useState(null);
 
   // Load data from Firebase on component mount
   useEffect(() => {
@@ -243,6 +246,7 @@ const Admin = () => {
   const stopEditing = () => {
     setIsEditing(null);
     setEditData({});
+    setImagePreview(null);
   };
 
   const saveEdit = () => {
@@ -283,6 +287,32 @@ const Admin = () => {
         [platform]: value
       }
     }));
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file size (max 2MB)
+    if (file.size > 2 * 1024 * 1024) {
+      alert('Image must be less than 2MB');
+      return;
+    }
+
+    // Validate file type
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+      alert('Please upload a JPEG, PNG, or WebP image');
+      return;
+    }
+
+    // Convert to base64
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const base64String = event.target?.result;
+      setImagePreview(base64String);
+      handleEditChange('image', base64String);
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleFeatureChange = (index, value) => {
@@ -563,13 +593,34 @@ const Admin = () => {
                         className="form-input text-sm"
                         placeholder="Role"
                       />
-                      <input
-                        type="text"
-                        value={editData.image || ''}
-                        onChange={(e) => handleEditChange('image', e.target.value)}
-                        className="form-input text-sm"
-                        placeholder="Image URL (e.g., /images/team/name.jpg)"
-                      />
+                      <div className="space-y-3">
+                        <div className="flex items-center space-x-3">
+                          <label className="flex-1">
+                            <div className="flex items-center space-x-2 bg-dark-100 border border-gray-700 rounded-lg p-3 cursor-pointer hover:border-gold-500/50 transition">
+                              <Upload size={16} className="text-gold-500" />
+                              <span className="text-sm text-gray-300">Click to upload image</span>
+                            </div>
+                            <input
+                              type="file"
+                              onChange={handleImageUpload}
+                              accept="image/jpeg,image/png,image/webp"
+                              className="hidden"
+                            />
+                          </label>
+                        </div>
+                        {(imagePreview || editData.image) && typeof (imagePreview || editData.image) === 'string' && (imagePreview || editData.image).startsWith('data:') && (
+                          <div className="relative w-20 h-20 rounded-lg overflow-hidden border border-gold-500/30">
+                            <img 
+                              src={imagePreview || editData.image} 
+                              alt="Preview" 
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        )}
+                        {editData.image && typeof editData.image === 'string' && !editData.image.startsWith('data:') && (
+                          <div className="text-xs text-gray-400">Image URL: {editData.image.substring(0, 50)}...</div>
+                        )}
+                      </div>
                       <textarea
                         value={editData.description || ''}
                         onChange={(e) => handleEditChange('description', e.target.value)}
