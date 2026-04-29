@@ -310,6 +310,7 @@ const Admin = () => {
     reader.onload = (event) => {
       const base64String = event.target?.result;
       setImagePreview(base64String);
+      // Store as a data URL string that can be used directly in img src
       handleEditChange('image', base64String);
     };
     reader.readAsDataURL(file);
@@ -594,31 +595,66 @@ const Admin = () => {
                         placeholder="Role"
                       />
                       <div className="space-y-3">
-                        <div className="flex items-center space-x-3">
-                          <label className="flex-1">
-                            <div className="flex items-center space-x-2 bg-dark-100 border border-gray-700 rounded-lg p-3 cursor-pointer hover:border-gold-500/50 transition">
-                              <Upload size={16} className="text-gold-500" />
-                              <span className="text-sm text-gray-300">Click to upload image</span>
-                            </div>
-                            <input
-                              type="file"
-                              onChange={handleImageUpload}
-                              accept="image/jpeg,image/png,image/webp"
-                              className="hidden"
-                            />
-                          </label>
-                        </div>
-                        {(imagePreview || editData.image) && typeof (imagePreview || editData.image) === 'string' && (imagePreview || editData.image).startsWith('data:') && (
-                          <div className="relative w-20 h-20 rounded-lg overflow-hidden border border-gold-500/30">
-                            <img 
-                              src={imagePreview || editData.image} 
-                              alt="Preview" 
-                              className="w-full h-full object-cover"
-                            />
+                        <label className="block">
+                          <span className="text-xs font-medium text-gray-400 mb-2 block">Image (Upload or URL)</span>
+                          <div className="flex items-center space-x-3">
+                            <label className="flex-1">
+                              <div className="flex items-center space-x-2 bg-dark-100 border border-gray-700 rounded-lg p-3 cursor-pointer hover:border-gold-500/50 transition">
+                                <Upload size={16} className="text-gold-500" />
+                                <span className="text-sm text-gray-300">Click to upload</span>
+                              </div>
+                              <input
+                                type="file"
+                                onChange={handleImageUpload}
+                                accept="image/jpeg,image/png,image/webp"
+                                className="hidden"
+                              />
+                            </label>
                           </div>
-                        )}
-                        {editData.image && typeof editData.image === 'string' && !editData.image.startsWith('data:') && (
-                          <div className="text-xs text-gray-400">Image URL: {editData.image.substring(0, 50)}...</div>
+                        </label>
+                        <div className="text-center text-xs text-gray-500">OR</div>
+                        <input
+                          type="text"
+                          value={typeof editData.image === 'string' && editData.image.startsWith('http') ? editData.image : ''}
+                          onChange={(e) => {
+                            const url = e.target.value;
+                            if (url) {
+                              setImagePreview(url);
+                              handleEditChange('image', url);
+                            }
+                          }}
+                          className="form-input text-sm"
+                          placeholder="Paste image URL (e.g., https://example.com/image.jpg)"
+                        />
+                        {(imagePreview || editData.image) && (
+                          <div className="flex items-center space-x-3">
+                            <div className="w-16 h-16 rounded-lg overflow-hidden border border-gold-500/30 bg-dark-100 flex items-center justify-center">
+                              <img 
+                                src={imagePreview || editData.image} 
+                                alt="Preview" 
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  e.target.style.display = 'none';
+                                  e.target.parentElement.innerHTML = '<span class="text-xs text-red-400">Invalid</span>';
+                                }}
+                              />
+                            </div>
+                            <div className="flex-1">
+                              <p className="text-xs text-gray-400">
+                                {typeof editData.image === 'string' && editData.image.startsWith('data:') ? 'Base64 Image ✓' : 'Image URL ✓'}
+                              </p>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  handleEditChange('image', '');
+                                  setImagePreview(null);
+                                }}
+                                className="text-xs text-red-400 hover:text-red-300 mt-1"
+                              >
+                                Clear
+                              </button>
+                            </div>
+                          </div>
                         )}
                       </div>
                       <textarea
