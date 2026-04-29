@@ -161,7 +161,7 @@ const Admin = () => {
       id: Date.now(),
       name: 'New Member',
       role: 'Team Member',
-      image: '/images/team/placeholder.jpg',
+      image: '', // Start with empty image - Team component shows initials fallback
       description: 'Member description',
       handles: {
         x: 'username',
@@ -639,7 +639,13 @@ const Admin = () => {
                                 className="w-full h-full object-cover"
                                 onError={(e) => {
                                   e.target.style.display = 'none';
-                                  e.target.parentElement.innerHTML = '<span class="text-xs text-red-400">Invalid</span>';
+                                  const parent = e.target.parentElement;
+                                  if (parent) {
+                                    const errorSpan = document.createElement('span');
+                                    errorSpan.className = 'text-xs text-red-400';
+                                    errorSpan.textContent = 'Invalid';
+                                    parent.appendChild(errorSpan);
+                                  }
                                 }}
                               />
                             </div>
