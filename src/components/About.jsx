@@ -15,12 +15,10 @@ import {
 const About = () => {
   const navigate = useNavigate();
 
-  // Function to handle "View Our Research" click
   const handleResearchClick = () => {
     navigate('/research');
   };
 
-  // Function to handle "View Other Services" click
   const handleServicesClick = () => {
     navigate('/services');
   };
