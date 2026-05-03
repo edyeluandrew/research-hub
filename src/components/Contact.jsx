@@ -60,7 +60,7 @@ const Contact = () => {
         from_email: formData.email,
         subject: formData.subject,
         message: formData.message,
-        reply_to: formData.email
+        email: formData.email
       };
 
       // Send email using EmailJS
