@@ -241,7 +241,9 @@ const Admin = () => {
       team: [],
       highlights: [],
       liveUrl: '',
-      githubRepo: ''
+      liveUrlStatus: 'available',
+      githubRepo: '',
+      isPrivate: false
     };
     setProjects(prev => [...prev, newProject]);
     setIsEditing(`project-${newProject.id}`);
@@ -949,6 +951,29 @@ const Admin = () => {
                         className="form-input text-sm"
                         placeholder="Live Site URL (optional)"
                       />
+                      <div className="space-y-2">
+                        <label className="form-label text-sm">Live Link Status</label>
+                        <select
+                          value={editData.liveUrlStatus || 'available'}
+                          onChange={(e) => handleEditChange('liveUrlStatus', e.target.value)}
+                          className="form-input text-sm"
+                        >
+                          <option value="available">Available</option>
+                          <option value="coming-soon">Coming Soon</option>
+                        </select>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          id="isPrivate"
+                          checked={editData.isPrivate || false}
+                          onChange={(e) => handleEditChange('isPrivate', e.target.checked)}
+                          className="rounded"
+                        />
+                        <label htmlFor="isPrivate" className="form-label text-sm">
+                          Mark as Private
+                        </label>
+                      </div>
                       <div className="flex space-x-2">
                         <button
                           onClick={saveEdit}

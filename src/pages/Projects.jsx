@@ -89,9 +89,16 @@ const Projects = () => {
                   key={project.id}
                   className="card p-8 hover:border-gold-500/50 transition-all duration-300 group"
                 >
-                  <h3 className="text-2xl font-bold text-gold-500 mb-3 group-hover:text-gold-400 transition-colors duration-200">
-                    {project.title}
-                  </h3>
+                  <div className="flex items-start justify-between mb-3">
+                    <h3 className="text-2xl font-bold text-gold-500 group-hover:text-gold-400 transition-colors duration-200">
+                      {project.title}
+                    </h3>
+                    {project.isPrivate && (
+                      <span className="bg-red-500/20 text-red-400 text-xs px-2 py-1 rounded border border-red-500/30 whitespace-nowrap">
+                        Private
+                      </span>
+                    )}
+                  </div>
 
                   <p className="text-gray-400 mb-6 leading-relaxed">
                     {project.description}
@@ -99,7 +106,12 @@ const Projects = () => {
 
                   {/* Links */}
                   <div className="flex gap-3">
-                    {project.liveUrl && (
+                    {project.liveUrlStatus === 'coming-soon' ? (
+                      <span className="flex items-center gap-2 px-4 py-2 bg-gold-500/10 text-gold-400 border border-gold-500/30 rounded-lg">
+                        <Globe size={16} />
+                        <span className="text-sm font-medium">Coming Soon</span>
+                      </span>
+                    ) : project.liveUrl ? (
                       <a
                         href={project.liveUrl}
                         target="_blank"
@@ -109,7 +121,7 @@ const Projects = () => {
                         <Globe size={16} />
                         <span className="text-sm font-medium">Live Site</span>
                       </a>
-                    )}
+                    ) : null}
                     {project.githubRepo && (
                       <a
                         href={project.githubRepo}

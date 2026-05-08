@@ -206,7 +206,9 @@ const defaultProjectsData = [
       'Decentralized model training'
     ],
     liveUrl: 'https://solanaedge.example.com',
-    githubRepo: 'https://github.com/betatechlabs/solana-edge'
+    liveUrlStatus: 'available',
+    githubRepo: 'https://github.com/betatechlabs/solana-edge',
+    isPrivate: false
   },
   {
     id: 202,
@@ -225,7 +227,9 @@ const defaultProjectsData = [
       'Collaborative editing'
     ],
     liveUrl: 'https://researchhub.example.com',
-    githubRepo: 'https://github.com/betatechlabs/research-hub'
+    liveUrlStatus: 'available',
+    githubRepo: 'https://github.com/betatechlabs/research-hub',
+    isPrivate: false
   },
   {
     id: 203,
@@ -244,7 +248,9 @@ const defaultProjectsData = [
       'Cross-platform support'
     ],
     liveUrl: '',
-    githubRepo: 'https://github.com/betatechlabs/wasm-ml-runtime'
+    liveUrlStatus: 'coming-soon',
+    githubRepo: 'https://github.com/betatechlabs/wasm-ml-runtime',
+    isPrivate: false
   },
   {
     id: 204,
@@ -263,7 +269,9 @@ const defaultProjectsData = [
       'Gas optimization'
     ],
     liveUrl: '',
-    githubRepo: 'https://github.com/betatechlabs/defi-audit-suite'
+    liveUrlStatus: 'available',
+    githubRepo: 'https://github.com/betatechlabs/defi-audit-suite',
+    isPrivate: true
   },
   {
     id: 205,
@@ -282,7 +290,9 @@ const defaultProjectsData = [
       'Enterprise-grade API'
     ],
     liveUrl: 'https://cv-api.betatechlabs.com',
-    githubRepo: 'https://github.com/betatechlabs/computer-vision-api'
+    liveUrlStatus: 'available',
+    githubRepo: 'https://github.com/betatechlabs/computer-vision-api',
+    isPrivate: false
   }
 ];
 
