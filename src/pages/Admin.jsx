@@ -231,7 +231,7 @@ const Admin = () => {
     const newProject = {
       id: Date.now(),
       title: 'New Project',
-      description: 'Project description',
+      description: 'Project overview',
       status: 'In Planning',
       category: 'Development',
       progress: 0,
@@ -239,7 +239,7 @@ const Admin = () => {
       startDate: new Date().toISOString().split('T')[0],
       expectedEnd: new Date().toISOString().split('T')[0],
       team: [],
-      highlights: ['Highlight 1'],
+      highlights: [],
       liveUrl: '',
       githubRepo: ''
     };
@@ -926,63 +926,14 @@ const Admin = () => {
                         value={editData.title || ''}
                         onChange={(e) => handleEditChange('title', e.target.value)}
                         className="form-input text-sm"
-                        placeholder="Project Title"
+                        placeholder="Project Name"
                       />
                       <textarea
                         value={editData.description || ''}
                         onChange={(e) => handleEditChange('description', e.target.value)}
                         className="form-input text-sm"
-                        rows="2"
-                        placeholder="Description"
-                      />
-                      <input
-                        type="text"
-                        value={editData.category || ''}
-                        onChange={(e) => handleEditChange('category', e.target.value)}
-                        className="form-input text-sm"
-                        placeholder="Category"
-                      />
-                      <select
-                        value={editData.status || 'In Planning'}
-                        onChange={(e) => handleEditChange('status', e.target.value)}
-                        className="form-input text-sm"
-                      >
-                        <option>In Planning</option>
-                        <option>In Development</option>
-                        <option>In Testing</option>
-                        <option>Launched</option>
-                      </select>
-                      <div className="flex space-x-2">
-                        <label className="text-gray-400 text-sm">Progress: {editData.progress}%</label>
-                        <input
-                          type="range"
-                          min="0"
-                          max="100"
-                          value={editData.progress || 0}
-                          onChange={(e) => handleEditChange('progress', parseInt(e.target.value))}
-                          className="flex-1"
-                        />
-                      </div>
-                      <div className="flex space-x-2">
-                        <input
-                          type="date"
-                          value={editData.startDate || ''}
-                          onChange={(e) => handleEditChange('startDate', e.target.value)}
-                          className="form-input text-sm flex-1"
-                        />
-                        <input
-                          type="date"
-                          value={editData.expectedEnd || ''}
-                          onChange={(e) => handleEditChange('expectedEnd', e.target.value)}
-                          className="form-input text-sm flex-1"
-                        />
-                      </div>
-                      <input
-                        type="url"
-                        value={editData.liveUrl || ''}
-                        onChange={(e) => handleEditChange('liveUrl', e.target.value)}
-                        className="form-input text-sm"
-                        placeholder="Live Site URL (optional)"
+                        rows="3"
+                        placeholder="Overview"
                       />
                       <input
                         type="url"
@@ -992,66 +943,12 @@ const Admin = () => {
                         placeholder="GitHub Repository URL"
                       />
                       <input
-                        type="text"
-                        value={(editData.team || []).join(', ')}
-                        onChange={(e) => handleEditChange('team', e.target.value.split(', ').map(t => t.trim()))}
+                        type="url"
+                        value={editData.liveUrl || ''}
+                        onChange={(e) => handleEditChange('liveUrl', e.target.value)}
                         className="form-input text-sm"
-                        placeholder="Team members (comma-separated)"
+                        placeholder="Live Site URL (optional)"
                       />
-                      <div className="space-y-2">
-                        <label className="form-label text-sm">Tags</label>
-                        {(editData.tags || []).map((tag, index) => (
-                          <div key={index} className="flex space-x-2">
-                            <input
-                              type="text"
-                              value={tag}
-                              onChange={(e) => handleTagChange(index, e.target.value)}
-                              className="form-input text-sm flex-1"
-                              placeholder="Tag"
-                            />
-                            <button
-                              onClick={() => removeTag(index)}
-                              className="bg-red-500/20 hover:bg-red-500/30 text-red-400 hover:text-red-300 px-3 rounded-lg transition-all duration-300"
-                            >
-                              <Trash2 size={14} />
-                            </button>
-                          </div>
-                        ))}
-                        <button
-                          onClick={addTag}
-                          className="btn-secondary w-full text-sm"
-                        >
-                          <Plus className="mr-1" size={14} />
-                          Add Tag
-                        </button>
-                      </div>
-                      <div className="space-y-2">
-                        <label className="form-label text-sm">Highlights</label>
-                        {(editData.highlights || []).map((highlight, index) => (
-                          <div key={index} className="flex space-x-2">
-                            <input
-                              type="text"
-                              value={highlight}
-                              onChange={(e) => handleHighlightChange(index, e.target.value)}
-                              className="form-input text-sm flex-1"
-                              placeholder="Highlight"
-                            />
-                            <button
-                              onClick={() => removeHighlight(index)}
-                              className="bg-red-500/20 hover:bg-red-500/30 text-red-400 hover:text-red-300 px-3 rounded-lg transition-all duration-300"
-                            >
-                              <Trash2 size={14} />
-                            </button>
-                          </div>
-                        ))}
-                        <button
-                          onClick={addHighlight}
-                          className="btn-secondary w-full text-sm"
-                        >
-                          <Plus className="mr-1" size={14} />
-                          Add Highlight
-                        </button>
-                      </div>
                       <div className="flex space-x-2">
                         <button
                           onClick={saveEdit}
