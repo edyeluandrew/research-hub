@@ -5,6 +5,8 @@ import Services from './pages/Services';
 import Events from './pages/Events';
 import Projects from './pages/Projects';
 import Admin from './pages/Admin';
+import AdminLogin from './pages/AdminLogin';
+import ProtectedRoute from './components/ProtectedRoute';
 import Research from './pages/Research';
 import NotFound from './pages/NotFound';
 import Privacy from './pages/Privacy';
@@ -29,7 +31,12 @@ function App() {
         <Route path="/services" element={<Services />} />
         <Route path="/events" element={<Events />} />
         <Route path="/projects" element={<Projects />} />
-        <Route path="/labs" element={<Admin />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
+        <Route path="/labs" element={
+          <ProtectedRoute>
+            <Admin />
+          </ProtectedRoute>
+        } />
         <Route path="/research" element={<Research />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/privacy" element={<Privacy />} />

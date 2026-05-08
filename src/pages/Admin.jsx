@@ -138,7 +138,9 @@ const Admin = () => {
   }, [projects]);
 
   const handleLogout = () => {
-    navigate('/');
+    sessionStorage.removeItem('adminToken');
+    sessionStorage.removeItem('adminLoginTime');
+    navigate('/admin-login');
   };
 
   const handleViewSite = () => {
