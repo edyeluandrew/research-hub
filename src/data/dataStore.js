@@ -204,7 +204,9 @@ const defaultProjectsData = [
       'On-chain ML inference',
       'Low-latency predictions',
       'Decentralized model training'
-    ]
+    ],
+    liveUrl: 'https://solanaedge.example.com',
+    githubRepo: 'https://github.com/betatechlabs/solana-edge'
   },
   {
     id: 202,
@@ -221,7 +223,9 @@ const defaultProjectsData = [
       'Peer review system',
       'Citation tracking',
       'Collaborative editing'
-    ]
+    ],
+    liveUrl: 'https://researchhub.example.com',
+    githubRepo: 'https://github.com/betatechlabs/research-hub'
   },
   {
     id: 203,
@@ -238,7 +242,9 @@ const defaultProjectsData = [
       'Fast inference in browsers',
       'Offline capabilities',
       'Cross-platform support'
-    ]
+    ],
+    liveUrl: '',
+    githubRepo: 'https://github.com/betatechlabs/wasm-ml-runtime'
   },
   {
     id: 204,
@@ -255,7 +261,9 @@ const defaultProjectsData = [
       'Real-time scanning',
       'Vulnerability reporting',
       'Gas optimization'
-    ]
+    ],
+    liveUrl: '',
+    githubRepo: 'https://github.com/betatechlabs/defi-audit-suite'
   },
   {
     id: 205,
@@ -272,7 +280,9 @@ const defaultProjectsData = [
       'Real-time processing',
       'Multiple AI models',
       'Enterprise-grade API'
-    ]
+    ],
+    liveUrl: 'https://cv-api.betatechlabs.com',
+    githubRepo: 'https://github.com/betatechlabs/computer-vision-api'
   }
 ];
 

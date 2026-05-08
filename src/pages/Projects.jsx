@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getProjectsData } from '../data/dataStore';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Globe, Github } from 'lucide-react';
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
@@ -213,6 +213,32 @@ const Projects = () => {
                       </ul>
                     </div>
                   )}
+
+                  {/* Links */}
+                  <div className="mb-6 flex gap-3">
+                    {project.liveUrl && (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-4 py-2 bg-gold-500/10 text-gold-400 hover:bg-gold-500/20 border border-gold-500/30 rounded-lg transition-all duration-300"
+                      >
+                        <Globe size={16} />
+                        <span className="text-sm font-medium">Live Site</span>
+                      </a>
+                    )}
+                    {project.githubRepo && (
+                      <a
+                        href={project.githubRepo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-4 py-2 bg-gray-600/10 text-gray-400 hover:bg-gray-600/20 border border-gray-600/30 rounded-lg transition-all duration-300"
+                      >
+                        <Github size={16} />
+                        <span className="text-sm font-medium">GitHub</span>
+                      </a>
+                    )}
+                  </div>
 
                   {/* Tags */}
                   {project.tags && project.tags.length > 0 && (

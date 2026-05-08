@@ -25,7 +25,9 @@ import {
   getTeamData, 
   saveTeamData, 
   getEventsData, 
-  saveEventsData
+  saveEventsData,
+  getProjectsData,
+  saveProjectsData
 } from '../data/dataStore';
 
 const Admin = () => {
@@ -46,6 +48,7 @@ const Admin = () => {
       try {
         const teamData = await getTeamData();
         const eventsData = await getEventsData();
+        const projectsData = await getProjectsData();
         
         if (teamData) {
           // Load ALL team members (CEO + topRow + bottomRow)
@@ -57,6 +60,9 @@ const Admin = () => {
         }
         if (eventsData) {
           setEvents(Array.isArray(eventsData) ? eventsData : []);
+        }
+        if (projectsData) {
+          setProjects(Array.isArray(projectsData) ? projectsData : []);
         }
         
         // Also load from localStorage as fallback
@@ -103,6 +109,16 @@ const Admin = () => {
       syncEventsData();
     }
   }, [events, loading]);
+
+  // Sync projects data to Firebase
+  useEffect(() => {
+    if (projects.length > 0 && !loading) {
+      const syncProjectsData = async () => {
+        await saveProjectsData(projects);
+      };
+      syncProjectsData();
+    }
+  }, [projects, loading]);
 
   // Save data to localStorage whenever it changes (backup)
   useEffect(() => {
@@ -221,7 +237,9 @@ const Admin = () => {
       startDate: new Date().toISOString().split('T')[0],
       expectedEnd: new Date().toISOString().split('T')[0],
       team: [],
-      highlights: ['Highlight 1']
+      highlights: ['Highlight 1'],
+      liveUrl: '',
+      githubRepo: ''
     };
     setProjects(prev => [...prev, newProject]);
     setIsEditing(`project-${newProject.id}`);
@@ -958,6 +976,20 @@ const Admin = () => {
                         />
                       </div>
                       <input
+                        type="url"
+                        value={editData.liveUrl || ''}
+                        onChange={(e) => handleEditChange('liveUrl', e.target.value)}
+                        className="form-input text-sm"
+                        placeholder="Live Site URL (optional)"
+                      />
+                      <input
+                        type="url"
+                        value={editData.githubRepo || ''}
+                        onChange={(e) => handleEditChange('githubRepo', e.target.value)}
+                        className="form-input text-sm"
+                        placeholder="GitHub Repository URL"
+                      />
+                      <input
                         type="text"
                         value={(editData.team || []).join(', ')}
                         onChange={(e) => handleEditChange('team', e.target.value.split(', ').map(t => t.trim()))}
@@ -1070,6 +1102,30 @@ const Admin = () => {
                       <p className="text-gray-400 text-xs mb-2">
                         {project.startDate} to {project.expectedEnd}
                       </p>
+                      {(project.liveUrl || project.githubRepo) && (
+                        <div className="mb-3 flex gap-2">
+                          {project.liveUrl && (
+                            <a
+                              href={project.liveUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-gold-400 text-xs hover:text-gold-300 hover:underline"
+                            >
+                              Live Site
+                            </a>
+                          )}
+                          {project.githubRepo && (
+                            <a
+                              href={project.githubRepo}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-gray-400 text-xs hover:text-gray-300 hover:underline"
+                            >
+                              GitHub
+                            </a>
+                          )}
+                        </div>
+                      )}
                       <div className="mb-3 space-y-2">
                         {project.team && project.team.length > 0 && (
                           <p className="text-gray-400 text-sm">Team: {project.team.join(', ')}</p>
