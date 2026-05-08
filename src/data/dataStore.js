@@ -207,8 +207,9 @@ const defaultProjectsData = [
     ],
     liveUrl: 'https://solanaedge.example.com',
     liveUrlStatus: 'available',
+    liveUrlPrivate: false,
     githubRepo: 'https://github.com/betatechlabs/solana-edge',
-    isPrivate: false
+    githubRepoPrivate: false
   },
   {
     id: 202,
@@ -228,8 +229,9 @@ const defaultProjectsData = [
     ],
     liveUrl: 'https://researchhub.example.com',
     liveUrlStatus: 'available',
+    liveUrlPrivate: false,
     githubRepo: 'https://github.com/betatechlabs/research-hub',
-    isPrivate: false
+    githubRepoPrivate: false
   },
   {
     id: 203,
@@ -249,8 +251,9 @@ const defaultProjectsData = [
     ],
     liveUrl: '',
     liveUrlStatus: 'coming-soon',
+    liveUrlPrivate: false,
     githubRepo: 'https://github.com/betatechlabs/wasm-ml-runtime',
-    isPrivate: false
+    githubRepoPrivate: false
   },
   {
     id: 204,
@@ -270,8 +273,9 @@ const defaultProjectsData = [
     ],
     liveUrl: '',
     liveUrlStatus: 'available',
+    liveUrlPrivate: false,
     githubRepo: 'https://github.com/betatechlabs/defi-audit-suite',
-    isPrivate: true
+    githubRepoPrivate: true
   },
   {
     id: 205,
@@ -291,8 +295,9 @@ const defaultProjectsData = [
     ],
     liveUrl: 'https://cv-api.betatechlabs.com',
     liveUrlStatus: 'available',
+    liveUrlPrivate: false,
     githubRepo: 'https://github.com/betatechlabs/computer-vision-api',
-    isPrivate: false
+    githubRepoPrivate: false
   }
 ];
 

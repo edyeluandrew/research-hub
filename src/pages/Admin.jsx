@@ -65,14 +65,9 @@ const Admin = () => {
           setProjects(Array.isArray(projectsData) ? projectsData : []);
         }
         
-        // Also load from localStorage as fallback
-        const savedEvents = localStorage.getItem('betaTechHubEvents');
+        // Load services from localStorage (no Firebase sync for services yet)
         const savedServices = localStorage.getItem('betaTechHubServices');
-        const savedProjects = localStorage.getItem('betaTechHubProjects');
-
-        if (savedEvents) setEvents(JSON.parse(savedEvents));
         if (savedServices) setServices(JSON.parse(savedServices));
-        if (savedProjects) setProjects(JSON.parse(savedProjects));
       } catch (error) {
         console.error('Error loading data:', error);
       } finally {
@@ -102,7 +97,7 @@ const Admin = () => {
 
   // Sync events data to Firebase
   useEffect(() => {
-    if (events.length > 0 && !loading) {
+    if (!loading) {
       const syncEventsData = async () => {
         await saveEventsData(events);
       };
@@ -112,7 +107,7 @@ const Admin = () => {
 
   // Sync projects data to Firebase
   useEffect(() => {
-    if (projects.length > 0 && !loading) {
+    if (!loading) {
       const syncProjectsData = async () => {
         await saveProjectsData(projects);
       };
@@ -242,8 +237,9 @@ const Admin = () => {
       highlights: [],
       liveUrl: '',
       liveUrlStatus: 'available',
+      liveUrlPrivate: false,
       githubRepo: '',
-      isPrivate: false
+      githubRepoPrivate: false
     };
     setProjects(prev => [...prev, newProject]);
     setIsEditing(`project-${newProject.id}`);
@@ -257,7 +253,10 @@ const Admin = () => {
   };
 
   const deleteProject = (id) => {
-    setProjects(prev => prev.filter(project => project.id !== id));
+    const updatedProjects = projects.filter(project => project.id !== id);
+    setProjects(updatedProjects);
+    // Explicitly save to Firebase after deletion
+    saveProjectsData(updatedProjects).catch(err => console.error('Error deleting project:', err));
   };
 
   const startEditing = (type, id, data) => {
@@ -965,13 +964,32 @@ const Admin = () => {
                       <div className="flex items-center space-x-2">
                         <input
                           type="checkbox"
-                          id="isPrivate"
-                          checked={editData.isPrivate || false}
-                          onChange={(e) => handleEditChange('isPrivate', e.target.checked)}
+                          id="liveUrlPrivate"
+                          checked={editData.liveUrlPrivate || false}
+                          onChange={(e) => handleEditChange('liveUrlPrivate', e.target.checked)}
                           className="rounded"
                         />
-                        <label htmlFor="isPrivate" className="form-label text-sm">
-                          Mark as Private
+                        <label htmlFor="liveUrlPrivate" className="form-label text-sm">
+                          Keep Live Site Link Private
+                        </label>
+                      </div>
+                      <input
+                        type="url"
+                        value={editData.githubRepo || ''}
+                        onChange={(e) => handleEditChange('githubRepo', e.target.value)}
+                        className="form-input text-sm"
+                        placeholder="GitHub Repository URL"
+                      />
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          id="githubRepoPrivate"
+                          checked={editData.githubRepoPrivate || false}
+                          onChange={(e) => handleEditChange('githubRepoPrivate', e.target.checked)}
+                          className="rounded"
+                        />
+                        <label htmlFor="githubRepoPrivate" className="form-label text-sm">
+                          Keep GitHub Repository Private
                         </label>
                       </div>
                       <div className="flex space-x-2">
