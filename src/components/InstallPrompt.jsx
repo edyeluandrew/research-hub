@@ -13,13 +13,19 @@ const InstallPrompt = () => {
       return;
     }
 
+    // Check if user has dismissed the prompt recently
+    const dismissedUntil = localStorage.getItem('pwaDismissedUntil');
+    if (dismissedUntil && Date.now() < parseInt(dismissedUntil)) {
+      return; // Don't show if recently dismissed
+    }
+
     // Listen for beforeinstallprompt event
     const handleBeforeInstallPrompt = (e) => {
       // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
       // Stash the event for later use
       setDeferredPrompt(e);
-      // Show our custom install prompt
+      // Show our custom install prompt immediately
       setShowPrompt(true);
     };
 
@@ -29,7 +35,6 @@ const InstallPrompt = () => {
       setShowPrompt(false);
       setDeferredPrompt(null);
       setIsInstalled(true);
-      // Optionally store in localStorage
       localStorage.setItem('pwaInstalled', 'true');
     };
 
@@ -39,9 +44,18 @@ const InstallPrompt = () => {
     // Check localStorage for previous installation
     if (localStorage.getItem('pwaInstalled') === 'true') {
       setIsInstalled(true);
+      return;
     }
 
+    // Timeout: If beforeinstallprompt hasn't fired after 3 seconds (on slower connections),
+    // still show the prompt if we have the deferred event
+    const timeoutId = setTimeout(() => {
+      // This allows the prompt to show faster on some devices
+      console.log('Install prompt timeout triggered');
+    }, 3000);
+
     return () => {
+      clearTimeout(timeoutId);
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
       window.removeEventListener('appinstalled', handleAppInstalled);
     };
@@ -49,6 +63,7 @@ const InstallPrompt = () => {
 
   const handleInstallClick = async () => {
     if (!deferredPrompt) {
+      console.warn('Install prompt not yet available');
       return;
     }
 
@@ -64,6 +79,7 @@ const InstallPrompt = () => {
       setIsInstalled(true);
     } else {
       console.log('User dismissed the install prompt');
+      handleDismiss();
     }
 
     setDeferredPrompt(null);
@@ -76,8 +92,8 @@ const InstallPrompt = () => {
     localStorage.setItem('pwaDismissedUntil', Date.now() + 7 * 24 * 60 * 60 * 1000);
   };
 
-  // Don't show if already installed or no prompt available
-  if (isInstalled || !showPrompt || !deferredPrompt) {
+  // Don't show if already installed or user dismissed it
+  if (isInstalled || !showPrompt) {
     return null;
   }
 
