@@ -20,6 +20,7 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
+          {/* Use the imported Beta Tech Labs logo asset here so the navbar stays branded. */}
           <Link 
             to="/" 
             className="flex items-center space-x-3"
