@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Send, Menu, X, ArrowRight } from 'lucide-react';
+import logo from '../assets/logo.png';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -25,9 +26,9 @@ const Header = () => {
             onClick={() => setIsMenuOpen(false)}
           >
             <img 
-              src="/icons/icon-192x192.png" 
+              src={logo} 
               alt="Beta Tech Labs Logo" 
-              className="w-12 h-12 rounded-lg shadow-lg hover:shadow-gold transition-shadow duration-300"
+              className="w-12 h-12 rounded-lg shadow-lg hover:shadow-gold transition-shadow duration-300 object-cover"
             />
             <div>
               <h1 className="text-xl font-bold text-gold-500">Beta Tech Hub</h1>
