@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
 import Home from './pages/Home';
 import Services from './pages/Services';
 import Events from './pages/Events';
@@ -7,6 +8,7 @@ import Projects from './pages/Projects';
 import Admin from './pages/Admin';
 import AdminLogin from './pages/AdminLogin';
 import ProtectedRoute from './components/ProtectedRoute';
+import InstallPrompt from './components/InstallPrompt';
 import Research from './pages/Research';
 import NotFound from './pages/NotFound';
 import Privacy from './pages/Privacy';
@@ -15,9 +17,14 @@ import Cookies from './pages/Cookies';
 import Contact from './components/Contact';
 import StructuredData from './components/StructuredData';
 import Analytics from './components/Analytics';
+import { registerServiceWorker } from './utils/pwaUtils';
 import './index.css';
 
 function App() {
+  useEffect(() => {
+    // Register service worker for PWA functionality
+    registerServiceWorker();
+  }, []);
   return (
     <div className="App main-container">
       {/* Google Analytics - tracks page views */}
@@ -25,6 +32,9 @@ function App() {
       
       {/* Add Structured Data globally */}
       <StructuredData />
+
+      {/* PWA Install Prompt */}
+      <InstallPrompt />
       
       <Routes>
         <Route path="/" element={<Home />} />
