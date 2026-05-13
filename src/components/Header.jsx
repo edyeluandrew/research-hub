@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Brain, Send, Menu, X, ArrowRight } from 'lucide-react';
+import { Send, Menu, X, ArrowRight } from 'lucide-react';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,9 +24,11 @@ const Header = () => {
             className="flex items-center space-x-3"
             onClick={() => setIsMenuOpen(false)}
           >
-            <div className="w-10 h-10 bg-gold-500 rounded-lg flex items-center justify-center shadow-gold">
-              <Brain className="text-dark-200" size={20} />
-            </div>
+            <img 
+              src="/icons/icon-192x192.png" 
+              alt="Beta Tech Labs Logo" 
+              className="w-12 h-12 rounded-lg shadow-lg hover:shadow-gold transition-shadow duration-300"
+            />
             <div>
               <h1 className="text-xl font-bold text-gold-500">Beta Tech Hub</h1>
               <p className="text-xs text-gray-400 -mt-1">AI & Blockchain Hub</p>
