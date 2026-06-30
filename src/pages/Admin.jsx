@@ -26,6 +26,8 @@ import {
   saveTeamData, 
   getEventsData, 
   saveEventsData,
+  getServicesData,
+  saveServicesData,
   getProjectsData,
   saveProjectsData
 } from '../data/dataStore';
@@ -64,10 +66,15 @@ const Admin = () => {
         if (projectsData) {
           setProjects(Array.isArray(projectsData) ? projectsData : []);
         }
-        
-        // Load services from localStorage (no Firebase sync for services yet)
-        const savedServices = localStorage.getItem('betaTechHubServices');
-        if (savedServices) setServices(JSON.parse(savedServices));
+
+        const servicesData = await getServicesData();
+        if (servicesData) {
+          const flatServices = [
+            ...(servicesData.core || []).map((s) => ({ ...s, isCore: true })),
+            ...(servicesData.additional || []).map((s) => ({ ...s, isCore: false })),
+          ];
+          setServices(flatServices);
+        }
       } catch (error) {
         console.error('Error loading data:', error);
       } finally {
@@ -78,59 +85,21 @@ const Admin = () => {
     loadData();
   }, []);
 
-  // Sync team data to Firebase
-  useEffect(() => {
-    if (teamMembers.length > 0 && !loading) {
-      const syncTeamData = async () => {
-        const currentTeamData = await getTeamData();
-        const updatedTeamData = {
-          ...currentTeamData,
-          ceo: teamMembers[0], // First member is CEO
-          topRow: teamMembers.slice(1, 3), // Next 2 are top row
-          bottomRow: teamMembers.slice(3) // Rest are bottom row
-        };
-        await saveTeamData(updatedTeamData);
-      };
-      syncTeamData();
-    }
-  }, [teamMembers, loading]);
+  const persistTeam = async (members) => {
+    if (members.length === 0) return;
+    await saveTeamData({
+      ceo: members[0],
+      topRow: members.slice(1, 3),
+      bottomRow: members.slice(3),
+    });
+  };
 
-  // Sync events data to Firebase
-  useEffect(() => {
-    if (!loading) {
-      const syncEventsData = async () => {
-        await saveEventsData(events);
-      };
-      syncEventsData();
-    }
-  }, [events, loading]);
-
-  // Sync projects data to Firebase
-  useEffect(() => {
-    if (!loading) {
-      const syncProjectsData = async () => {
-        await saveProjectsData(projects);
-      };
-      syncProjectsData();
-    }
-  }, [projects, loading]);
-
-  // Save data to localStorage whenever it changes (backup)
-  useEffect(() => {
-    localStorage.setItem('betaTechHubEvents', JSON.stringify(events));
-  }, [events]);
-
-  useEffect(() => {
-    localStorage.setItem('betaTechHubTeam', JSON.stringify(teamMembers));
-  }, [teamMembers]);
-
-  useEffect(() => {
-    localStorage.setItem('betaTechHubServices', JSON.stringify(services));
-  }, [services]);
-
-  useEffect(() => {
-    localStorage.setItem('betaTechHubProjects', JSON.stringify(projects));
-  }, [projects]);
+  const persistServices = async (flatServices) => {
+    await saveServicesData({
+      core: flatServices.filter((s) => s.isCore),
+      additional: flatServices.filter((s) => !s.isCore),
+    });
+  };
 
   const handleLogout = () => {
     sessionStorage.removeItem('adminToken');
@@ -151,21 +120,28 @@ const Admin = () => {
       time: '10:00 AM - 4:00 PM',
       location: 'Beta Tech Hub, Kabale',
       description: 'Event description',
-      attendees: 25
+      attendees: 25,
+      registrationLink: 'https://forms.gle/placeholder-register',
     };
-    setEvents(prev => [...prev, newEvent]);
+    const updated = [...events, newEvent];
+    setEvents(updated);
+    saveEventsData(updated);
     setIsEditing(newEvent.id);
     setEditData(newEvent);
   };
 
   const updateEvent = (id, updates) => {
-    setEvents(prev => prev.map(event => 
+    const updated = events.map((event) =>
       event.id === id ? { ...event, ...updates } : event
-    ));
+    );
+    setEvents(updated);
+    saveEventsData(updated);
   };
 
   const deleteEvent = (id) => {
-    setEvents(prev => prev.filter(event => event.id !== id));
+    const updated = events.filter((event) => event.id !== id);
+    setEvents(updated);
+    saveEventsData(updated);
   };
 
   // Team Management
@@ -182,19 +158,25 @@ const Admin = () => {
         github: 'username'
       }
     };
-    setTeamMembers(prev => [...prev, newMember]);
+    const updated = [...teamMembers, newMember];
+    setTeamMembers(updated);
+    persistTeam(updated);
     setIsEditing(`team-${newMember.id}`);
     setEditData(newMember);
   };
 
   const updateTeamMember = (id, updates) => {
-    setTeamMembers(prev => prev.map(member => 
+    const updated = teamMembers.map((member) =>
       member.id === id ? { ...member, ...updates } : member
-    ));
+    );
+    setTeamMembers(updated);
+    persistTeam(updated);
   };
 
   const deleteTeamMember = (id) => {
-    setTeamMembers(prev => prev.filter(member => member.id !== id));
+    const updated = teamMembers.filter((member) => member.id !== id);
+    setTeamMembers(updated);
+    persistTeam(updated);
   };
 
   // Services Management
@@ -206,19 +188,25 @@ const Admin = () => {
       features: ['Feature 1', 'Feature 2'],
       isCore: false
     };
-    setServices(prev => [...prev, newService]);
+    const updated = [...services, newService];
+    setServices(updated);
+    persistServices(updated);
     setIsEditing(`service-${newService.id}`);
     setEditData(newService);
   };
 
   const updateService = (id, updates) => {
-    setServices(prev => prev.map(service => 
+    const updated = services.map((service) =>
       service.id === id ? { ...service, ...updates } : service
-    ));
+    );
+    setServices(updated);
+    persistServices(updated);
   };
 
   const deleteService = (id) => {
-    setServices(prev => prev.filter(service => service.id !== id));
+    const updated = services.filter((service) => service.id !== id);
+    setServices(updated);
+    persistServices(updated);
   };
 
   // Projects Management
@@ -241,22 +229,25 @@ const Admin = () => {
       githubRepo: '',
       githubRepoPrivate: false
     };
-    setProjects(prev => [...prev, newProject]);
+    const updated = [...projects, newProject];
+    setProjects(updated);
+    saveProjectsData(updated);
     setIsEditing(`project-${newProject.id}`);
     setEditData(newProject);
   };
 
   const updateProject = (id, updates) => {
-    setProjects(prev => prev.map(project => 
+    const updated = projects.map((project) =>
       project.id === id ? { ...project, ...updates } : project
-    ));
+    );
+    setProjects(updated);
+    saveProjectsData(updated);
   };
 
   const deleteProject = (id) => {
-    const updatedProjects = projects.filter(project => project.id !== id);
-    setProjects(updatedProjects);
-    // Explicitly save to Firebase after deletion
-    saveProjectsData(updatedProjects).catch(err => console.error('Error deleting project:', err));
+    const updated = projects.filter((project) => project.id !== id);
+    setProjects(updated);
+    saveProjectsData(updated);
   };
 
   const startEditing = (type, id, data) => {
@@ -423,7 +414,7 @@ const Admin = () => {
                 <Settings className="text-dark-200" size={20} />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gold-500">Beta Tech Hub Admin</h1>
+                <h1 className="text-xl font-bold text-gold-500">Beta Tech Labs Admin</h1>
                 <p className="text-xs text-gray-400 -mt-1">Management Panel</p>
               </div>
             </div>
@@ -973,13 +964,6 @@ const Admin = () => {
                           Keep Live Site Link Private
                         </label>
                       </div>
-                      <input
-                        type="url"
-                        value={editData.githubRepo || ''}
-                        onChange={(e) => handleEditChange('githubRepo', e.target.value)}
-                        className="form-input text-sm"
-                        placeholder="GitHub Repository URL"
-                      />
                       <div className="flex items-center space-x-2">
                         <input
                           type="checkbox"

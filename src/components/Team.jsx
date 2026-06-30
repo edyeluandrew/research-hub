@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Twitter, Linkedin, Github, Crown, Star } from 'lucide-react';
+import { Twitter, Linkedin, Github, Crown, Star, UserPlus } from 'lucide-react';
 import { getTeamData } from '../data/dataStore';
 
 const Team = () => {
@@ -26,16 +26,7 @@ const Team = () => {
   }, []);
 
   const handleApplyForInternship = () => {
-    navigate('/');
-    setTimeout(() => {
-      const contactSection = document.getElementById('contact');
-      if (contactSection) {
-        contactSection.scrollIntoView({ 
-          behavior: 'smooth',
-          block: 'start'
-        });
-      }
-    }, 100);
+    navigate('/contact');
   };
 
   // Get data from store with defaults
@@ -192,7 +183,7 @@ const Team = () => {
         </div>
 
         {/* Join Team CTA */}
-        <div className="text-center mt-16">
+        <div className="text-center mt-16" id="internships">
           <div className="bg-gradient-to-r from-gold-500/10 to-gold-300/10 border border-gold-500/30 rounded-2xl p-8 md:p-12 max-w-4xl mx-auto">
             <h3 className="text-2xl md:text-3xl font-bold text-gold-500 mb-4">
               Want to Join Our Team?
@@ -202,11 +193,8 @@ const Team = () => {
               in AI and Blockchain research. Join us in shaping the future of technology in Uganda.
             </p>
             <div className="flex justify-center">
-              <button 
-                onClick={handleApplyForInternship}
-                className="btn-primary"
-              >
-                <i className="fas fa-user-plus mr-2"></i>
+              <button onClick={handleApplyForInternship} className="btn-primary flex items-center justify-center mx-auto">
+                <UserPlus className="mr-2" size={18} />
                 Apply for Internship
               </button>
             </div>

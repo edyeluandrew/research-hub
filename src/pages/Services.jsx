@@ -62,7 +62,7 @@ const Services = () => {
   const additionalServices = (servicesData?.additional || []).map(service => ({
     ...service,
     icon: iconMap[service.icon] || Settings,
-    hasEvents: service.title.includes('Workshop')
+    hasEvents: service.title.toLowerCase().includes('internship') || service.title.toLowerCase().includes('workshop')
   }));
 
   const handleBackHome = () => {
@@ -71,6 +71,10 @@ const Services = () => {
 
   const handleViewEvents = () => {
     navigate('/events');
+  };
+
+  const handleGetInTouch = () => {
+    navigate('/contact');
   };
 
   return (
@@ -235,7 +239,7 @@ const Services = () => {
               we'd love to discuss how we can work together.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="btn-primary flex items-center justify-center">
+              <button onClick={handleGetInTouch} className="btn-primary flex items-center justify-center">
                 <Mail className="mr-2" size={18} />
                 Get In Touch
               </button>

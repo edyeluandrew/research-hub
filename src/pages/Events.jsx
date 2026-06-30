@@ -3,17 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import SEO from '../components/SEO';
 import Footer from '../components/Footer';
 import { getEventsData } from '../data/dataStore';
-import { 
-  ArrowLeft, 
-  Calendar, 
-  Clock, 
-  MapPin, 
+import { SOCIAL } from '../config/site';
+import {
+  ArrowLeft,
+  Calendar,
+  Clock,
+  MapPin,
   Users,
   CheckCircle,
   Image as ImageIcon,
   ChevronLeft,
   ChevronRight,
-  X
+  X,
 } from 'lucide-react';
 
 const Events = () => {
@@ -71,6 +72,7 @@ const Events = () => {
   };
 
   const { upcoming, past } = categorizeEvents();
+  const eventsList = eventsData || [];
 
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -281,7 +283,7 @@ const Events = () => {
               {/* Stats */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12 max-w-2xl mx-auto">
                 <div className="text-center">
-                  <div className="text-2xl font-bold font-heading text-gold-500">{eventsData.length}</div>
+                  <div className="text-2xl font-bold font-heading text-gold-500">{eventsList.length}</div>
                   <div className="text-gray-400 text-sm">Total Events</div>
                 </div>
                 <div className="text-center">
@@ -294,7 +296,7 @@ const Events = () => {
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold font-heading text-gold-500">
-                    {eventsData.reduce((sum, event) => sum + event.attendees, 0)}+
+                    {eventsList.reduce((sum, event) => sum + (event.attendees || 0), 0)}+
                   </div>
                   <div className="text-gray-400 text-sm">Total Attendees</div>
                 </div>
@@ -406,10 +408,10 @@ const Events = () => {
               and the latest developments in AI and Blockchain.
             </p>
             <div className="flex justify-center gap-4">
-              <a href="https://x.com/betatechlabs" target="_blank" rel="noopener noreferrer" className="btn-primary">
+              <a href={SOCIAL.x} target="_blank" rel="noopener noreferrer" className="btn-primary">
                 Follow on X
               </a>
-              <a href="https://www.linkedin.com/in/betatech-labs-06398039b" target="_blank" rel="noopener noreferrer" className="btn-secondary">
+              <a href={SOCIAL.linkedin} target="_blank" rel="noopener noreferrer" className="btn-secondary">
                 Connect on LinkedIn
               </a>
             </div>

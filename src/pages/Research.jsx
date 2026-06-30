@@ -1,48 +1,36 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import SEO from '../components/SEO';
-import { 
-  Search, 
-  ArrowLeft,
-  Mail
-} from 'lucide-react';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import { Search, ArrowLeft, Mail } from 'lucide-react';
+import { SITE } from '../config/site';
 
 const Research = () => {
   const navigate = useNavigate();
 
   const handleContactResearchTeam = () => {
-    navigate('/');
-    setTimeout(() => {
-      const contactSection = document.getElementById('contact');
-      if (contactSection) {
-        contactSection.scrollIntoView({ 
-          behavior: 'smooth',
-          block: 'start'
-        });
-      }
-    }, 100);
-  };
-
-  const handleBackToHome = () => {
-    navigate('/');
+    navigate('/contact');
   };
 
   return (
     <>
-      <SEO 
+      <SEO
         title="Research Hub - AI & Blockchain Innovation"
-        description="Discover groundbreaking AI and Blockchain research at Beta Tech Hub. Our research team conducts cutting-edge studies to identify industry gaps and develop innovative solutions for Uganda and beyond."
-        keywords="AI research, Blockchain research, machine learning studies, research publications, innovation hub Uganda, tech research Kabale, AI models, Blockchain protocols"
-        ogUrl="https://www.beta-techlabs.com/research"
-        ogImage="https://www.beta-techlabs.com/images/og-research.svg"
+        description={`Discover groundbreaking AI and Blockchain research at ${SITE.name}. Our team conducts cutting-edge studies to develop innovative solutions for Uganda and beyond.`}
+        keywords="AI research, Blockchain research, machine learning studies, research publications, innovation hub Uganda"
+        ogUrl={`${SITE.url}/research`}
+        ogImage={`${SITE.url}/images/og-research.svg`}
       />
 
-      <section id="research" className="py-20 bg-dark-100 min-h-screen">
+      <div className="min-h-screen bg-dark-200 flex flex-col">
+        <Header />
+        <main className="flex-1">
+      <section id="research" className="py-20 bg-dark-100">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header */}
           <div className="text-center mb-16">
-            <button 
-              onClick={handleBackToHome}
+            <button
+              onClick={() => navigate('/')}
               className="flex items-center text-gold-500 hover:text-gold-400 mb-8 transition-colors"
             >
               <ArrowLeft size={20} className="mr-2" />
@@ -234,81 +222,10 @@ const Research = () => {
             </div>
           </div>
         </div>
-
-        {/* Custom CSS Animations */}
-        <style jsx>{`
-          @keyframes float-3d {
-            0%, 100% { 
-              transform: translateY(0px) rotate(12deg) rotateX(5deg); 
-            }
-            25% { 
-              transform: translateY(-8px) rotate(14deg) rotateX(3deg); 
-            }
-            50% { 
-              transform: translateY(-12px) rotate(12deg) rotateX(5deg); 
-            }
-            75% { 
-              transform: translateY(-8px) rotate(10deg) rotateX(7deg); 
-            }
-          }
-          
-          @keyframes gentle-sway {
-            0%, 100% { 
-              transform: translateX(0px) rotate(-6deg); 
-            }
-            50% { 
-              transform: translateX(4px) rotate(-4deg); 
-            }
-          }
-          
-          @keyframes blink {
-            0%, 90%, 100% { 
-              height: 2px; 
-              top: -1px; 
-            }
-            95% { 
-              height: 8px; 
-              top: -4px; 
-            }
-          }
-          
-          @keyframes pulse-slow {
-            0%, 100% { 
-              opacity: 1; 
-            }
-            50% { 
-              opacity: 0.8; 
-            }
-          }
-
-          .animate-float-3d {
-            animation: float-3d 6s ease-in-out infinite;
-          }
-          
-          .animate-gentle-sway {
-            animation: gentle-sway 3s ease-in-out infinite;
-          }
-          
-          .animate-blink {
-            animation: blink 4s ease-in-out infinite;
-          }
-          
-          .animate-pulse-slow {
-            animation: pulse-slow 2s ease-in-out infinite;
-          }
-          
-          .perspective-1000 {
-            perspective: 1000px;
-          }
-          
-          .shadow-glow {
-            box-shadow: 
-              0 0 15px #10B981, 
-              0 0 30px #10B981,
-              inset 0 0 10px #10B981;
-          }
-        `}</style>
       </section>
+        </main>
+        <Footer />
+      </div>
     </>
   );
 };

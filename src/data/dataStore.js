@@ -59,7 +59,7 @@ const defaultEventsData = [
   {
     id: 101,
     title: 'Advanced AI & Deep Learning',
-    date: '2025-05-15',
+    date: '2026-08-15',
     time: '9:00 AM - 4:00 PM',
     location: 'Beta Tech Hub, Kabale',
     venue: 'Beta Tech Hub',
@@ -67,12 +67,12 @@ const defaultEventsData = [
     attendees: 30,
     images: [],
     highlights: ['Deep Learning', 'Computer Vision', 'NLP'],
-    registrationLink: '#'
+    registrationLink: 'https://forms.gle/placeholder-register'
   },
   {
     id: 102,
     title: 'Rust & Solana Development',
-    date: '2025-06-10',
+    date: '2026-09-10',
     time: '10:00 AM - 5:00 PM',
     location: 'Kabale University, Tech Lab',
     venue: 'Kabale University',
@@ -80,12 +80,12 @@ const defaultEventsData = [
     attendees: 25,
     images: [],
     highlights: ['Rust Programming', 'Solana Blockchain', 'DeFi'],
-    registrationLink: '#'
+    registrationLink: 'https://forms.gle/placeholder-register'
   },
   {
     id: 103,
     title: 'Web3 & Smart Contracts Bootcamp',
-    date: '2025-04-20',
+    date: '2026-03-20',
     time: '2:00 PM - 6:00 PM',
     location: 'Beta Tech Hub, Kabale',
     venue: 'Beta Tech Hub',
@@ -93,12 +93,12 @@ const defaultEventsData = [
     attendees: 40,
     images: [],
     highlights: ['Solidity', 'Web3.js', 'Security'],
-    registrationLink: '#'
+    registrationLink: 'https://forms.gle/placeholder-register'
   },
   {
     id: 104,
     title: 'React & Frontend Development Workshop',
-    date: '2025-07-05',
+    date: '2026-07-05',
     time: '10:00 AM - 3:00 PM',
     location: 'Beta Tech Hub, Kabale',
     venue: 'Beta Tech Hub',
@@ -106,7 +106,7 @@ const defaultEventsData = [
     attendees: 35,
     images: [],
     highlights: ['React.js', 'State Management', 'UI/UX'],
-    registrationLink: '#'
+    registrationLink: 'https://forms.gle/placeholder-register'
   }
 ];
 const defaultServicesData = { 
@@ -188,7 +188,53 @@ const defaultServicesData = {
   ]
 };
 
-const defaultProjectsData = [];
+const defaultProjectsData = [
+  {
+    id: 1,
+    title: 'AgriSense AI',
+    description:
+      'Edge AI system for crop disease detection using computer vision — built for smallholder farmers in Western Uganda.',
+    status: 'In Development',
+    category: 'AI / Computer Vision',
+    progress: 75,
+    tags: ['Python', 'TensorFlow', 'Edge AI'],
+    liveUrl: '',
+    liveUrlStatus: 'coming-soon',
+    liveUrlPrivate: false,
+    githubRepo: 'https://github.com/beta-techlabs',
+    githubRepoPrivate: false,
+  },
+  {
+    id: 2,
+    title: 'ChainVote',
+    description:
+      'Blockchain-based transparent voting prototype for campus organizations — smart contracts on Solana with a React dashboard.',
+    status: 'In Testing',
+    category: 'Blockchain / Web3',
+    progress: 90,
+    tags: ['Rust', 'Solana', 'React'],
+    liveUrl: '',
+    liveUrlStatus: 'coming-soon',
+    liveUrlPrivate: false,
+    githubRepo: 'https://github.com/beta-techlabs',
+    githubRepoPrivate: false,
+  },
+  {
+    id: 3,
+    title: 'EduBot',
+    description:
+      'NLP-powered tutoring assistant for computing students — answers course questions and recommends learning resources.',
+    status: 'Launched',
+    category: 'AI / NLP',
+    progress: 100,
+    tags: ['Python', 'NLP', 'FastAPI'],
+    liveUrl: '',
+    liveUrlStatus: 'coming-soon',
+    liveUrlPrivate: false,
+    githubRepo: 'https://github.com/beta-techlabs',
+    githubRepoPrivate: false,
+  },
+];
 
 // Initialize Firebase
 export const initializeFirebaseData = async () => {
@@ -203,7 +249,9 @@ export const initializeFirebaseData = async () => {
     if (!services) await firebaseSet('betaTechLabs/services', defaultServicesData);
 
     const projects = await firebaseGet('betaTechLabs/projects');
-    if (!projects) await firebaseSet('betaTechLabs/projects', defaultProjectsData);
+    if (!projects || (Array.isArray(projects) && projects.length === 0)) {
+      await firebaseSet('betaTechLabs/projects', defaultProjectsData);
+    }
   } catch (error) {
     console.error('Error initializing Firebase:', error);
   }

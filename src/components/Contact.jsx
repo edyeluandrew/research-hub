@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
-import { 
-  MapPin, 
-  Mail, 
-  Phone, 
-  Clock, 
-  MessageCircle, 
-  User, 
-  Tag, 
-  ChevronDown, 
+import {
+  MapPin,
+  Mail,
+  Phone,
+  Clock,
+  MessageCircle,
+  User,
+  Tag,
+  ChevronDown,
   Send,
-  Map,
   Twitter,
   Linkedin,
   Github,
@@ -18,8 +17,9 @@ import {
   Youtube,
   CheckCircle,
   AlertCircle,
-  Loader
+  Loader,
 } from 'lucide-react';
+import { CONTACT, SOCIAL, SITE } from '../config/site';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -55,7 +55,7 @@ const Contact = () => {
     try {
       // Prepare email template parameters
       const emailParams = {
-        to_email: 'betatechlabs10@gmail.com',
+        to_email: CONTACT.email,
         from_name: formData.name,
         from_email: formData.email,
         subject: formData.subject,
@@ -81,7 +81,7 @@ const Contact = () => {
     } catch (error) {
       console.error('Email sending error:', error);
       setStatus('error');
-      setStatusMessage('Failed to send message. Please try again or contact us directly at betatechlabs10@gmail.com');
+      setStatusMessage(`Failed to send message. Please try again or contact us directly at ${CONTACT.email}`);
       
       // Clear error message after 5 seconds
       setTimeout(() => setStatus(null), 5000);
@@ -94,55 +94,35 @@ const Contact = () => {
     {
       icon: MapPin,
       title: 'Visit Us',
-      details: 'Kabale, Uganda',
-      description: 'Come visit our research hub in beautiful Kabale'
+      details: SITE.location,
+      description: 'Come visit our research hub in beautiful Kabale',
     },
     {
       icon: Mail,
       title: 'Email Us',
-      details: 'betatechlabs10@gmail.com',
-      description: 'Send us an email anytime'
+      details: CONTACT.email,
+      description: 'Send us an email anytime',
     },
     {
       icon: Phone,
-      title: 'Call Us',
-      details: '+256 791018086',
-      description: 'Mon to Fri, 9am to 5pm'
+      title: 'Call / WhatsApp',
+      details: CONTACT.phone,
+      description: CONTACT.hours,
     },
     {
       icon: Clock,
       title: 'Working Hours',
-      details: 'Mon - Fri: 9:00 - 17:00',
-      description: 'Weekend research by appointment'
-    }
+      details: CONTACT.hours,
+      description: 'Weekend research by appointment',
+    },
   ];
 
   const socialLinks = [
-    {
-      icon: Twitter,
-      href: 'https://twitter.com/betatechlabs',
-      name: 'Twitter'
-    },
-    {
-      icon: Linkedin,
-      href: 'https://www.linkedin.com/company/betatechlabs',
-      name: 'LinkedIn'
-    },
-    {
-      icon: Github,
-      href: 'https://github.com/betatechlabs',
-      name: 'GitHub'
-    },
-    {
-      icon: MessageSquare,
-      href: 'https://discord.gg/betatechlabs',
-      name: 'Discord'
-    },
-    {
-      icon: Youtube,
-      href: 'https://www.youtube.com/@betatechlabs',
-      name: 'YouTube'
-    }
+    { icon: Twitter, href: SOCIAL.x, name: 'X' },
+    { icon: Linkedin, href: SOCIAL.linkedin, name: 'LinkedIn' },
+    { icon: Github, href: SOCIAL.github, name: 'GitHub' },
+    { icon: MessageSquare, href: SOCIAL.discord, name: 'Discord' },
+    { icon: Youtube, href: SOCIAL.youtube, name: 'YouTube' },
   ];
 
   return (
@@ -221,19 +201,18 @@ const Contact = () => {
               </div>
             </div>
 
-            {/* Location Map Placeholder */}
-            <div className="glass-card p-6">
+            <div className="glass-card p-6 overflow-hidden">
               <div className="flex items-center space-x-3 mb-4">
-                <Map className="text-gold-500" size={20} />
+                <MapPin className="text-gold-500" size={20} />
                 <h4 className="text-gold-500 font-semibold">Our Location</h4>
               </div>
-              <div className="bg-gradient-to-br from-gold-500/20 to-gold-300/20 rounded-xl h-48 flex items-center justify-center border border-gold-500/30">
-                <div className="text-center">
-                  <Map className="text-gold-500 mx-auto mb-2" size={32} />
-                  <p className="text-gold-500 font-semibold">Kabale, Uganda</p>
-                  <p className="text-gray-400 text-sm">Tech Research Hub</p>
-                </div>
-              </div>
+              <iframe
+                title="Beta Tech Labs location in Kabale, Uganda"
+                src={CONTACT.mapEmbedUrl}
+                className="w-full h-48 rounded-xl border border-gold-500/30"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
             </div>
           </div>
 

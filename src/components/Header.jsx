@@ -2,79 +2,66 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Send, Menu, X, ArrowRight } from 'lucide-react';
 import logo from '../assets/logo.png';
+import { SITE } from '../config/site';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
     { name: 'Home', href: '/' },
-    { name: 'About', href: '#about' },
-    { name: 'Team', href: '#team' },
+    { name: 'About', href: '/#about' },
+    { name: 'Team', href: '/#team' },
     { name: 'Services', href: '/services' },
     { name: 'Projects', href: '/projects' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Events', href: '/events' },
+    { name: 'Contact', href: '/contact' },
   ];
+
+  const isRoute = (href) => href.startsWith('/') && !href.includes('#');
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-dark-200/95 backdrop-blur-md border-b border-gold-500/20 gold-border-top">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          {/* Use the imported Beta Tech Labs logo asset here so the navbar stays branded. */}
-          <Link 
-            to="/" 
+          <Link
+            to="/"
             className="flex items-center space-x-3"
             onClick={() => setIsMenuOpen(false)}
           >
-            <img 
-              src={logo} 
-              alt="Beta Tech Labs Logo" 
+            <img
+              src={logo}
+              alt={`${SITE.name} Logo`}
               className="w-12 h-12 rounded-lg shadow-lg hover:shadow-gold transition-shadow duration-300 object-cover"
             />
             <div>
-              <h1 className="text-xl font-bold text-gold-500">Beta Tech Hub</h1>
-              <p className="text-xs text-gray-400 -mt-1">AI & Blockchain Hub</p>
+              <h1 className="text-xl font-bold text-gold-500">{SITE.name}</h1>
+              <p className="text-xs text-gray-400 -mt-1">{SITE.tagline}</p>
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
-            {navItems.map((item) => (
-              item.href.startsWith('/') ? (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className="nav-link relative group"
-                >
+            {navItems.map((item) =>
+              isRoute(item.href) ? (
+                <Link key={item.name} to={item.href} className="nav-link relative group">
                   {item.name}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gold-500 transition-all group-hover:w-full duration-300"></span>
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gold-500 transition-all group-hover:w-full duration-300" />
                 </Link>
               ) : (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className="nav-link relative group"
-                >
+                <a key={item.name} href={item.href} className="nav-link relative group">
                   {item.name}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gold-500 transition-all group-hover:w-full duration-300"></span>
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gold-500 transition-all group-hover:w-full duration-300" />
                 </a>
               )
-            ))}
+            )}
           </nav>
 
-          {/* CTA Button - Desktop */}
           <div className="hidden md:block">
-            <a 
-              href="#contact" 
-              className="btn-primary flex items-center"
-              onClick={() => setIsMenuOpen(false)}
-            >
+            <Link to="/contact" className="btn-primary flex items-center" onClick={() => setIsMenuOpen(false)}>
               <Send className="mr-2" size={16} />
               Get Started
-            </a>
+            </Link>
           </div>
 
-          {/* Mobile menu button */}
           <button
             className="md:hidden p-2 rounded-lg text-gold-500 hover:bg-gold-500/10 transition-colors duration-200"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -84,12 +71,11 @@ const Header = () => {
           </button>
         </div>
 
-        {/* Mobile Navigation */}
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-gray-700 bg-dark-200/95 backdrop-blur-md">
             <nav className="flex flex-col space-y-4">
-              {navItems.map((item) => (
-                item.href.startsWith('/') ? (
+              {navItems.map((item) =>
+                isRoute(item.href) ? (
                   <Link
                     key={item.name}
                     to={item.href}
@@ -110,15 +96,15 @@ const Header = () => {
                     {item.name}
                   </a>
                 )
-              ))}
-              <a 
-                href="#contact" 
-                className="btn-primary w-full mt-4 text-center flex items-center justify-center" 
+              )}
+              <Link
+                to="/contact"
+                className="btn-primary w-full mt-4 text-center flex items-center justify-center"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <Send className="mr-2" size={16} />
                 Get Started
-              </a>
+              </Link>
             </nav>
           </div>
         )}
