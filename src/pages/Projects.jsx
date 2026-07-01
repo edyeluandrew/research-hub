@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { getProjectsData, PROJECT_LOGOS } from '../data/dataStore';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -12,6 +12,7 @@ import {
   Layers,
 } from 'lucide-react';
 import { SITE, STATS } from '../config/site';
+import { navigateToHomeSection } from '../utils/homeNavigation';
 
 const STATUS_STYLES = {
   Launched: 'bg-green-500/15 text-green-400 border-green-500/30',
@@ -96,6 +97,8 @@ const ProjectCard = ({ project }) => {
 
 const Projects = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const goToContact = () => navigateToHomeSection(navigate, location, 'contact');
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -183,7 +186,7 @@ const Projects = () => {
                 <div className="text-center py-12 rounded-xl border border-gray-800 bg-dark-200">
                   <p className="text-sm text-gray-400 mb-4">New projects are on the way.</p>
                   <button
-                    onClick={() => navigate('/#contact')}
+                    onClick={goToContact}
                     className="btn-primary text-sm inline-flex items-center"
                   >
                     <Send className="mr-2" size={16} />
@@ -212,7 +215,7 @@ const Projects = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <button
-                  onClick={() => navigate('/#contact')}
+                  onClick={goToContact}
                   className="btn-primary inline-flex items-center justify-center text-sm"
                 >
                   <Send className="mr-2" size={16} />

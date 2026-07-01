@@ -1,64 +1,31 @@
 import React from 'react';
-import { Search, Lightbulb, PenTool, Code, Rocket } from 'lucide-react';
+import { RESEARCH_FRAMEWORK, COMPANY } from '../config/site';
+import { Search, BookOpen, FileText, CheckCircle, Rocket } from 'lucide-react';
 
-const PROCESS_STEPS = [
-  {
-    phase: 'Research',
-    title: 'Understand the Challenge',
-    description:
-      'We investigate problems, study users, analyze technologies, and identify opportunities worth solving.',
-    icon: Search,
-  },
-  {
-    phase: 'Discover',
-    title: 'Shape Better Ideas',
-    description:
-      'We turn research into clear insights, identify innovative approaches, and define the best path forward.',
-    icon: Lightbulb,
-  },
-  {
-    phase: 'Design',
-    title: 'Create Meaningful Experiences',
-    description:
-      'We design intuitive, scalable, and user-centered solutions that balance innovation with usability.',
-    icon: PenTool,
-  },
-  {
-    phase: 'Engineer',
-    title: 'Build with Purpose',
-    description:
-      'We transform ideas into reliable technology, from AI solutions and business systems to mobile apps, web platforms, and custom software.',
-    icon: Code,
-  },
-  {
-    phase: 'Launch & Improve',
-    title: 'Deliver Lasting Impact',
-    description:
-      'We continuously refine every product using feedback, research, and real-world experience to ensure it keeps creating value over time.',
-    icon: Rocket,
-  },
-];
+const STEP_ICONS = [Search, BookOpen, FileText, CheckCircle, Rocket];
 
 const About = () => (
   <section id="about" className="py-12 md:py-16 bg-dark-100 border-b border-gray-800/50">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 lg:items-stretch">
-        {/* Left, intro, image, quote */}
         <div className="flex flex-col">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-500 mb-2">
+            The Beta-Tech Way
+          </p>
           <h2 className="text-3xl md:text-4xl font-bold text-gold-500 font-heading mb-4">
-            How do we work?
+            How We Work
           </h2>
           <div className="w-14 h-1 bg-gold-500 rounded-full mb-6" />
 
           <div className="space-y-4 text-base md:text-lg text-gray-300 leading-relaxed">
             <p>
-              Every solution we create follows a research-driven process. Before we design or develop
-              technology, we take time to understand the challenge, explore possible solutions, and
-              validate ideas.
+              Many technology companies ask, &ldquo;What can we build?&rdquo; We begin by asking,
+              &ldquo;What problem are we solving?&rdquo; Before designing a product or writing code,
+              we invest time in understanding the challenge through research.
             </p>
             <p>
-              Whether we&apos;re developing our own products or partnering with an organization, our
-              approach remains the same.
+              Whether developing our own products or partnering with organizations, our commitment
+              remains the same: understand first, then innovate with purpose.
             </p>
           </div>
 
@@ -72,25 +39,22 @@ const About = () => (
             <div className="absolute inset-0 bg-gradient-to-t from-dark-200/80 via-dark-200/20 to-transparent pointer-events-none" />
             <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5">
               <p className="text-xs md:text-sm font-semibold uppercase tracking-wider text-gold-500 mb-1">
-                Our Process
+                Beta-Tech Research Framework
               </p>
               <p className="text-sm md:text-base text-white font-medium">
-                From research insights to real-world solutions
+                From problem discovery to innovation readiness
               </p>
             </div>
           </div>
 
           <p className="text-sm md:text-base text-gray-400 leading-relaxed italic mt-auto pt-6 border-t border-gray-800">
-            &ldquo;Research isn&apos;t the end of our work. It&apos;s where every innovation begins. By
-            combining research, engineering, and creativity, we transform ideas into products and
-            technology solutions that make a real-world impact.&rdquo;
+            &ldquo;{COMPANY.storyQuote}&rdquo;
           </p>
         </div>
 
-        {/* Right, process steps */}
         <div className="flex flex-col gap-4 h-full">
-          {PROCESS_STEPS.map((step, index) => {
-            const Icon = step.icon;
+          {RESEARCH_FRAMEWORK.map((step, index) => {
+            const Icon = STEP_ICONS[index] || Search;
             return (
               <div
                 key={step.phase}

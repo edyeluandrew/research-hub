@@ -14,11 +14,13 @@ import {
 } from 'lucide-react';
 import logo from '../assets/logo.png';
 import { SITE, CONTACT, SOCIAL } from '../config/site';
+import HashLink from './HashLink';
 
 const QUICK_LINKS = [
   { name: 'Home', href: '/' },
   { name: 'How We Work', href: '/#about' },
   { name: 'Our Focus', href: '/#our-focus' },
+  { name: 'Our Values', href: '/#values' },
   { name: 'Team', href: '/#team' },
   { name: 'Projects', href: '/projects' },
   { name: 'Events', href: '/events' },
@@ -27,7 +29,7 @@ const QUICK_LINKS = [
 
 const FOCUS_AREAS = [
   'Research & Innovation',
-  'Product Development',
+  'Product Innovation',
   'Solution Engineering',
   'Talent Development',
 ];
@@ -69,11 +71,11 @@ const Footer = () => {
 
   const renderLink = (link) => {
     const className = 'text-sm text-gray-400 hover:text-gold-500 transition-colors leading-snug';
-    if (link.href.startsWith('/#')) {
+    if (link.href.includes('#')) {
       return (
-        <a href={link.href} className={className}>
+        <HashLink to={link.href} className={className}>
           {link.name}
-        </a>
+        </HashLink>
       );
     }
     return (
@@ -101,8 +103,7 @@ const Footer = () => {
               </div>
             </Link>
             <p className="text-sm text-gray-400 leading-snug mb-4 max-w-sm">
-              Research-led AI and blockchain engineering from {SITE.location}. We help teams turn
-              ideas into products that work in the real world.
+              {SITE.brandPromise}. A {SITE.positioning.toLowerCase()} based in {SITE.location}.
             </p>
             <div className="flex gap-2">
               {socialLinks.map((social) => {
@@ -143,13 +144,13 @@ const Footer = () => {
             <ul className="space-y-2">
               {FOCUS_AREAS.map((area) => (
                 <li key={area}>
-                  <Link
+                  <HashLink
                     to="/#our-focus"
                     className="text-sm text-gray-400 hover:text-gold-500 transition-colors leading-snug flex items-start gap-2"
                   >
                     <span className="text-gold-500/60 mt-0.5">·</span>
                     {area}
-                  </Link>
+                  </HashLink>
                 </li>
               ))}
             </ul>
@@ -222,7 +223,7 @@ const Footer = () => {
       <div className="border-t border-gray-800">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <p className="text-xs text-gray-500 leading-snug">
-            &copy; {currentYear} {SITE.name}. All rights reserved.
+            &copy; {currentYear} {SITE.legalName}. All rights reserved.
           </p>
           <div className="flex flex-wrap gap-x-5 gap-y-1">
             <Link to="/privacy" className="text-xs text-gray-500 hover:text-gold-500 transition-colors">

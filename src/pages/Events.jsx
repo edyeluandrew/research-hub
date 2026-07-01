@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import SEO from '../components/SEO';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { getEventsData } from '../data/dataStore';
 import { SITE, SOCIAL, STATS } from '../config/site';
+import { navigateToHomeSection } from '../utils/homeNavigation';
 import {
   Calendar,
   Clock,
@@ -163,7 +164,7 @@ const EventBanner = ({ event, isPast, onOpenGallery }) => {
   );
 };
 
-const EventCard = ({ event, isPast, onOpenGallery }) => {
+const EventCard = ({ event, isPast, onOpenGallery, onRequestSeat }) => {
   const daysUntil = !isPast ? getDaysUntilEvent(event.date) : null;
 
   const countdownLabel = () => {
@@ -263,9 +264,7 @@ const EventCard = ({ event, isPast, onOpenGallery }) => {
           ) : !isPast ? (
             <button
               type="button"
-              onClick={() => {
-                window.location.href = '/#contact';
-              }}
+              onClick={onRequestSeat}
               className="btn-secondary w-full inline-flex items-center justify-center text-sm"
             >
               <Send className="mr-2" size={14} />
@@ -278,7 +277,7 @@ const EventCard = ({ event, isPast, onOpenGallery }) => {
   );
 };
 
-const FeaturedEvent = ({ event, onOpenGallery }) => {
+const FeaturedEvent = ({ event, onOpenGallery, onRequestSeat }) => {
   const daysUntil = getDaysUntilEvent(event.date);
   const parts = formatDateParts(event.date);
 
@@ -351,10 +350,14 @@ const FeaturedEvent = ({ event, onOpenGallery }) => {
                 <ArrowRight className="ml-2" size={16} />
               </a>
             ) : (
-              <a href="/#contact" className="btn-primary inline-flex items-center justify-center text-sm">
+              <button
+                type="button"
+                onClick={onRequestSeat}
+                className="btn-primary inline-flex items-center justify-center text-sm"
+              >
                 <Send className="mr-2" size={16} />
                 Request a Seat
-              </a>
+              </button>
             )}
             {event.images?.length > 0 && (
               <button
@@ -375,6 +378,8 @@ const FeaturedEvent = ({ event, onOpenGallery }) => {
 
 const Events = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const goToContact = () => navigateToHomeSection(navigate, location, 'contact');
   const [activeTab, setActiveTab] = useState('upcoming');
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -555,7 +560,7 @@ const Events = () => {
           {!loading && featuredEvent && (
             <section className="py-8 md:py-10 bg-dark-100 border-b border-gray-800/50">
               <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
-                <FeaturedEvent event={featuredEvent} onOpenGallery={openGallery} />
+                <FeaturedEvent event={featuredEvent} onOpenGallery={openGallery} onRequestSeat={goToContact} />
               </div>
             </section>
           )}
@@ -613,6 +618,7 @@ const Events = () => {
                         event={event}
                         isPast={false}
                         onOpenGallery={openGallery}
+                        onRequestSeat={goToContact}
                       />
                     ))}
                   </div>
@@ -635,6 +641,7 @@ const Events = () => {
                         event={event}
                         isPast
                         onOpenGallery={openGallery}
+                        onRequestSeat={goToContact}
                       />
                     ))}
                   </div>
@@ -703,7 +710,7 @@ const Events = () => {
                 <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row gap-3 md:justify-end">
                   <button
                     type="button"
-                    onClick={() => navigate('/#contact')}
+                    onClick={goToContact}
                     className="btn-primary inline-flex items-center justify-center text-sm"
                   >
                     <Send className="mr-2" size={16} />

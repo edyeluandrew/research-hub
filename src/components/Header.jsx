@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Send, Menu, X } from 'lucide-react';
 import logo from '../assets/logo.png';
 import { SITE } from '../config/site';
+import HashLink from './HashLink';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -18,6 +19,7 @@ const Header = () => {
   ];
 
   const isRoute = (href) => href.startsWith('/') && !href.includes('#');
+  const closeMenu = () => setIsMenuOpen(false);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-dark-200/95 backdrop-blur-md border-b border-gold-500/20 gold-border-top">
@@ -26,7 +28,7 @@ const Header = () => {
           <Link
             to="/"
             className="flex items-center gap-3"
-            onClick={() => setIsMenuOpen(false)}
+            onClick={closeMenu}
           >
             <img
               src={logo}
@@ -47,19 +49,19 @@ const Header = () => {
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gold-500 transition-all group-hover:w-full duration-300" />
                 </Link>
               ) : (
-                <a key={item.name} href={item.href} className="nav-link relative group text-sm">
+                <HashLink key={item.name} to={item.href} className="nav-link relative group text-sm">
                   {item.name}
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gold-500 transition-all group-hover:w-full duration-300" />
-                </a>
+                </HashLink>
               )
             )}
           </nav>
 
           <div className="hidden lg:block">
-            <a href="/#contact" className="btn-primary inline-flex items-center text-sm py-2 px-4" onClick={() => setIsMenuOpen(false)}>
+            <HashLink to="/#contact" className="btn-primary inline-flex items-center text-sm py-2 px-4">
               <Send className="mr-2" size={15} />
               Get Started
-            </a>
+            </HashLink>
           </div>
 
           <button
@@ -80,29 +82,29 @@ const Header = () => {
                     key={item.name}
                     to={item.href}
                     className="nav-link py-2.5 px-3 rounded-lg hover:bg-gold-500/10"
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={closeMenu}
                   >
                     {item.name}
                   </Link>
                 ) : (
-                  <a
+                  <HashLink
                     key={item.name}
-                    href={item.href}
+                    to={item.href}
                     className="nav-link py-2.5 px-3 rounded-lg hover:bg-gold-500/10"
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={closeMenu}
                   >
                     {item.name}
-                  </a>
+                  </HashLink>
                 )
               )}
-              <a
-                href="/#contact"
+              <HashLink
+                to="/#contact"
                 className="btn-primary w-full mt-3 text-center flex items-center justify-center"
-                onClick={() => setIsMenuOpen(false)}
+                onClick={closeMenu}
               >
                 <Send className="mr-2" size={15} />
                 Get Started
-              </a>
+              </HashLink>
             </nav>
           </div>
         )}

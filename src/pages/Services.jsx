@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   Search,
   Package,
@@ -20,69 +20,19 @@ import {
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import SEO from '../components/SEO';
-import { SITE } from '../config/site';
+import { SITE, STRATEGIC_PILLARS } from '../config/site';
+import { navigateToHomeSection } from '../utils/homeNavigation';
 
-const SERVICE_PILLARS = [
-  {
-    icon: Search,
-    label: 'Research & Innovation',
-    title: 'Research That Drives Every Build',
-    description:
-      'We start with the problem, not the technology. Our team investigates real challenges, studies users and environments, and applies rigorous research before a single line of production code is written.',
-    items: [
-      'Problem discovery & needs assessment',
-      'User, market & field research',
-      'Applied AI & machine learning research',
-      'Blockchain & distributed systems R&D',
-      'IoT, edge computing & embedded exploration',
-      'Technical reports & research documentation',
-    ],
-  },
-  {
-    icon: Package,
-    label: 'Product Development',
-    title: 'Products Built on Evidence',
-    description:
-      'We turn research into products people actually use, from AI platforms and mobile apps to IoT dashboards and business systems designed for African markets and beyond.',
-    items: [
-      'AI-powered products & intelligent platforms',
-      'Mobile applications (iOS & Android)',
-      'Web platforms, portals & SaaS products',
-      'Business & operations management systems',
-      'IoT devices, sensors & monitoring dashboards',
-      'Data & analytics platforms',
-    ],
-  },
-  {
-    icon: Settings,
-    label: 'Solution Engineering',
-    title: 'Engineering That Delivers Results',
-    description:
-      'Organizations come to us with ideas, constraints, and deadlines. We collaborate closely, engineer with discipline, and ship solutions that are maintainable, scalable, and measurable.',
-    items: [
-      'Custom software & full-stack development',
-      'AI automation & intelligent workflows',
-      'Blockchain, Web3 & smart contract systems',
-      'API design, integrations & legacy modernization',
-      'Cloud deployment & production infrastructure',
-      'Proof of concept through production scaling',
-    ],
-  },
-  {
-    icon: GraduationCap,
-    label: 'Talent Development',
-    title: 'Growing Capable Builders',
-    description:
-      'We develop engineers and innovators through real projects, not classroom theory alone. Our programs combine mentorship, research exposure, and hands-on delivery on live work.',
-    items: [
-      'Structured internships & research training',
-      'Practical product development experience',
-      'Industry collaboration projects',
-      'Technical workshops & innovation events',
-      'Mentorship & career development',
-    ],
-  },
-];
+const SERVICE_PILLARS = STRATEGIC_PILLARS.map((pillar, index) => {
+  const icons = [Search, Package, Settings, GraduationCap];
+  return {
+    icon: icons[index],
+    label: pillar.label,
+    title: pillar.title,
+    description: pillar.description,
+    items: pillar.items.map((item) => item.toLowerCase()),
+  };
+});
 
 const TECHNOLOGY_AREAS = [
   { icon: Brain, title: 'Artificial Intelligence', detail: 'ML models, NLP, computer vision, predictive systems' },
@@ -96,10 +46,11 @@ const TECHNOLOGY_AREAS = [
 ];
 
 const ENGAGEMENT_STEPS = [
-  { step: '01', title: 'Discover', text: 'We listen, research, and define the real problem worth solving.' },
-  { step: '02', title: 'Design', text: 'We shape the solution architecture, scope, and delivery plan.' },
-  { step: '03', title: 'Build', text: 'We engineer, test, and iterate with transparent progress updates.' },
-  { step: '04', title: 'Deliver', text: 'We deploy, hand over, and support what ships into production.' },
+  { step: '01', title: 'Research Insights', text: 'We begin with validated findings, user insights, and opportunities from our research framework.' },
+  { step: '02', title: 'Idea Generation', text: 'We transform research into concepts through ideation, exploration, and opportunity analysis.' },
+  { step: '03', title: 'Concept Validation', text: 'We test feasibility, prototype ideas, gather feedback, and assess risk before building.' },
+  { step: '04', title: 'Engineering', text: 'Validated concepts become reliable products or client solutions through disciplined engineering.' },
+  { step: '05', title: 'Deployment & Impact', text: 'We launch, monitor, gather feedback, and continuously improve for lasting value.' },
 ];
 
 const ServiceCard = ({ pillar }) => {
@@ -131,12 +82,14 @@ const ServiceCard = ({ pillar }) => {
 
 const Services = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const goToContact = () => navigateToHomeSection(navigate, location, 'contact');
 
   return (
     <>
       <SEO
-        title="Our Services - Research, Engineering & Product Development"
-        description={`${SITE.name} delivers research-led AI, blockchain, IoT, and software engineering services from ${SITE.location}. Product development, solution engineering, and talent programs for serious teams.`}
+        title="Our Services - Research, Product Innovation & Engineering"
+        description={`${SITE.legalName}: ${SITE.brandPromise} Research, product innovation, solution engineering, and talent development from ${SITE.location}.`}
         keywords="AI services Uganda, blockchain development Kabale, IoT solutions Uganda, software engineering East Africa, product development, research collaboration, tech consulting Uganda"
         ogUrl={`${SITE.url}/services`}
         ogImage={`${SITE.url}/images/og-services.svg`}
@@ -150,17 +103,15 @@ const Services = () => {
           <section className="pt-20 pb-8 md:pb-10 bg-gold-gradient border-b border-gray-800/50">
             <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-500 mb-2">
-                What We Deliver
+                The Beta-Tech Way
               </p>
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white font-heading leading-tight mb-3 max-w-3xl">
-                Research-Led Services for{' '}
-                <span className="text-gold-500">Serious Technology</span>
+                {SITE.brandPromise}
               </h1>
               <p className="text-sm md:text-base text-gray-400 leading-snug max-w-2xl">
-                Beta-Tech Labs helps organizations build AI, blockchain, IoT, and software products
-                grounded in real research, not hype. From discovery to deployment, we engineer
-                solutions that work in the field, scale with your growth, and earn trust from the
-                people who use them.
+                {SITE.positioning}. We conduct research, develop products, engineer solutions, and
+                develop talent through a disciplined approach that starts with understanding, not
+                assumption.
               </p>
             </div>
           </section>
@@ -170,11 +121,11 @@ const Services = () => {
             <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
               <div className="mb-6 md:mb-8 max-w-2xl">
                 <h2 className="text-2xl md:text-3xl font-bold text-white font-heading mb-2 leading-tight">
-                  Our Core Service Areas
+                  Strategic Pillars
                 </h2>
                 <p className="text-sm text-gray-400 leading-snug">
-                  Four interconnected capabilities, the same foundation behind everything on our
-                  home page, expanded for teams evaluating whether we are the right partner.
+                  Four interconnected capabilities that define how Beta-Tech Labs creates value
+                  for partners, communities, and Africa&apos;s digital future.
                 </p>
               </div>
               <div className="grid md:grid-cols-2 gap-4 md:gap-5">
@@ -222,13 +173,13 @@ const Services = () => {
             <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
               <div className="mb-6 max-w-2xl">
                 <h2 className="text-2xl md:text-3xl font-bold text-white font-heading mb-2 leading-tight">
-                  How We Work With Clients
+                  The Beta-Tech Innovation Pipeline
                 </h2>
                 <p className="text-sm text-gray-400 leading-snug">
-                  A clear, disciplined process, so you always know where we are and what comes next.
+                  How validated research becomes products, solutions, and measurable impact.
                 </p>
               </div>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-3 md:gap-4">
                 {ENGAGEMENT_STEPS.map((item) => (
                   <div key={item.step} className="rounded-xl border border-gray-800 bg-dark-200 p-4">
                     <span className="text-xs font-bold text-gold-500/40 tabular-nums">{item.step}</span>
@@ -252,7 +203,7 @@ const Services = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <button
-                  onClick={() => navigate('/#contact')}
+                  onClick={goToContact}
                   className="btn-primary inline-flex items-center justify-center text-sm"
                 >
                   <Send className="mr-2" size={16} />

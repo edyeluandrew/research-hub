@@ -1,16 +1,18 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import SEO from '../components/SEO';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { Search, ArrowLeft, Mail } from 'lucide-react';
 import { SITE } from '../config/site';
+import { navigateToHomeSection } from '../utils/homeNavigation';
 
 const Research = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleContactResearchTeam = () => {
-    navigate('/#contact');
+    navigateToHomeSection(navigate, location, 'contact');
   };
 
   return (

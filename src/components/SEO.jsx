@@ -11,7 +11,7 @@ const SEO = ({
   type = 'website',
   article = null,
 }) => {
-  const defaultDescription = `Uganda's premier AI and Blockchain research hub. We conduct cutting-edge research, develop innovative solutions, and offer tech education programs in Kabale.`;
+  const defaultDescription = `${SITE.brandPromise} ${SITE.positioning} based in ${SITE.location}.`;
   const twitterHandle = '@betatechlabs';
 
   const fullTitle = title ? `${title} | ${SITE.name}` : `${SITE.name} | ${SITE.tagline}`;

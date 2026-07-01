@@ -203,7 +203,7 @@ const defaultServicesData = {
     {
       id: 'service-2',
       icon: 'Package',
-      title: 'Product Development',
+      title: 'Product Innovation',
       description: 'Research-backed products, from AI platforms to IoT dashboards.',
       features: [
         'AI-Powered Products & Platforms',

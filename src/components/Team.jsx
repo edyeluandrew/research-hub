@@ -128,8 +128,8 @@ const Team = () => {
             The People Behind the Work
           </h2>
           <p className="text-sm md:text-base text-gray-400 leading-snug">
-            Engineers, researchers, and strategists building AI and blockchain products from
-            Uganda, the same caliber of talent you would expect from a world-class tech team.
+            Researchers, engineers, and strategists united by a shared belief: technology should
+            create meaningful impact, measured not by complexity, but by the value it delivers.
           </p>
         </div>
 

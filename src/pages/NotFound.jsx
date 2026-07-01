@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import SEO from '../components/SEO';
+import HashLink from '../components/HashLink';
 import { Home, ArrowLeft, Search } from 'lucide-react';
 
 const NotFound = () => {
@@ -60,9 +61,9 @@ const NotFound = () => {
                 Events
               </a>
               <span className="text-gray-600">•</span>
-              <a href="/#contact" className="text-gold-400 hover:text-gold-300 transition-colors">
+              <HashLink to="/#contact" className="text-gold-400 hover:text-gold-300 transition-colors">
                 Contact Us
-              </a>
+              </HashLink>
             </div>
           </div>
         </div>
