@@ -22,6 +22,7 @@ import Footer from '../components/Footer';
 import SEO from '../components/SEO';
 import { SITE, STRATEGIC_PILLARS } from '../config/site';
 import { navigateToHomeSection } from '../utils/homeNavigation';
+import Reveal from '../components/Reveal';
 
 const SERVICE_PILLARS = STRATEGIC_PILLARS.map((pillar, index) => {
   const icons = [Search, Package, Settings, GraduationCap];
@@ -56,17 +57,21 @@ const ENGAGEMENT_STEPS = [
 const ServiceCard = ({ pillar }) => {
   const Icon = pillar.icon;
   return (
-    <article className="rounded-xl border border-gray-800 bg-dark-200 overflow-hidden flex flex-col h-full">
-      <div className="h-1 bg-gradient-to-r from-gold-500/30 via-gold-500/50 to-transparent" />
+    <article className="group interactive-card rounded-xl overflow-hidden flex flex-col h-full">
+      <div className="h-1 bg-gradient-to-r from-gold-500/30 via-gold-500/50 to-transparent transition-opacity duration-300 group-hover:opacity-100 opacity-70" />
       <div className="p-5 md:p-6 flex flex-col flex-1">
-        <div className="w-10 h-10 rounded-lg bg-gold-500/10 border border-gold-500/20 flex items-center justify-center mb-3">
-          <Icon className="text-gold-500" size={20} />
+        <div className="icon-box w-10 h-10 rounded-lg bg-gold-500/10 border border-gold-500/20 flex items-center justify-center mb-3">
+          <Icon className="text-gold-500 transition-transform duration-300" size={20} />
         </div>
         <p className="text-xs font-semibold uppercase tracking-wider text-gold-500 mb-1 leading-snug">
           {pillar.label}
         </p>
-        <h3 className="text-lg md:text-xl font-bold text-white mb-2 leading-snug">{pillar.title}</h3>
-        <p className="text-sm text-gray-400 leading-snug mb-4">{pillar.description}</p>
+        <h3 className="text-lg md:text-xl font-bold text-white mb-2 leading-snug transition-colors duration-300 group-hover:text-gold-50">
+          {pillar.title}
+        </h3>
+        <p className="text-sm text-gray-400 leading-snug mb-4 transition-colors duration-300 group-hover:text-gray-300">
+          {pillar.description}
+        </p>
         <ul className="space-y-2 mt-auto pt-4 border-t border-gray-800">
           {pillar.items.map((item) => (
             <li key={item} className="flex items-start gap-2 text-sm text-gray-300 leading-snug">
@@ -129,8 +134,10 @@ const Services = () => {
                 </p>
               </div>
               <div className="grid md:grid-cols-2 gap-4 md:gap-5">
-                {SERVICE_PILLARS.map((pillar) => (
-                  <ServiceCard key={pillar.label} pillar={pillar} />
+                {SERVICE_PILLARS.map((pillar, index) => (
+                  <Reveal key={pillar.label} delay={index * 80}>
+                    <ServiceCard pillar={pillar} />
+                  </Reveal>
                 ))}
               </div>
             </div>
@@ -149,19 +156,24 @@ const Services = () => {
                 </p>
               </div>
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-                {TECHNOLOGY_AREAS.map((tech) => {
+                {TECHNOLOGY_AREAS.map((tech, index) => {
                   const Icon = tech.icon;
                   return (
+                    <Reveal key={tech.title} delay={index * 50}>
                     <div
-                      key={tech.title}
-                      className="rounded-xl border border-gray-800 bg-dark-100 p-4"
+                      className="group interactive-card-light rounded-xl p-4 h-full"
                     >
-                      <div className="w-9 h-9 rounded-lg bg-gold-500/10 border border-gold-500/20 flex items-center justify-center mb-2.5">
-                        <Icon className="text-gold-500" size={16} />
+                      <div className="icon-box w-9 h-9 rounded-lg bg-gold-500/10 border border-gold-500/20 flex items-center justify-center mb-2.5">
+                        <Icon className="text-gold-500 transition-transform duration-300" size={16} />
                       </div>
-                      <h3 className="text-sm font-semibold text-white mb-1 leading-snug">{tech.title}</h3>
-                      <p className="text-xs text-gray-500 leading-snug">{tech.detail}</p>
+                      <h3 className="text-sm font-semibold text-white mb-1 leading-snug transition-colors duration-300 group-hover:text-gold-50">
+                        {tech.title}
+                      </h3>
+                      <p className="text-xs text-gray-500 leading-snug transition-colors duration-300 group-hover:text-gray-400">
+                        {tech.detail}
+                      </p>
                     </div>
+                    </Reveal>
                   );
                 })}
               </div>
@@ -180,12 +192,18 @@ const Services = () => {
                 </p>
               </div>
               <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-3 md:gap-4">
-                {ENGAGEMENT_STEPS.map((item) => (
-                  <div key={item.step} className="rounded-xl border border-gray-800 bg-dark-200 p-4">
-                    <span className="text-xs font-bold text-gold-500/40 tabular-nums">{item.step}</span>
-                    <h3 className="text-base font-bold text-white mt-1 mb-1 leading-snug">{item.title}</h3>
-                    <p className="text-sm text-gray-400 leading-snug">{item.text}</p>
+                {ENGAGEMENT_STEPS.map((item, index) => (
+                  <Reveal key={item.step} delay={index * 60}>
+                  <div className="group pipeline-step h-full">
+                    <span className="step-number">{item.step}</span>
+                    <h3 className="text-base font-bold text-white mt-1 mb-1 leading-snug transition-colors duration-300 group-hover:text-gold-50">
+                      {item.title}
+                    </h3>
+                    <p className="text-sm text-gray-400 leading-snug transition-colors duration-300 group-hover:text-gray-300">
+                      {item.text}
+                    </p>
                   </div>
+                  </Reveal>
                 ))}
               </div>
             </div>

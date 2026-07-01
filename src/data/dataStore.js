@@ -407,6 +407,9 @@ export const initializeFirebaseData = async () => {
     if (!services) await firebaseSet('betaTechLabs/services', defaultServicesData);
 
     await firebaseSet('betaTechLabs/projects', defaultProjectsData);
+
+    const testimonials = await firebaseGet('betaTechLabs/testimonials');
+    if (!testimonials) await firebaseSet('betaTechLabs/testimonials', []);
   } catch (error) {
     console.error('Error initializing Firebase:', error);
   }
@@ -544,6 +547,81 @@ export const resetProjectsData = async () => {
     window.dispatchEvent(new Event('projectsDataUpdated'));
   } catch (e) {
     console.error('Error resetting projects data:', e);
+  }
+};
+
+// Client feedback / testimonials
+export const getTestimonialsData = async () => {
+  try {
+    const data = await firebaseGet('betaTechLabs/testimonials');
+    return Array.isArray(data) ? data : [];
+  } catch (e) {
+    console.error('Error getting testimonials data:', e);
+    return [];
+  }
+};
+
+export const saveTestimonialsData = async (data) => {
+  try {
+    await firebaseSet('betaTechLabs/testimonials', data);
+    window.dispatchEvent(new Event('testimonialsDataUpdated'));
+    return true;
+  } catch (e) {
+    console.error('Error saving testimonials data:', e);
+    return false;
+  }
+};
+
+export const addTestimonial = async (testimonial) => {
+  try {
+    const existing = await getTestimonialsData();
+    const entry = {
+      id: Date.now(),
+      name: testimonial.name.trim(),
+      role: testimonial.role.trim(),
+      organization: testimonial.organization.trim(),
+      location: testimonial.location?.trim() || '',
+      quote: testimonial.quote.trim(),
+      createdAt: new Date().toISOString(),
+    };
+    const updated = [entry, ...existing];
+    return saveTestimonialsData(updated);
+  } catch (e) {
+    console.error('Error adding testimonial:', e);
+    return false;
+  }
+};
+
+export const deleteTestimonial = async (id) => {
+  try {
+    const existing = await getTestimonialsData();
+    const updated = existing.filter((item) => item.id !== id);
+    return saveTestimonialsData(updated);
+  } catch (e) {
+    console.error('Error deleting testimonial:', e);
+    return false;
+  }
+};
+
+export const updateTestimonial = async (id, updates) => {
+  try {
+    const existing = await getTestimonialsData();
+    const updated = existing.map((item) =>
+      item.id === id
+        ? {
+            ...item,
+            name: (updates.name ?? item.name).trim(),
+            role: (updates.role ?? item.role).trim(),
+            organization: (updates.organization ?? item.organization).trim(),
+            location: (updates.location ?? item.location ?? '').trim(),
+            quote: (updates.quote ?? item.quote).trim(),
+          }
+        : item
+    );
+    return saveTestimonialsData(updated);
+  } catch (e) {
+    console.error('Error updating testimonial:', e);
+    return false;
   }
 };
 

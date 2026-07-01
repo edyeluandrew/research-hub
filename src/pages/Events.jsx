@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import { getEventsData } from '../data/dataStore';
 import { SITE, SOCIAL, STATS } from '../config/site';
 import { navigateToHomeSection } from '../utils/homeNavigation';
+import Reveal from '../components/Reveal';
 import {
   Calendar,
   Clock,
@@ -175,7 +176,7 @@ const EventCard = ({ event, isPast, onOpenGallery, onRequestSeat }) => {
   };
 
   return (
-    <article className="rounded-xl border border-gray-800 bg-dark-100 overflow-hidden flex flex-col h-full hover:border-gold-500/30 transition-colors">
+    <article className="group interactive-card-light rounded-xl overflow-hidden flex flex-col h-full">
       <EventBanner event={event} isPast={isPast} onOpenGallery={onOpenGallery} />
 
       <div className="p-5 md:p-6 flex flex-col flex-1">
@@ -209,7 +210,9 @@ const EventCard = ({ event, isPast, onOpenGallery, onRequestSeat }) => {
           </p>
         )}
 
-        <h3 className="text-lg md:text-xl font-bold text-white mb-2 leading-snug">{event.title}</h3>
+        <h3 className="text-lg md:text-xl font-bold text-white mb-2 leading-snug transition-colors duration-300 group-hover:text-gold-50">
+          {event.title}
+        </h3>
 
         <div className="space-y-1.5 mb-3">
           <div className="flex items-center gap-2 text-sm text-gray-400">
@@ -282,14 +285,14 @@ const FeaturedEvent = ({ event, onOpenGallery, onRequestSeat }) => {
   const parts = formatDateParts(event.date);
 
   return (
-    <article className="rounded-xl border border-gold-500/30 bg-dark-100 overflow-hidden">
+    <article className="group interactive-card-light rounded-xl overflow-hidden !border-gold-500/30 hover:!border-gold-500/50">
       <div className="grid lg:grid-cols-5 gap-0">
         <div className="lg:col-span-2 relative min-h-[220px] bg-gradient-to-br from-gold-900/30 via-dark-200 to-purple-900/40 flex items-center justify-center p-8 border-b lg:border-b-0 lg:border-r border-gray-800">
           <div className="text-center">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-gold-500 mb-3">
               Next Up
             </p>
-            <div className="inline-flex flex-col items-center justify-center w-24 h-24 rounded-2xl border-2 border-gold-500/40 bg-dark-200/90 mb-3">
+            <div className="inline-flex flex-col items-center justify-center w-24 h-24 rounded-2xl border-2 border-gold-500/40 bg-dark-200/90 mb-3 transition-all duration-500 group-hover:scale-105 group-hover:border-gold-500/60">
               <span className="text-xs font-bold text-gold-500">{parts.month}</span>
               <span className="text-4xl font-bold text-white leading-none">{parts.day}</span>
               <span className="text-xs text-gray-500">{parts.year}</span>
@@ -518,21 +521,24 @@ const Events = () => {
                 </p>
               </div>
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-                {WHY_ATTEND.map((item) => {
+                {WHY_ATTEND.map((item, index) => {
                   const Icon = item.icon;
                   return (
+                    <Reveal key={item.title} delay={index * 70}>
                     <div
-                      key={item.title}
-                      className="rounded-xl border border-gray-800 bg-dark-200 p-4 md:p-5"
+                      className="group interactive-card rounded-xl p-4 md:p-5 h-full"
                     >
-                      <div className="w-9 h-9 rounded-lg bg-gold-500/10 border border-gold-500/20 flex items-center justify-center mb-3">
-                        <Icon className="text-gold-500" size={16} />
+                      <div className="icon-box w-9 h-9 rounded-lg bg-gold-500/10 border border-gold-500/20 flex items-center justify-center mb-3">
+                        <Icon className="text-gold-500 transition-transform duration-300" size={16} />
                       </div>
-                      <h3 className="text-sm font-bold text-white mb-1.5 leading-snug">
+                      <h3 className="text-sm font-bold text-white mb-1.5 leading-snug transition-colors duration-300 group-hover:text-gold-50">
                         {item.title}
                       </h3>
-                      <p className="text-xs text-gray-500 leading-snug">{item.text}</p>
+                      <p className="text-xs text-gray-500 leading-snug transition-colors duration-300 group-hover:text-gray-400">
+                        {item.text}
+                      </p>
                     </div>
+                    </Reveal>
                   );
                 })}
               </div>
@@ -543,14 +549,19 @@ const Events = () => {
           <section className="py-6 bg-dark-200 border-b border-gray-800/50">
             <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                {EVENT_FORMATS.map((fmt) => (
+                {EVENT_FORMATS.map((fmt, index) => (
+                  <Reveal key={fmt.label} delay={index * 50}>
                   <div
-                    key={fmt.label}
-                    className="rounded-lg border border-gray-800/80 bg-dark-100 px-4 py-3"
+                    className="group interactive-card-light rounded-lg px-4 py-3 transition-all duration-300"
                   >
-                    <p className="text-sm font-semibold text-gold-500">{fmt.label}</p>
-                    <p className="text-xs text-gray-500 mt-0.5 leading-snug">{fmt.detail}</p>
+                    <p className="text-sm font-semibold text-gold-500 transition-colors duration-300 group-hover:text-gold-400">
+                      {fmt.label}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-0.5 leading-snug transition-colors duration-300 group-hover:text-gray-400">
+                      {fmt.detail}
+                    </p>
                   </div>
+                  </Reveal>
                 ))}
               </div>
             </div>
@@ -612,14 +623,15 @@ const Events = () => {
               ) : activeTab === 'upcoming' ? (
                 upcoming.length > 0 ? (
                   <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5">
-                    {(featuredEvent ? upcoming.slice(1) : upcoming).map((event) => (
-                      <EventCard
-                        key={event.id}
-                        event={event}
-                        isPast={false}
-                        onOpenGallery={openGallery}
-                        onRequestSeat={goToContact}
-                      />
+                    {(featuredEvent ? upcoming.slice(1) : upcoming).map((event, index) => (
+                      <Reveal key={event.id} delay={index * 70}>
+                        <EventCard
+                          event={event}
+                          isPast={false}
+                          onOpenGallery={openGallery}
+                          onRequestSeat={goToContact}
+                        />
+                      </Reveal>
                     ))}
                   </div>
                 ) : (
@@ -635,14 +647,15 @@ const Events = () => {
               ) : past.length > 0 ? (
                 <>
                   <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5">
-                    {past.map((event) => (
-                      <EventCard
-                        key={event.id}
-                        event={event}
-                        isPast
-                        onOpenGallery={openGallery}
-                        onRequestSeat={goToContact}
-                      />
+                    {past.map((event, index) => (
+                      <Reveal key={event.id} delay={index * 70}>
+                        <EventCard
+                          event={event}
+                          isPast
+                          onOpenGallery={openGallery}
+                          onRequestSeat={goToContact}
+                        />
+                      </Reveal>
                     ))}
                   </div>
 
@@ -662,7 +675,7 @@ const Events = () => {
                             key={`${event.id}-${imageIndex}`}
                             type="button"
                             onClick={() => openGallery(event, imageIndex)}
-                            className="group relative aspect-[4/3] rounded-xl overflow-hidden border border-gray-800 bg-dark-100 hover:border-gold-500/40 transition-colors text-left"
+                            className="group relative aspect-[4/3] rounded-xl overflow-hidden interactive-card-light text-left"
                           >
                             <img
                               src={url}

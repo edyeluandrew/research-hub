@@ -19,7 +19,8 @@ import {
   Cpu,
   Link,
   Upload,
-  Image as ImageIcon
+  Image as ImageIcon,
+  MessageSquare,
 } from 'lucide-react';
 import { 
   getTeamData, 
@@ -29,7 +30,10 @@ import {
   getServicesData,
   saveServicesData,
   getProjectsData,
-  saveProjectsData
+  saveProjectsData,
+  getTestimonialsData,
+  deleteTestimonial,
+  updateTestimonial,
 } from '../data/dataStore';
 
 const Admin = () => {
@@ -39,6 +43,7 @@ const Admin = () => {
   const [teamMembers, setTeamMembers] = useState([]);
   const [services, setServices] = useState([]);
   const [projects, setProjects] = useState([]);
+  const [testimonials, setTestimonials] = useState([]);
   const [isEditing, setIsEditing] = useState(null);
   const [editData, setEditData] = useState({});
   const [loading, setLoading] = useState(true);
@@ -66,6 +71,9 @@ const Admin = () => {
         if (projectsData) {
           setProjects(Array.isArray(projectsData) ? projectsData : []);
         }
+
+        const testimonialsData = await getTestimonialsData();
+        setTestimonials(Array.isArray(testimonialsData) ? testimonialsData : []);
 
         const servicesData = await getServicesData();
         if (servicesData) {
@@ -146,6 +154,22 @@ const Admin = () => {
     const updated = events.filter((event) => event.id !== id);
     setEvents(updated);
     saveEventsData(updated);
+  };
+
+  const removeTestimonial = async (id) => {
+    const ok = await deleteTestimonial(id);
+    if (ok) {
+      setTestimonials((prev) => prev.filter((item) => item.id !== id));
+    }
+  };
+
+  const updateFeedback = async (id, updates) => {
+    const ok = await updateTestimonial(id, updates);
+    if (ok) {
+      setTestimonials((prev) =>
+        prev.map((item) => (item.id === id ? { ...item, ...updates } : item))
+      );
+    }
   };
 
   // Team Management
@@ -287,6 +311,9 @@ const Admin = () => {
         break;
       case 'project':
         updateProject(numericId, editData);
+        break;
+      case 'feedback':
+        updateFeedback(numericId, editData);
         break;
       default:
         break;
@@ -504,7 +531,8 @@ const Admin = () => {
               { id: 'events', label: 'Events', icon: Calendar },
               { id: 'team', label: 'Team', icon: Users },
               { id: 'services', label: 'Services', icon: BookOpen },
-              { id: 'projects', label: 'Projects', icon: Projector }
+              { id: 'projects', label: 'Projects', icon: Projector },
+              { id: 'feedback', label: 'Feedback', icon: MessageSquare },
             ].map((tab) => {
               const TabIcon = tab.icon;
               return (
@@ -1218,6 +1246,114 @@ const Admin = () => {
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {activeTab === 'feedback' && (
+          <div>
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-gold-500">Client Feedback</h2>
+              <p className="text-sm text-gray-400 mt-1">
+                Feedback submitted by visitors on the home page. Edit or remove entries as needed.
+              </p>
+            </div>
+
+            {testimonials.length === 0 ? (
+              <div className="card p-8 text-center text-gray-400">No client feedback submitted yet.</div>
+            ) : (
+              <div className="grid md:grid-cols-2 gap-6">
+                {testimonials.map((item) => (
+                  <div key={item.id} className="card p-6">
+                    {isEditing === `feedback-${item.id}` ? (
+                      <div className="space-y-3">
+                        <input
+                          type="text"
+                          value={editData.name || ''}
+                          onChange={(e) => handleEditChange('name', e.target.value)}
+                          className="form-input text-sm"
+                          placeholder="Name"
+                        />
+                        <input
+                          type="text"
+                          value={editData.role || ''}
+                          onChange={(e) => handleEditChange('role', e.target.value)}
+                          className="form-input text-sm"
+                          placeholder="Role"
+                        />
+                        <input
+                          type="text"
+                          value={editData.organization || ''}
+                          onChange={(e) => handleEditChange('organization', e.target.value)}
+                          className="form-input text-sm"
+                          placeholder="Organization"
+                        />
+                        <input
+                          type="text"
+                          value={editData.location || ''}
+                          onChange={(e) => handleEditChange('location', e.target.value)}
+                          className="form-input text-sm"
+                          placeholder="Location"
+                        />
+                        <textarea
+                          value={editData.quote || ''}
+                          onChange={(e) => handleEditChange('quote', e.target.value)}
+                          className="form-input text-sm"
+                          rows="4"
+                          placeholder="Feedback"
+                        />
+                        <div className="flex space-x-2">
+                          <button
+                            onClick={saveEdit}
+                            className="btn-primary flex-1 flex items-center justify-center text-sm"
+                          >
+                            <Save className="mr-1" size={14} />
+                            Save
+                          </button>
+                          <button
+                            onClick={stopEditing}
+                            className="btn-secondary flex-1 flex items-center justify-center text-sm"
+                          >
+                            <X className="mr-1" size={14} />
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <p className="text-gray-300 text-sm leading-relaxed mb-4">&ldquo;{item.quote}&rdquo;</p>
+                        <p className="text-gold-500 font-semibold text-sm">{item.name}</p>
+                        <p className="text-gray-400 text-sm">{item.role}</p>
+                        <p className="text-gray-500 text-sm mb-4">
+                          {item.organization}
+                          {item.location ? ` · ${item.location}` : ''}
+                        </p>
+                        {item.createdAt && (
+                          <p className="text-xs text-gray-600 mb-4">
+                            {new Date(item.createdAt).toLocaleString()}
+                          </p>
+                        )}
+                        <div className="flex space-x-2">
+                          <button
+                            onClick={() => startEditing('feedback', item.id, item)}
+                            className="btn-secondary flex-1 flex items-center justify-center text-sm"
+                          >
+                            <Edit className="mr-1" size={14} />
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => removeTestimonial(item.id)}
+                            className="bg-red-500/20 hover:bg-red-500/30 text-red-400 hover:text-red-300 py-2 px-3 rounded-lg transition-all duration-300 flex items-center justify-center text-sm"
+                          >
+                            <Trash2 className="mr-1" size={14} />
+                            Delete
+                          </button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>

@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { SITE, STATS } from '../config/site';
 import { navigateToHomeSection } from '../utils/homeNavigation';
+import Reveal from '../components/Reveal';
 
 const STATUS_STYLES = {
   Launched: 'bg-green-500/15 text-green-400 border-green-500/30',
@@ -25,14 +26,14 @@ const ProjectCard = ({ project }) => {
   const statusClass = STATUS_STYLES[project.status] || STATUS_STYLES['In Planning'];
 
   return (
-    <article className="rounded-xl border border-gray-800 bg-dark-100 overflow-hidden flex flex-col h-full">
+    <article className="group interactive-card-light rounded-xl overflow-hidden flex flex-col h-full">
       {/* Logo banner */}
-      <div className="relative h-36 md:h-40 bg-dark-200 border-b border-gray-800 flex items-center justify-center p-6">
+      <div className="relative h-36 md:h-40 bg-dark-200 border-b border-gray-800 flex items-center justify-center p-6 overflow-hidden">
         {project.image || PROJECT_LOGOS[project.title?.toLowerCase().trim()] ? (
           <img
             src={project.image || PROJECT_LOGOS[project.title?.toLowerCase().trim()]}
             alt={`${project.title} logo`}
-            className="max-h-full max-w-[220px] w-auto object-contain"
+            className="max-h-full max-w-[220px] w-auto object-contain transition-transform duration-500 group-hover:scale-105"
             loading="lazy"
           />
         ) : (
@@ -55,8 +56,10 @@ const ProjectCard = ({ project }) => {
             {project.category}
           </p>
         )}
-        <h3 className="text-xl font-bold text-white mb-2 leading-snug">{project.title}</h3>
-        <p className="text-sm text-gray-400 leading-snug mb-4 flex-1">
+        <h3 className="text-xl font-bold text-white mb-2 leading-snug transition-colors duration-300 group-hover:text-gold-50">
+          {project.title}
+        </h3>
+        <p className="text-sm text-gray-400 leading-snug mb-4 flex-1 transition-colors duration-300 group-hover:text-gray-300">
           {project.description || '\u00A0'}
         </p>
 
@@ -143,31 +146,31 @@ const Projects = () => {
           {/* Hero */}
           <section className="pt-20 pb-8 md:pb-10 bg-gold-gradient border-b border-gray-800/50">
             <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white font-heading leading-tight mb-3 max-w-3xl">
+              <h1 className="hero-fade-in hero-delay-1 text-3xl md:text-4xl lg:text-5xl font-bold text-white font-heading leading-tight mb-3 max-w-3xl">
                 Products We&apos;ve{' '}
-                <span className="text-gold-500">Built & Shipped</span>
+                <span className="text-gold-500 accent-word">Built & Shipped</span>
               </h1>
-              <p className="text-sm md:text-base text-gray-400 leading-snug max-w-2xl">
+              <p className="hero-fade-in hero-delay-2 text-sm md:text-base text-gray-400 leading-snug max-w-2xl">
                 Real platforms in AI, blockchain, IoT, and web engineering, researched, designed,
                 and delivered by the Beta-Tech Labs team from Kabale, Uganda.
               </p>
 
               {!loading && projects.length > 0 && (
-                <div className="flex flex-wrap gap-6 mt-6 pt-5 border-t border-gray-800/80">
-                  <div>
-                    <p className="text-xl font-bold text-white">{projects.length}</p>
+                <div className="hero-fade-in hero-delay-3 flex flex-wrap gap-6 mt-6 pt-5 border-t border-gray-800/80">
+                  <div className="stat-block">
+                    <p className="stat-value text-xl font-bold text-white">{projects.length}</p>
                     <p className="text-xs text-gray-500">Total projects</p>
                   </div>
-                  <div>
-                    <p className="text-xl font-bold text-gold-500">{launchedCount}</p>
+                  <div className="stat-block">
+                    <p className="stat-value text-xl font-bold text-gold-500">{launchedCount}</p>
                     <p className="text-xs text-gray-500">Launched</p>
                   </div>
-                  <div>
-                    <p className="text-xl font-bold text-white">{activeCount}</p>
+                  <div className="stat-block">
+                    <p className="stat-value text-xl font-bold text-white">{activeCount}</p>
                     <p className="text-xs text-gray-500">In active build</p>
                   </div>
-                  <div>
-                    <p className="text-xl font-bold text-white">{STATS.researchPapers}</p>
+                  <div className="stat-block">
+                    <p className="stat-value text-xl font-bold text-white">{STATS.researchPapers}</p>
                     <p className="text-xs text-gray-500">Research outputs</p>
                   </div>
                 </div>
@@ -195,8 +198,10 @@ const Projects = () => {
                 </div>
               ) : (
                 <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5">
-                  {projects.map((project) => (
-                    <ProjectCard key={project.id} project={project} />
+                  {projects.map((project, index) => (
+                    <Reveal key={project.id} delay={index * 70}>
+                      <ProjectCard project={project} />
+                    </Reveal>
                   ))}
                 </div>
               )}

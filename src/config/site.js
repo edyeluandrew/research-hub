@@ -59,6 +59,12 @@ export const CORE_VALUES = [
       'We are committed to delivering reliable, scalable, and high-quality technology that people can trust.',
   },
   {
+    title: 'Local Excellence',
+    motto: 'Global standards. Local commitment.',
+    description:
+      'We believe meaningful technology must understand the communities it serves. We combine world-class engineering with deep local knowledge to build solutions that work where they matter most.',
+  },
+  {
     title: 'Collaboration Creates Impact',
     motto: 'Great ideas grow together.',
     description:
