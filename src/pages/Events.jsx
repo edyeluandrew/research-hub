@@ -7,6 +7,7 @@ import { getEventsData } from '../data/dataStore';
 import { SITE, SOCIAL, STATS } from '../config/site';
 import { navigateToHomeSection } from '../utils/homeNavigation';
 import Reveal from '../components/Reveal';
+import EventGalleryModal from '../components/EventGalleryModal';
 import {
   Calendar,
   Clock,
@@ -14,9 +15,6 @@ import {
   Users,
   CheckCircle,
   Image as ImageIcon,
-  ChevronLeft,
-  ChevronRight,
-  X,
   ArrowRight,
   Send,
   Sparkles,
@@ -244,8 +242,8 @@ const EventCard = ({ event, isPast, onOpenGallery, onRequestSeat }) => {
           </div>
         )}
 
-        <div className="mt-auto pt-4 border-t border-gray-800">
-          {!isPast && event.registrationLink ? (
+        <div className="mt-auto pt-4 border-t border-gray-800 space-y-2">
+          {!isPast && event.registrationLink && (
             <a
               href={event.registrationLink}
               target="_blank"
@@ -255,16 +253,20 @@ const EventCard = ({ event, isPast, onOpenGallery, onRequestSeat }) => {
               Register Now
               <ExternalLink className="ml-2" size={14} />
             </a>
-          ) : isPast && event.images?.length > 0 ? (
+          )}
+          {event.images?.length > 0 && (
             <button
               type="button"
               onClick={() => onOpenGallery(event)}
-              className="btn-secondary w-full inline-flex items-center justify-center text-sm"
+              className={`w-full inline-flex items-center justify-center text-sm ${
+                !isPast && event.registrationLink ? 'btn-secondary' : 'btn-primary'
+              }`}
             >
               <ImageIcon className="mr-2" size={14} />
-              View Photos ({event.images.length})
+              View Gallery ({event.images.length} photo{event.images.length !== 1 ? 's' : ''})
             </button>
-          ) : !isPast ? (
+          )}
+          {!isPast && !event.registrationLink && (
             <button
               type="button"
               onClick={onRequestSeat}
@@ -273,7 +275,7 @@ const EventCard = ({ event, isPast, onOpenGallery, onRequestSeat }) => {
               <Send className="mr-2" size={14} />
               Request a Seat
             </button>
-          ) : null}
+          )}
         </div>
       </div>
     </article>
@@ -415,6 +417,14 @@ const Events = () => {
   );
   const featuredEvent = upcoming[0] || null;
 
+  const galleryEvents = useMemo(
+    () =>
+      [...upcoming, ...past]
+        .filter((event) => event.images?.length > 0)
+        .sort((a, b) => new Date(b.date) - new Date(a.date)),
+    [upcoming, past]
+  );
+
   const galleryItems = useMemo(
     () =>
       past.flatMap((event) =>
@@ -437,22 +447,6 @@ const Events = () => {
   const closeGallery = () => {
     setSelectedEvent(null);
     setCurrentImageIndex(0);
-  };
-
-  const nextImage = () => {
-    if (selectedEvent?.images?.length > 0) {
-      setCurrentImageIndex((prev) =>
-        prev === selectedEvent.images.length - 1 ? 0 : prev + 1
-      );
-    }
-  };
-
-  const prevImage = () => {
-    if (selectedEvent?.images?.length > 0) {
-      setCurrentImageIndex((prev) =>
-        prev === 0 ? selectedEvent.images.length - 1 : prev - 1
-      );
-    }
   };
 
   return (
@@ -504,6 +498,16 @@ const Events = () => {
                     <p className="text-xs text-gray-500">Builders trained</p>
                   </div>
                 </div>
+              )}
+
+              {!loading && galleryEvents.length > 0 && (
+                <a
+                  href="#event-galleries"
+                  className="btn-secondary inline-flex items-center mt-5 text-sm"
+                >
+                  <ImageIcon className="mr-2" size={16} />
+                  Browse event photo galleries
+                </a>
               )}
             </div>
           </section>
@@ -572,6 +576,63 @@ const Events = () => {
             <section className="py-8 md:py-10 bg-dark-100 border-b border-gray-800/50">
               <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
                 <FeaturedEvent event={featuredEvent} onOpenGallery={openGallery} onRequestSeat={goToContact} />
+              </div>
+            </section>
+          )}
+
+          {/* Company event photo galleries */}
+          {!loading && galleryEvents.length > 0 && (
+            <section id="event-galleries" className="py-8 md:py-10 bg-dark-200 border-b border-gray-800/50">
+              <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
+                <Reveal className="mb-6 md:mb-8 max-w-2xl">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-500 mb-2 section-eyebrow">
+                    Event Galleries
+                  </p>
+                  <h2 className="text-2xl md:text-3xl font-bold text-white font-heading mb-2 leading-tight">
+                    Photos From Our Events
+                  </h2>
+                  <p className="text-sm text-gray-400 leading-snug">
+                    Attended a workshop or meetup? Browse and download photos from each event below.
+                    Click any event to open its full gallery.
+                  </p>
+                </Reveal>
+
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+                  {galleryEvents.map((event, index) => (
+                    <Reveal key={event.id} delay={index * 60}>
+                      <button
+                        type="button"
+                        onClick={() => openGallery(event)}
+                        className="group interactive-card-light rounded-xl overflow-hidden text-left w-full h-full flex flex-col"
+                      >
+                        <div className="relative h-44 overflow-hidden">
+                          <img
+                            src={event.images[0]}
+                            alt={event.title}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-dark-200/90 via-transparent to-transparent" />
+                          <span className="absolute bottom-3 right-3 inline-flex items-center gap-1 text-xs text-white bg-black/60 px-2.5 py-1 rounded-full">
+                            <ImageIcon size={12} />
+                            {event.images.length} photo{event.images.length !== 1 ? 's' : ''}
+                          </span>
+                        </div>
+                        <div className="p-4 md:p-5 flex flex-col flex-1">
+                          <p className="text-xs text-gold-500 uppercase tracking-wider mb-1">
+                            {event.category || 'Event'}
+                          </p>
+                          <h3 className="text-base font-bold text-white mb-1 leading-snug group-hover:text-gold-50 transition-colors">
+                            {event.title}
+                          </h3>
+                          <p className="text-xs text-gray-500 mb-3">{formatDate(event.date)}</p>
+                          <span className="mt-auto text-sm font-medium text-gold-400 group-hover:text-gold-300 transition-colors">
+                            Open gallery →
+                          </span>
+                        </div>
+                      </button>
+                    </Reveal>
+                  ))}
+                </div>
               </div>
             </section>
           )}
@@ -777,60 +838,11 @@ const Events = () => {
         <Footer />
       </div>
 
-      {/* Gallery modal */}
-      {selectedEvent?.images?.length > 0 && (
-        <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
-          <button
-            type="button"
-            onClick={closeGallery}
-            className="absolute top-4 right-4 text-white hover:text-gold-500 transition-colors z-10"
-            aria-label="Close gallery"
-          >
-            <X size={32} />
-          </button>
-
-          <div className="absolute top-4 left-4 text-white z-10 max-w-[80%]">
-            <h3 className="text-lg font-bold text-gold-500">{selectedEvent.title}</h3>
-            <p className="text-sm text-gray-400">
-              {formatDate(selectedEvent.date)} · {selectedEvent.venue || selectedEvent.location}
-            </p>
-          </div>
-
-          {selectedEvent.images.length > 1 && (
-            <>
-              <button
-                type="button"
-                onClick={prevImage}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-gold-500 bg-black/50 p-2 rounded-full"
-                aria-label="Previous image"
-              >
-                <ChevronLeft size={32} />
-              </button>
-              <button
-                type="button"
-                onClick={nextImage}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-gold-500 bg-black/50 p-2 rounded-full"
-                aria-label="Next image"
-              >
-                <ChevronRight size={32} />
-              </button>
-            </>
-          )}
-
-          <img
-            src={selectedEvent.images[currentImageIndex]}
-            alt={`${selectedEvent.title}, photo ${currentImageIndex + 1}`}
-            className="max-w-full max-h-[80vh] object-contain rounded-lg"
-            onError={(e) => {
-              e.target.alt = 'Photo unavailable';
-            }}
-          />
-
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white bg-black/50 px-4 py-2 rounded-full text-sm">
-            {currentImageIndex + 1} / {selectedEvent.images.length}
-          </div>
-        </div>
-      )}
+      <EventGalleryModal
+        event={selectedEvent}
+        startIndex={currentImageIndex}
+        onClose={closeGallery}
+      />
     </>
   );
 };

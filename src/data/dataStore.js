@@ -1,4 +1,5 @@
 import { firebaseSet, firebaseGet } from '../firebase/config';
+import { COMPANY, CORE_VALUES, STRATEGIC_PILLARS, SITE } from '../config/site';
 
 // Default minimal data
 const defaultTeamData = {
@@ -271,6 +272,83 @@ const defaultServicesData = {
   ],
 };
 
+const defaultEngagementSteps = [
+  {
+    step: '01',
+    title: 'Research Insights',
+    text: 'We begin with validated findings, user insights, and opportunities from our research framework.',
+  },
+  {
+    step: '02',
+    title: 'Idea Generation',
+    text: 'We transform research into concepts through ideation, exploration, and opportunity analysis.',
+  },
+  {
+    step: '03',
+    title: 'Concept Validation',
+    text: 'We test feasibility, prototype ideas, gather feedback, and assess risk before building.',
+  },
+  {
+    step: '04',
+    title: 'Engineering',
+    text: 'Validated concepts become reliable products or client solutions through disciplined engineering.',
+  },
+  {
+    step: '05',
+    title: 'Deployment & Impact',
+    text: 'We launch, monitor, gather feedback, and continuously improve for lasting value.',
+  },
+];
+
+export const defaultSiteContent = {
+  mission: {
+    sectionEyebrow: 'Who We Are',
+    sectionTitle: 'A Research-Driven Technology Company',
+    purpose: COMPANY.purpose,
+    vision: COMPANY.vision,
+    mission: COMPANY.mission,
+    positioningStatement: COMPANY.positioningStatement,
+    philosophy: SITE.philosophy,
+    philosophyPractice: SITE.philosophyPractice,
+  },
+  coreValues: CORE_VALUES.map((value, index) => ({
+    id: `value-${index + 1}`,
+    ...value,
+  })),
+  strategicPillars: STRATEGIC_PILLARS,
+  servicesPage: {
+    pillarsSubtitle:
+      "Four interconnected capabilities that define how Beta-Tech Labs creates value for partners, communities, and Africa's digital future.",
+    techSectionSubtitle:
+      'We combine modern stacks with practical engineering, including IoT tooling, edge systems, and field-ready deployments across Uganda and East Africa.',
+    engagementSteps: defaultEngagementSteps,
+  },
+};
+
+const mergeSiteContent = (stored) => {
+  if (!stored || typeof stored !== 'object') return defaultSiteContent;
+
+  return {
+    mission: { ...defaultSiteContent.mission, ...(stored.mission || {}) },
+    coreValues:
+      Array.isArray(stored.coreValues) && stored.coreValues.length > 0
+        ? stored.coreValues
+        : defaultSiteContent.coreValues,
+    strategicPillars:
+      Array.isArray(stored.strategicPillars) && stored.strategicPillars.length > 0
+        ? stored.strategicPillars
+        : defaultSiteContent.strategicPillars,
+    servicesPage: {
+      ...defaultSiteContent.servicesPage,
+      ...(stored.servicesPage || {}),
+      engagementSteps:
+        stored.servicesPage?.engagementSteps?.length > 0
+          ? stored.servicesPage.engagementSteps
+          : defaultSiteContent.servicesPage.engagementSteps,
+    },
+  };
+};
+
 // Project logos in /public/images
 export const PROJECT_LOGOS = {
   stellaride: '/images/Stellarlogo.png',
@@ -406,7 +484,11 @@ export const initializeFirebaseData = async () => {
     const services = await firebaseGet('betaTechLabs/services');
     if (!services) await firebaseSet('betaTechLabs/services', defaultServicesData);
 
-    await firebaseSet('betaTechLabs/projects', defaultProjectsData);
+    const projects = await firebaseGet('betaTechLabs/projects');
+    if (!projects) await firebaseSet('betaTechLabs/projects', defaultProjectsData);
+
+    const siteContent = await firebaseGet('betaTechLabs/siteContent');
+    if (!siteContent) await firebaseSet('betaTechLabs/siteContent', defaultSiteContent);
 
     const testimonials = await firebaseGet('betaTechLabs/testimonials');
     if (!testimonials) await firebaseSet('betaTechLabs/testimonials', []);
@@ -625,4 +707,31 @@ export const updateTestimonial = async (id, updates) => {
   }
 };
 
-export { defaultTeamData, defaultEventsData, defaultServicesData, defaultProjectsData };
+// Mission, values, pillars, and services page copy
+export const getSiteContent = async () => {
+  try {
+    const data = await firebaseGet('betaTechLabs/siteContent');
+    return mergeSiteContent(data);
+  } catch (e) {
+    console.error('Error getting site content:', e);
+    return defaultSiteContent;
+  }
+};
+
+export const saveSiteContent = async (data) => {
+  try {
+    await firebaseSet('betaTechLabs/siteContent', data);
+    window.dispatchEvent(new Event('siteContentUpdated'));
+    return true;
+  } catch (e) {
+    console.error('Error saving site content:', e);
+    return false;
+  }
+};
+
+export {
+  defaultTeamData,
+  defaultEventsData,
+  defaultServicesData,
+  defaultProjectsData,
+};

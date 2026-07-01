@@ -21,6 +21,9 @@ import {
   Upload,
   Image as ImageIcon,
   MessageSquare,
+  Target,
+  Gem,
+  Layers3,
 } from 'lucide-react';
 import { 
   getTeamData, 
@@ -34,6 +37,9 @@ import {
   getTestimonialsData,
   deleteTestimonial,
   updateTestimonial,
+  getSiteContent,
+  saveSiteContent,
+  defaultSiteContent,
 } from '../data/dataStore';
 
 const Admin = () => {
@@ -44,6 +50,7 @@ const Admin = () => {
   const [services, setServices] = useState([]);
   const [projects, setProjects] = useState([]);
   const [testimonials, setTestimonials] = useState([]);
+  const [siteContent, setSiteContent] = useState(defaultSiteContent);
   const [isEditing, setIsEditing] = useState(null);
   const [editData, setEditData] = useState({});
   const [loading, setLoading] = useState(true);
@@ -83,6 +90,9 @@ const Admin = () => {
           ];
           setServices(flatServices);
         }
+
+        const content = await getSiteContent();
+        setSiteContent(content);
       } catch (error) {
         console.error('Error loading data:', error);
       } finally {
@@ -117,6 +127,122 @@ const Admin = () => {
 
   const handleViewSite = () => {
     navigate('/');
+  };
+
+  const persistSiteContent = async (next) => {
+    setSiteContent(next);
+    await saveSiteContent(next);
+  };
+
+  const handleMissionChange = (field, value) => {
+    setSiteContent((prev) => ({
+      ...prev,
+      mission: { ...prev.mission, [field]: value },
+    }));
+  };
+
+  const saveMission = async () => {
+    await saveSiteContent(siteContent);
+  };
+
+  const addCoreValue = () => {
+    const newValue = {
+      id: `value-${Date.now()}`,
+      title: 'New Value',
+      motto: 'Motto here',
+      description: 'Value description',
+    };
+    const next = { ...siteContent, coreValues: [...siteContent.coreValues, newValue] };
+    persistSiteContent(next);
+    startEditing(`value-${newValue.id}`, newValue);
+  };
+
+  const updateCoreValue = (id, updates) => {
+    const next = {
+      ...siteContent,
+      coreValues: siteContent.coreValues.map((value) =>
+        value.id === id ? { ...value, ...updates } : value
+      ),
+    };
+    persistSiteContent(next);
+  };
+
+  const deleteCoreValue = (id) => {
+    const next = {
+      ...siteContent,
+      coreValues: siteContent.coreValues.filter((value) => value.id !== id),
+    };
+    persistSiteContent(next);
+  };
+
+  const addPillar = () => {
+    const newPillar = {
+      id: `pillar-${Date.now()}`,
+      label: 'New Pillar',
+      title: 'Pillar title',
+      description: 'Pillar description',
+      listTitle: 'Focus Areas',
+      items: ['Item one'],
+    };
+    const next = { ...siteContent, strategicPillars: [...siteContent.strategicPillars, newPillar] };
+    persistSiteContent(next);
+    startEditing(`pillar-${newPillar.id}`, newPillar);
+  };
+
+  const updatePillar = (id, updates) => {
+    const next = {
+      ...siteContent,
+      strategicPillars: siteContent.strategicPillars.map((pillar) =>
+        pillar.id === id ? { ...pillar, ...updates } : pillar
+      ),
+    };
+    persistSiteContent(next);
+  };
+
+  const deletePillar = (id) => {
+    const next = {
+      ...siteContent,
+      strategicPillars: siteContent.strategicPillars.filter((pillar) => pillar.id !== id),
+    };
+    persistSiteContent(next);
+  };
+
+  const handlePillarItemChange = (index, value) => {
+    const items = [...(editData.items || [])];
+    items[index] = value;
+    handleEditChange('items', items);
+  };
+
+  const addPillarItem = () => {
+    handleEditChange('items', [...(editData.items || []), 'New item']);
+  };
+
+  const removePillarItem = (index) => {
+    handleEditChange('items', (editData.items || []).filter((_, i) => i !== index));
+  };
+
+  const handleServicesPageChange = (field, value) => {
+    setSiteContent((prev) => ({
+      ...prev,
+      servicesPage: { ...prev.servicesPage, [field]: value },
+    }));
+  };
+
+  const saveServicesPage = async () => {
+    await saveSiteContent(siteContent);
+  };
+
+  const updateEngagementStep = (step, updates) => {
+    const next = {
+      ...siteContent,
+      servicesPage: {
+        ...siteContent.servicesPage,
+        engagementSteps: siteContent.servicesPage.engagementSteps.map((item) =>
+          item.step === step ? { ...item, ...updates } : item
+        ),
+      },
+    };
+    persistSiteContent(next);
   };
 
   // Events Management
@@ -296,24 +422,36 @@ const Admin = () => {
   };
 
   const saveEdit = () => {
-    const [type, id] = isEditing.split('-');
-    const numericId = parseInt(id);
+    const dashIndex = isEditing.indexOf('-');
+    const type = isEditing.substring(0, dashIndex);
+    const id = isEditing.substring(dashIndex + 1);
+    const numericId = Number(id);
+    const resolvedId = Number.isNaN(numericId) ? id : numericId;
 
     switch (type) {
       case 'event':
-        updateEvent(numericId, editData);
+        updateEvent(resolvedId, editData);
         break;
       case 'team':
-        updateTeamMember(numericId, editData);
+        updateTeamMember(resolvedId, editData);
         break;
       case 'service':
-        updateService(numericId, editData);
+        updateService(resolvedId, editData);
         break;
       case 'project':
-        updateProject(numericId, editData);
+        updateProject(resolvedId, editData);
         break;
       case 'feedback':
-        updateFeedback(numericId, editData);
+        updateFeedback(resolvedId, editData);
+        break;
+      case 'value':
+        updateCoreValue(resolvedId, editData);
+        break;
+      case 'pillar':
+        updatePillar(resolvedId, editData);
+        break;
+      case 'pipeline':
+        updateEngagementStep(resolvedId, editData);
         break;
       default:
         break;
@@ -530,6 +668,9 @@ const Admin = () => {
             {[
               { id: 'events', label: 'Events', icon: Calendar },
               { id: 'team', label: 'Team', icon: Users },
+              { id: 'mission', label: 'Mission', icon: Target },
+              { id: 'values', label: 'Values', icon: Gem },
+              { id: 'pillars', label: 'Pillars', icon: Layers3 },
               { id: 'services', label: 'Services', icon: BookOpen },
               { id: 'projects', label: 'Projects', icon: Projector },
               { id: 'feedback', label: 'Feedback', icon: MessageSquare },
@@ -630,9 +771,18 @@ const Admin = () => {
                         className="form-input text-sm"
                         placeholder="Registration link (optional)"
                       />
+                      <div className="rounded-lg border border-gold-500/20 bg-gold-500/5 p-4 space-y-3">
+                        <p className="text-sm font-semibold text-gold-400">
+                          Event photo gallery (public on website)
+                        </p>
+                        <p className="text-xs text-gray-400 leading-snug">
+                          Upload photos after the event. Attendees can open the event on /events,
+                          view the gallery, and download images. Use URLs or upload files below.
+                        </p>
+                      </div>
                       <div>
                         <label className="block text-xs text-gray-400 mb-1">
-                          Gallery images, one URL per line (e.g. /images/events/photo.jpg)
+                          Image URLs, one per line (e.g. /images/events/photo.jpg)
                         </label>
                         <textarea
                           value={(editData.images || []).join('\n')}
@@ -700,8 +850,9 @@ const Admin = () => {
                       <p className="text-gray-400 text-sm mb-4">{event.description}</p>
                       <p className="text-gold-400 text-sm">Attendees: {event.attendees}</p>
                       {(event.images || []).length > 0 && (
-                        <p className="text-gray-500 text-xs mt-1">
-                          Gallery: {(event.images || []).length} photo(s)
+                        <p className="text-green-400/90 text-xs mt-1 flex items-center gap-1">
+                          <ImageIcon size={12} />
+                          Gallery live: {(event.images || []).length} photo(s) on /events
                         </p>
                       )}
                       <div className="flex space-x-2 mt-4">
@@ -921,11 +1072,283 @@ const Admin = () => {
           </div>
         )}
 
+        {activeTab === 'mission' && (
+          <div className="max-w-3xl">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-gold-500">Mission & Philosophy</h2>
+              <p className="text-sm text-gray-400 mt-1">
+                Updates the Who We Are section on the home page.
+              </p>
+            </div>
+
+            <div className="card p-6 space-y-4">
+              <input
+                type="text"
+                value={siteContent.mission.sectionEyebrow || ''}
+                onChange={(e) => handleMissionChange('sectionEyebrow', e.target.value)}
+                className="form-input text-sm"
+                placeholder="Section eyebrow"
+              />
+              <input
+                type="text"
+                value={siteContent.mission.sectionTitle || ''}
+                onChange={(e) => handleMissionChange('sectionTitle', e.target.value)}
+                className="form-input text-sm"
+                placeholder="Section title"
+              />
+              <textarea
+                value={siteContent.mission.positioningStatement || ''}
+                onChange={(e) => handleMissionChange('positioningStatement', e.target.value)}
+                className="form-input text-sm"
+                rows="3"
+                placeholder="Positioning statement"
+              />
+              <textarea
+                value={siteContent.mission.purpose || ''}
+                onChange={(e) => handleMissionChange('purpose', e.target.value)}
+                className="form-input text-sm"
+                rows="3"
+                placeholder="Purpose"
+              />
+              <textarea
+                value={siteContent.mission.vision || ''}
+                onChange={(e) => handleMissionChange('vision', e.target.value)}
+                className="form-input text-sm"
+                rows="3"
+                placeholder="Vision"
+              />
+              <textarea
+                value={siteContent.mission.mission || ''}
+                onChange={(e) => handleMissionChange('mission', e.target.value)}
+                className="form-input text-sm"
+                rows="3"
+                placeholder="Mission"
+              />
+              <input
+                type="text"
+                value={siteContent.mission.philosophy || ''}
+                onChange={(e) => handleMissionChange('philosophy', e.target.value)}
+                className="form-input text-sm"
+                placeholder="Philosophy headline"
+              />
+              <textarea
+                value={siteContent.mission.philosophyPractice || ''}
+                onChange={(e) => handleMissionChange('philosophyPractice', e.target.value)}
+                className="form-input text-sm"
+                rows="3"
+                placeholder="Philosophy practice"
+              />
+              <button onClick={saveMission} className="btn-primary">
+                <Save className="mr-2 inline" size={16} />
+                Save Mission
+              </button>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'values' && (
+          <div>
+            <div className="flex justify-between items-center mb-6">
+              <div>
+                <h2 className="text-2xl font-bold text-gold-500">Core Values</h2>
+                <p className="text-sm text-gray-400 mt-1">Shown on the home page values section.</p>
+              </div>
+              <button onClick={addCoreValue} className="btn-primary flex items-center">
+                <Plus className="mr-2" size={16} />
+                Add Value
+              </button>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              {siteContent.coreValues.map((value) => (
+                <div key={value.id} className="card p-6">
+                  {isEditing === `value-${value.id}` ? (
+                    <div className="space-y-3">
+                      <input
+                        type="text"
+                        value={editData.title || ''}
+                        onChange={(e) => handleEditChange('title', e.target.value)}
+                        className="form-input text-sm"
+                        placeholder="Title"
+                      />
+                      <input
+                        type="text"
+                        value={editData.motto || ''}
+                        onChange={(e) => handleEditChange('motto', e.target.value)}
+                        className="form-input text-sm"
+                        placeholder="Motto"
+                      />
+                      <textarea
+                        value={editData.description || ''}
+                        onChange={(e) => handleEditChange('description', e.target.value)}
+                        className="form-input text-sm"
+                        rows="4"
+                        placeholder="Description"
+                      />
+                      <div className="flex space-x-2">
+                        <button onClick={saveEdit} className="btn-primary flex-1 flex items-center justify-center text-sm">
+                          <Save className="mr-1" size={14} />
+                          Save
+                        </button>
+                        <button onClick={stopEditing} className="btn-secondary flex-1 flex items-center justify-center text-sm">
+                          <X className="mr-1" size={14} />
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <h3 className="text-lg font-bold text-white mb-1">{value.title}</h3>
+                      <p className="text-sm text-gold-500 mb-2">{value.motto}</p>
+                      <p className="text-sm text-gray-400 mb-4">{value.description}</p>
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() => startEditing('value', value.id, value)}
+                          className="btn-secondary flex-1 flex items-center justify-center text-sm"
+                        >
+                          <Edit className="mr-1" size={14} />
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => deleteCoreValue(value.id)}
+                          className="bg-red-500/20 hover:bg-red-500/30 text-red-400 py-2 px-3 rounded-lg text-sm"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'pillars' && (
+          <div>
+            <div className="flex justify-between items-center mb-6">
+              <div>
+                <h2 className="text-2xl font-bold text-gold-500">Strategic Pillars</h2>
+                <p className="text-sm text-gray-400 mt-1">
+                  Shown on the home page ecosystem section and the services page pillars.
+                </p>
+              </div>
+              <button onClick={addPillar} className="btn-primary flex items-center">
+                <Plus className="mr-2" size={16} />
+                Add Pillar
+              </button>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              {siteContent.strategicPillars.map((pillar) => (
+                <div key={pillar.id} className="card p-6">
+                  {isEditing === `pillar-${pillar.id}` ? (
+                    <div className="space-y-3">
+                      <input
+                        type="text"
+                        value={editData.label || ''}
+                        onChange={(e) => handleEditChange('label', e.target.value)}
+                        className="form-input text-sm"
+                        placeholder="Label"
+                      />
+                      <input
+                        type="text"
+                        value={editData.title || ''}
+                        onChange={(e) => handleEditChange('title', e.target.value)}
+                        className="form-input text-sm"
+                        placeholder="Title"
+                      />
+                      <textarea
+                        value={editData.description || ''}
+                        onChange={(e) => handleEditChange('description', e.target.value)}
+                        className="form-input text-sm"
+                        rows="3"
+                        placeholder="Description"
+                      />
+                      <input
+                        type="text"
+                        value={editData.listTitle || ''}
+                        onChange={(e) => handleEditChange('listTitle', e.target.value)}
+                        className="form-input text-sm"
+                        placeholder="List title"
+                      />
+                      <div className="space-y-2">
+                        <label className="form-label text-sm">List items</label>
+                        {(editData.items || []).map((item, index) => (
+                          <div key={index} className="flex space-x-2">
+                            <input
+                              type="text"
+                              value={item}
+                              onChange={(e) => handlePillarItemChange(index, e.target.value)}
+                              className="form-input text-sm flex-1"
+                            />
+                            <button
+                              onClick={() => removePillarItem(index)}
+                              className="bg-red-500/20 text-red-400 px-3 rounded-lg"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+                        ))}
+                        <button onClick={addPillarItem} className="btn-secondary w-full text-sm">
+                          <Plus className="mr-1" size={14} />
+                          Add Item
+                        </button>
+                      </div>
+                      <div className="flex space-x-2">
+                        <button onClick={saveEdit} className="btn-primary flex-1 flex items-center justify-center text-sm">
+                          <Save className="mr-1" size={14} />
+                          Save
+                        </button>
+                        <button onClick={stopEditing} className="btn-secondary flex-1 flex items-center justify-center text-sm">
+                          <X className="mr-1" size={14} />
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <p className="text-xs text-gold-500 uppercase tracking-wider mb-1">{pillar.label}</p>
+                      <h3 className="text-lg font-bold text-white mb-2">{pillar.title}</h3>
+                      <p className="text-sm text-gray-400 mb-3">{pillar.description}</p>
+                      <ul className="text-sm text-gray-500 mb-4 space-y-1">
+                        {pillar.items?.map((item) => (
+                          <li key={item}>· {item}</li>
+                        ))}
+                      </ul>
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() => startEditing('pillar', pillar.id, pillar)}
+                          className="btn-secondary flex-1 flex items-center justify-center text-sm"
+                        >
+                          <Edit className="mr-1" size={14} />
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => deletePillar(pillar.id)}
+                          className="bg-red-500/20 hover:bg-red-500/30 text-red-400 py-2 px-3 rounded-lg text-sm"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Services Management */}
         {activeTab === 'services' && (
           <div>
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-gold-500">Services Management</h2>
+              <div>
+                <h2 className="text-2xl font-bold text-gold-500">Services Management</h2>
+                <p className="text-sm text-gray-400 mt-1">
+                  Service cards appear on the Technologies section at /services. Edit pillars under the Pillars tab.
+                </p>
+              </div>
               <button
                 onClick={addService}
                 className="btn-primary flex items-center"
@@ -935,6 +1358,29 @@ const Admin = () => {
               </button>
             </div>
 
+            <div className="card p-6 mb-8 space-y-4">
+              <h3 className="text-lg font-bold text-white">Services Page Copy</h3>
+              <textarea
+                value={siteContent.servicesPage.pillarsSubtitle || ''}
+                onChange={(e) => handleServicesPageChange('pillarsSubtitle', e.target.value)}
+                className="form-input text-sm"
+                rows="2"
+                placeholder="Pillars section subtitle"
+              />
+              <textarea
+                value={siteContent.servicesPage.techSectionSubtitle || ''}
+                onChange={(e) => handleServicesPageChange('techSectionSubtitle', e.target.value)}
+                className="form-input text-sm"
+                rows="2"
+                placeholder="Technologies section subtitle"
+              />
+              <button onClick={saveServicesPage} className="btn-primary text-sm">
+                <Save className="mr-2 inline" size={14} />
+                Save Page Copy
+              </button>
+            </div>
+
+            <h3 className="text-lg font-bold text-white mb-4">Technology & Service Cards</h3>
             <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-6">
               {services.map((service) => (
                 <div key={service.id} className="card p-6">
@@ -1040,10 +1486,58 @@ const Admin = () => {
                 </div>
               ))}
             </div>
+
+            <div className="mt-10">
+              <h3 className="text-lg font-bold text-white mb-4">Innovation Pipeline Steps</h3>
+              <p className="text-sm text-gray-400 mb-4">Shown on the services page pipeline section.</p>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {siteContent.servicesPage.engagementSteps.map((step) => (
+                  <div key={step.step} className="card p-5">
+                    {isEditing === `pipeline-${step.step}` ? (
+                      <div className="space-y-3">
+                        <input
+                          type="text"
+                          value={editData.title || ''}
+                          onChange={(e) => handleEditChange('title', e.target.value)}
+                          className="form-input text-sm"
+                          placeholder="Title"
+                        />
+                        <textarea
+                          value={editData.text || ''}
+                          onChange={(e) => handleEditChange('text', e.target.value)}
+                          className="form-input text-sm"
+                          rows="3"
+                          placeholder="Description"
+                        />
+                        <div className="flex space-x-2">
+                          <button onClick={saveEdit} className="btn-primary flex-1 text-sm">
+                            Save
+                          </button>
+                          <button onClick={stopEditing} className="btn-secondary flex-1 text-sm">
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <span className="text-xs text-gold-500 font-bold">{step.step}</span>
+                        <h4 className="text-white font-semibold mt-1 mb-2">{step.title}</h4>
+                        <p className="text-sm text-gray-400 mb-3">{step.text}</p>
+                        <button
+                          onClick={() => startEditing('pipeline', step.step, step)}
+                          className="btn-secondary w-full text-sm flex items-center justify-center"
+                        >
+                          <Edit className="mr-1" size={14} />
+                          Edit
+                        </button>
+                      </>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         )}
-
-        {/* Projects Management */}
         {activeTab === 'projects' && (
           <div>
             <div className="flex justify-between items-center mb-6">
