@@ -118,10 +118,14 @@ const Admin = () => {
       title: 'New Event',
       date: new Date().toISOString().split('T')[0],
       time: '10:00 AM - 4:00 PM',
-      location: 'Beta Tech Hub, Kabale',
+      location: 'Beta Tech Labs, Kabale Main Town',
+      venue: 'Beta Tech Labs HQ',
+      category: 'Workshop',
       description: 'Event description',
       attendees: 25,
-      registrationLink: 'https://forms.gle/placeholder-register',
+      images: [],
+      highlights: [],
+      registrationLink: '',
     };
     const updated = [...events, newEvent];
     setEvents(updated);
@@ -334,6 +338,59 @@ const Admin = () => {
     reader.readAsDataURL(file);
   };
 
+  const handleEventImagesText = (text) => {
+    const images = text
+      .split('\n')
+      .map((line) => line.trim())
+      .filter(Boolean);
+    handleEditChange('images', images);
+  };
+
+  const handleEventGalleryUpload = (e) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+
+    const validFiles = files.filter((file) => {
+      if (file.size > 2 * 1024 * 1024) {
+        alert(`${file.name} is over 2MB and was skipped`);
+        return false;
+      }
+      if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+        alert(`${file.name} is not a supported image type and was skipped`);
+        return false;
+      }
+      return true;
+    });
+
+    if (!validFiles.length) return;
+
+    Promise.all(
+      validFiles.map(
+        (file) =>
+          new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = (ev) => resolve(ev.target?.result || null);
+            reader.readAsDataURL(file);
+          })
+      )
+    ).then((uploaded) => {
+      const newImages = uploaded.filter(Boolean);
+      setEditData((prev) => ({
+        ...prev,
+        images: [...(prev.images || []), ...newImages],
+      }));
+    });
+
+    e.target.value = '';
+  };
+
+  const removeEventImage = (index) => {
+    setEditData((prev) => ({
+      ...prev,
+      images: (prev.images || []).filter((_, i) => i !== index),
+    }));
+  };
+
   const handleFeatureChange = (index, value) => {
     const newFeatures = [...(editData.features || [])];
     newFeatures[index] = value;
@@ -531,6 +588,65 @@ const Admin = () => {
                         className="form-input text-sm"
                         placeholder="Attendees"
                       />
+                      <input
+                        type="text"
+                        value={editData.category || ''}
+                        onChange={(e) => handleEditChange('category', e.target.value)}
+                        className="form-input text-sm"
+                        placeholder="Category (Workshop, Bootcamp, Meetup)"
+                      />
+                      <input
+                        type="text"
+                        value={editData.registrationLink || ''}
+                        onChange={(e) => handleEditChange('registrationLink', e.target.value)}
+                        className="form-input text-sm"
+                        placeholder="Registration link (optional)"
+                      />
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1">
+                          Gallery images, one URL per line (e.g. /images/events/photo.jpg)
+                        </label>
+                        <textarea
+                          value={(editData.images || []).join('\n')}
+                          onChange={(e) => handleEventImagesText(e.target.value)}
+                          className="form-input text-sm font-mono"
+                          rows="4"
+                          placeholder="/images/events/workshop-1.jpg&#10;https://example.com/photo.jpg"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1">
+                          Or upload photos (JPEG, PNG, WebP, max 2MB each)
+                        </label>
+                        <input
+                          type="file"
+                          accept="image/jpeg,image/png,image/webp"
+                          multiple
+                          onChange={handleEventGalleryUpload}
+                          className="form-input text-sm"
+                        />
+                      </div>
+                      {(editData.images || []).length > 0 && (
+                        <div className="grid grid-cols-3 gap-2">
+                          {(editData.images || []).map((src, index) => (
+                            <div key={`${index}-${src.slice(0, 24)}`} className="relative group">
+                              <img
+                                src={src}
+                                alt={`Gallery ${index + 1}`}
+                                className="w-full h-16 object-cover rounded-lg border border-gray-700"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => removeEventImage(index)}
+                                className="absolute top-1 right-1 bg-red-500/80 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                                aria-label="Remove image"
+                              >
+                                <X size={12} />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                       <div className="flex space-x-2">
                         <button
                           onClick={saveEdit}
@@ -555,6 +671,11 @@ const Admin = () => {
                       <p className="text-gray-400 text-sm mb-2">{event.location}</p>
                       <p className="text-gray-400 text-sm mb-4">{event.description}</p>
                       <p className="text-gold-400 text-sm">Attendees: {event.attendees}</p>
+                      {(event.images || []).length > 0 && (
+                        <p className="text-gray-500 text-xs mt-1">
+                          Gallery: {(event.images || []).length} photo(s)
+                        </p>
+                      )}
                       <div className="flex space-x-2 mt-4">
                         <button
                           onClick={() => startEditing('event', event.id, event)}

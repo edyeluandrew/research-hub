@@ -127,7 +127,7 @@ const Projects = () => {
     <>
       <SEO
         title="Our Projects - AI, Blockchain, IoT & Software"
-        description={`Explore products from ${SITE.name} — Fasiri, Cultural Hub, StellarIDE, Rowan, RetiSight, Numba, and more from ${SITE.location}.`}
+        description={`Explore products from ${SITE.name}, Fasiri, Cultural Hub, StellarIDE, Rowan, RetiSight, Numba, and more from ${SITE.location}.`}
         keywords="Beta Tech Labs projects, Stellar Uganda, blockchain products Kabale, software portfolio East Africa, IoT AI projects"
         ogUrl={`${SITE.url}/projects`}
         ogImage={`${SITE.url}/images/og-image.svg`}
@@ -145,7 +145,7 @@ const Projects = () => {
                 <span className="text-gold-500">Built & Shipped</span>
               </h1>
               <p className="text-sm md:text-base text-gray-400 leading-snug max-w-2xl">
-                Real platforms in AI, blockchain, IoT, and web engineering — researched, designed,
+                Real platforms in AI, blockchain, IoT, and web engineering, researched, designed,
                 and delivered by the Beta-Tech Labs team from Kabale, Uganda.
               </p>
 
@@ -208,7 +208,7 @@ const Projects = () => {
               </h2>
               <p className="text-sm text-gray-400 leading-snug mb-5">
                 We partner with founders, institutions, and teams to research, build, and launch
-                technology that holds up in production — from first prototype to deployed platform.
+                technology that holds up in production, from first prototype to deployed platform.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <button

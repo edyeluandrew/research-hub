@@ -18,10 +18,10 @@
 
 **Beta Tech Labs** is a student-led research hub based in Kabale, Uganda, dedicated to pushing the boundaries of technology through AI and Blockchain innovation.
 
-🔬 **Research** — Cutting-edge AI/ML and Blockchain research projects  
-🛠️ **Development** — Building real-world decentralized applications and AI solutions  
-📚 **Education** — Training the next generation of tech leaders in Uganda  
-🤝 **Community** — Fostering a vibrant tech ecosystem in Western Uganda  
+🔬 **Research**, Cutting-edge AI/ML and Blockchain research projects  
+🛠️ **Development**, Building real-world decentralized applications and AI solutions  
+📚 **Education**, Training the next generation of tech leaders in Uganda  
+🤝 **Community**, Fostering a vibrant tech ecosystem in Western Uganda  
 
 ---
 
@@ -41,7 +41,7 @@ To democratize access to emerging technologies and empower African developers to
 
 ## 👥 The Team
 
-A passionate team of **5 core members** — developers, AI engineers, and strategists — all driven by innovation.
+A passionate team of **5 core members**, developers, AI engineers, and strategists, all driven by innovation.
 
 ---
 

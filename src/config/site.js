@@ -19,10 +19,10 @@ export const CONTACT = {
   address: {
     headline: 'Behind Kabale Central Police Station',
     area: 'Kabale Main Town, Uganda',
-    road: 'Kabale–Kisoro Road',
+    road: 'Kabale-Kisoro Road',
     landmark: 'Opposite Numba Cafe · Near All Saints Church',
     directions:
-      'On Kabale–Kisoro Road in main town. Numba Cafe sits opposite the police station, next to All Saints Church. Beta-Tech Labs is in the building behind the station.',
+      'On Kabale-Kisoro Road in main town. Numba Cafe sits opposite the police station, next to All Saints Church. Beta-Tech Labs is in the building behind the station.',
   },
   mapEmbedUrl:
     'https://maps.google.com/maps?q=Kabale+Central+Police+Station,+Kabale-Kisoro+Road,+Kabale,+Uganda&z=18&output=embed',
@@ -65,7 +65,7 @@ export const TESTIMONIALS = [
   },
   {
     quote:
-      'We approached them for blockchain consulting and expected the usual hype. Instead, they challenged our assumptions, scoped an honest proof of concept, and delivered working code with clear documentation — on the timeline we agreed.',
+      'We approached them for blockchain consulting and expected the usual hype. Instead, they challenged our assumptions, scoped an honest proof of concept, and delivered working code with clear documentation, on the timeline we agreed.',
     name: 'Mugisha Brian',
     role: 'Product Manager',
     organization: 'SwiftPay Africa',
@@ -84,8 +84,8 @@ export const SERVICE_PACKAGES = [
   {
     title: 'MVP Build',
     price: 'From $2,500',
-    description: 'Research-backed prototype in AI, Web, or Blockchain — ready to demo.',
-    features: ['2–4 week sprint', 'Weekly demos', 'Source code handoff'],
+    description: 'Research-backed prototype in AI, Web, or Blockchain, ready to demo.',
+    features: ['2-4 week sprint', 'Weekly demos', 'Source code handoff'],
     cta: 'Start a Project',
     highlighted: true,
   },

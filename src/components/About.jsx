@@ -27,7 +27,7 @@ const PROCESS_STEPS = [
     phase: 'Engineer',
     title: 'Build with Purpose',
     description:
-      'We transform ideas into reliable technology—from AI solutions and business systems to mobile apps, web platforms, and custom software.',
+      'We transform ideas into reliable technology, from AI solutions and business systems to mobile apps, web platforms, and custom software.',
     icon: Code,
   },
   {
@@ -43,7 +43,7 @@ const About = () => (
   <section id="about" className="py-12 md:py-16 bg-dark-100 border-b border-gray-800/50">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 lg:items-stretch">
-        {/* Left — intro, image, quote */}
+        {/* Left, intro, image, quote */}
         <div className="flex flex-col">
           <h2 className="text-3xl md:text-4xl font-bold text-gold-500 font-heading mb-4">
             How do we work?
@@ -81,13 +81,13 @@ const About = () => (
           </div>
 
           <p className="text-sm md:text-base text-gray-400 leading-relaxed italic mt-auto pt-6 border-t border-gray-800">
-            &ldquo;Research isn&apos;t the end of our work—it&apos;s where every innovation begins. By
+            &ldquo;Research isn&apos;t the end of our work. It&apos;s where every innovation begins. By
             combining research, engineering, and creativity, we transform ideas into products and
             technology solutions that make a real-world impact.&rdquo;
           </p>
         </div>
 
-        {/* Right — process steps */}
+        {/* Right, process steps */}
         <div className="flex flex-col gap-4 h-full">
           {PROCESS_STEPS.map((step, index) => {
             const Icon = step.icon;

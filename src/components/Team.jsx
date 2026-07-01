@@ -47,7 +47,7 @@ const TeamCard = ({ member, isLead = false }) => (
         >
           <img
             src={member.image}
-            alt={`${member.name || 'Team member'} — ${member.role || 'Beta Tech Labs'}`}
+            alt={`${member.name || 'Team member'}, ${member.role || 'Beta Tech Labs'}`}
             loading="lazy"
             decoding="async"
             className="w-full h-full object-cover"
@@ -129,7 +129,7 @@ const Team = () => {
           </h2>
           <p className="text-sm md:text-base text-gray-400 leading-snug">
             Engineers, researchers, and strategists building AI and blockchain products from
-            Uganda — the same caliber of talent you would expect from a world-class tech team.
+            Uganda, the same caliber of talent you would expect from a world-class tech team.
           </p>
         </div>
 

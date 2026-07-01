@@ -28,7 +28,7 @@ const SERVICE_PILLARS = [
     label: 'Research & Innovation',
     title: 'Research That Drives Every Build',
     description:
-      'We start with the problem — not the technology. Our team investigates real challenges, studies users and environments, and applies rigorous research before a single line of production code is written.',
+      'We start with the problem, not the technology. Our team investigates real challenges, studies users and environments, and applies rigorous research before a single line of production code is written.',
     items: [
       'Problem discovery & needs assessment',
       'User, market & field research',
@@ -43,7 +43,7 @@ const SERVICE_PILLARS = [
     label: 'Product Development',
     title: 'Products Built on Evidence',
     description:
-      'We turn research into products people actually use — from AI platforms and mobile apps to IoT dashboards and business systems designed for African markets and beyond.',
+      'We turn research into products people actually use, from AI platforms and mobile apps to IoT dashboards and business systems designed for African markets and beyond.',
     items: [
       'AI-powered products & intelligent platforms',
       'Mobile applications (iOS & Android)',
@@ -73,7 +73,7 @@ const SERVICE_PILLARS = [
     label: 'Talent Development',
     title: 'Growing Capable Builders',
     description:
-      'We develop engineers and innovators through real projects — not classroom theory alone. Our programs combine mentorship, research exposure, and hands-on delivery on live work.',
+      'We develop engineers and innovators through real projects, not classroom theory alone. Our programs combine mentorship, research exposure, and hands-on delivery on live work.',
     items: [
       'Structured internships & research training',
       'Practical product development experience',
@@ -158,7 +158,7 @@ const Services = () => {
               </h1>
               <p className="text-sm md:text-base text-gray-400 leading-snug max-w-2xl">
                 Beta-Tech Labs helps organizations build AI, blockchain, IoT, and software products
-                grounded in real research — not hype. From discovery to deployment, we engineer
+                grounded in real research, not hype. From discovery to deployment, we engineer
                 solutions that work in the field, scale with your growth, and earn trust from the
                 people who use them.
               </p>
@@ -173,8 +173,8 @@ const Services = () => {
                   Our Core Service Areas
                 </h2>
                 <p className="text-sm text-gray-400 leading-snug">
-                  Four interconnected capabilities — the same foundation behind everything on our
-                  home page — expanded for teams evaluating whether we are the right partner.
+                  Four interconnected capabilities, the same foundation behind everything on our
+                  home page, expanded for teams evaluating whether we are the right partner.
                 </p>
               </div>
               <div className="grid md:grid-cols-2 gap-4 md:gap-5">
@@ -193,7 +193,7 @@ const Services = () => {
                   Technologies We Work With
                 </h2>
                 <p className="text-sm text-gray-400 leading-snug">
-                  We combine modern stacks with practical engineering — including IoT tooling,
+                  We combine modern stacks with practical engineering, including IoT tooling,
                   edge systems, and field-ready deployments across Uganda and East Africa.
                 </p>
               </div>
@@ -225,7 +225,7 @@ const Services = () => {
                   How We Work With Clients
                 </h2>
                 <p className="text-sm text-gray-400 leading-snug">
-                  A clear, disciplined process — so you always know where we are and what comes next.
+                  A clear, disciplined process, so you always know where we are and what comes next.
                 </p>
               </div>
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
@@ -248,7 +248,7 @@ const Services = () => {
               </h2>
               <p className="text-sm text-gray-400 leading-snug mb-5">
                 Tell us about your project, research idea, or engineering challenge. We respond
-                within one business day and scope work honestly — no inflated promises.
+                within one business day and scope work honestly, no inflated promises.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <button

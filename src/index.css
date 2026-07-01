@@ -90,7 +90,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
     backface-visibility: hidden;
   }
 
-  /* Hero — static panels (no hover glow) */
+  /* Hero, static panels (no hover glow) */
   .hero-panel {
     @apply bg-dark-100/90 rounded-2xl border border-gray-700/60;
   }

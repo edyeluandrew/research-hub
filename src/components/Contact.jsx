@@ -105,7 +105,7 @@ const Contact = () => {
       );
 
       setStatus('success');
-      setStatusMessage('Thank you — we received your message and will respond within one business day.');
+      setStatusMessage('Thank you. We received your message and will respond within one business day.');
       setFormData({ name: '', email: '', subject: '', message: '' });
       setTimeout(() => setStatus(null), 5000);
     } catch (error) {
@@ -136,12 +136,12 @@ const Contact = () => {
         </div>
 
         <div className="grid lg:grid-cols-12 gap-4 md:gap-5 items-start">
-          {/* Contact form — primary column */}
+          {/* Contact form, primary column */}
           <div className="lg:col-span-7 rounded-xl border border-gray-800 bg-dark-200 p-4 md:p-6">
             <div className="mb-4">
               <h3 className="text-lg font-bold text-white mb-1">Send a message</h3>
               <p className="text-sm text-gray-500 leading-snug">
-                Share as much context as you can — scope, timeline, and what success looks like for you.
+                Share as much context as you can, scope, timeline, and what success looks like for you.
               </p>
             </div>
 
@@ -277,7 +277,7 @@ const Contact = () => {
             </form>
           </div>
 
-          {/* Contact channels — sidebar */}
+          {/* Contact channels, sidebar */}
           <div className="lg:col-span-5 space-y-3 md:space-y-4">
             <div className="rounded-xl border border-gray-800 bg-dark-200 p-4 md:p-5">
               <h3 className="text-base font-bold text-white mb-3">Direct contact</h3>

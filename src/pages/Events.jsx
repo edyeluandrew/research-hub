@@ -29,17 +29,17 @@ const WHY_ATTEND = [
   {
     icon: Code2,
     title: 'Build, Don\'t Just Watch',
-    text: 'Every session is hands-on. You leave with code written, problems solved, and something you can show — not just slides saved.',
+    text: 'Every session is hands-on. You leave with code written, problems solved, and something you can show, not just slides saved.',
   },
   {
     icon: GraduationCap,
     title: 'Mentors Who Ship',
-    text: 'Led by engineers and researchers actively building AI, blockchain, and software products — not career lecturers reading from a syllabus.',
+    text: 'Led by engineers and researchers actively building AI, blockchain, and software products, not career lecturers reading from a syllabus.',
   },
   {
     icon: Sparkles,
     title: 'Real-World Context',
-    text: 'Workshops shaped around African markets, local infrastructure, and problems our community actually faces — grounded in field research.',
+    text: 'Workshops shaped around African markets, local infrastructure, and problems our community actually faces, grounded in field research.',
   },
   {
     icon: Mic2,
@@ -52,7 +52,7 @@ const EVENT_FORMATS = [
   { label: 'Workshops', detail: 'Focused half-day or full-day skill sessions' },
   { label: 'Bootcamps', detail: 'Intensive deep-dives with capstone builds' },
   { label: 'Meetups', detail: 'Talks, demos, and open networking evenings' },
-  { label: 'Hackathons', detail: 'Team sprints on real challenges — coming soon' },
+  { label: 'Hackathons', detail: 'Team sprints on real challenges, coming soon' },
 ];
 
 const CATEGORY_GRADIENTS = {
@@ -407,6 +407,18 @@ const Events = () => {
   );
   const featuredEvent = upcoming[0] || null;
 
+  const galleryItems = useMemo(
+    () =>
+      past.flatMap((event) =>
+        (event.images || []).map((url, imageIndex) => ({
+          url,
+          event,
+          imageIndex,
+        }))
+      ),
+    [past]
+  );
+
   const openGallery = (event, imageIndex = 0) => {
     if (event.images?.length > 0) {
       setSelectedEvent(event);
@@ -439,7 +451,7 @@ const Events = () => {
     <>
       <SEO
         title="Workshops & Events - AI, Blockchain & Engineering"
-        description={`Join ${SITE.name} workshops, bootcamps, and tech meetups in ${SITE.location}. Hands-on sessions in AI, blockchain, Web3, and software engineering — built for builders.`}
+        description={`Join ${SITE.name} workshops, bootcamps, and tech meetups in ${SITE.location}. Hands-on sessions in AI, blockchain, Web3, and software engineering, built for builders.`}
         keywords="tech workshops Uganda, AI workshop Kabale, blockchain bootcamp East Africa, Web3 training, developer events Uganda, Beta Tech Labs events"
         ogUrl={`${SITE.url}/events`}
         ogImage={`${SITE.url}/images/og-events.svg`}
@@ -452,17 +464,13 @@ const Events = () => {
           {/* Hero */}
           <section className="pt-20 pb-8 md:pb-10 bg-gold-gradient border-b border-gray-800/50">
             <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-500 mb-2">
-                Learn · Build · Connect
-              </p>
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white font-heading leading-tight mb-3 max-w-3xl">
-                Where Kabale&apos;s{' '}
-                <span className="text-gold-500">Builders Show Up</span>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white font-heading leading-tight mb-3 whitespace-nowrap">
+                Where Kabale&apos;s <span className="text-gold-500">Builders Show Up</span>
               </h1>
               <p className="text-sm md:text-base text-gray-400 leading-snug max-w-2xl">
                 Workshops, bootcamps, and meetups led by engineers who ship real products.
                 Whether you are learning AI, diving into blockchain, or levelling up your
-                frontend skills — this is where research meets hands-on practice.
+                frontend skills, this is where research meets hands-on practice.
               </p>
 
               {!loading && (
@@ -562,7 +570,7 @@ const Events = () => {
                   </h2>
                   <p className="text-sm text-gray-400 leading-snug max-w-xl">
                     {activeTab === 'upcoming'
-                      ? 'Register early — seats are limited and workshops fill fast.'
+                      ? 'Register early, seats are limited and workshops fill fast.'
                       : 'A record of what we have run. More galleries coming as we publish event photos.'}
                   </p>
                 </div>
@@ -612,23 +620,60 @@ const Events = () => {
                   <div className="text-center py-16 rounded-xl border border-gray-800 bg-dark-100">
                     <Calendar className="mx-auto text-gold-500/30 mb-4" size={48} />
                     <p className="text-sm text-gray-400 mb-1">No upcoming events scheduled right now.</p>
-                    <p className="text-xs text-gray-500 mb-5">Follow us — new workshops drop regularly.</p>
+                    <p className="text-xs text-gray-500 mb-5">Follow us, new workshops drop regularly.</p>
                     <a href={SOCIAL.x} target="_blank" rel="noopener noreferrer" className="btn-primary text-sm inline-flex items-center">
                       Follow on X
                     </a>
                   </div>
                 )
               ) : past.length > 0 ? (
-                <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5">
-                  {past.map((event) => (
-                    <EventCard
-                      key={event.id}
-                      event={event}
-                      isPast
-                      onOpenGallery={openGallery}
-                    />
-                  ))}
-                </div>
+                <>
+                  <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5">
+                    {past.map((event) => (
+                      <EventCard
+                        key={event.id}
+                        event={event}
+                        isPast
+                        onOpenGallery={openGallery}
+                      />
+                    ))}
+                  </div>
+
+                  {galleryItems.length > 0 && (
+                    <div className="mt-10 md:mt-12 pt-8 border-t border-gray-800">
+                      <div className="mb-6">
+                        <h3 className="text-xl md:text-2xl font-bold text-white font-heading mb-1 leading-tight">
+                          Event Gallery
+                        </h3>
+                        <p className="text-sm text-gray-400 leading-snug">
+                          Photos from our past workshops and meetups. Click any image to view full size.
+                        </p>
+                      </div>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+                        {galleryItems.map(({ url, event, imageIndex }) => (
+                          <button
+                            key={`${event.id}-${imageIndex}`}
+                            type="button"
+                            onClick={() => openGallery(event, imageIndex)}
+                            className="group relative aspect-[4/3] rounded-xl overflow-hidden border border-gray-800 bg-dark-100 hover:border-gold-500/40 transition-colors text-left"
+                          >
+                            <img
+                              src={url}
+                              alt={`${event.title}, photo ${imageIndex + 1}`}
+                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-dark-200/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <div className="absolute bottom-0 left-0 right-0 p-2.5 translate-y-full group-hover:translate-y-0 transition-transform">
+                              <p className="text-xs font-medium text-white leading-snug line-clamp-2">
+                                {event.title}
+                              </p>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </>
               ) : (
                 <div className="text-center py-16 rounded-xl border border-gray-800 bg-dark-100">
                   <ImageIcon className="mx-auto text-gray-600 mb-4" size={48} />
@@ -651,7 +696,7 @@ const Events = () => {
                   </h2>
                   <p className="text-sm text-gray-400 leading-snug">
                     Universities, startups, and organizations partner with us to run tailored
-                    sessions — AI literacy for students, blockchain pilots for teams, or
+                    sessions, AI literacy for students, blockchain pilots for teams, or
                     custom engineering intensives. We handle curriculum, mentors, and delivery.
                   </p>
                 </div>
@@ -754,7 +799,7 @@ const Events = () => {
 
           <img
             src={selectedEvent.images[currentImageIndex]}
-            alt={`${selectedEvent.title} — photo ${currentImageIndex + 1}`}
+            alt={`${selectedEvent.title}, photo ${currentImageIndex + 1}`}
             className="max-w-full max-h-[80vh] object-contain rounded-lg"
             onError={(e) => {
               e.target.alt = 'Photo unavailable';
