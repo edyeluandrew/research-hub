@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SEO from '../components/SEO';
+import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { getEventsData } from '../data/dataStore';
-import { SOCIAL } from '../config/site';
+import { SITE, SOCIAL, STATS } from '../config/site';
 import {
-  ArrowLeft,
   Calendar,
   Clock,
   MapPin,
@@ -15,80 +15,400 @@ import {
   ChevronLeft,
   ChevronRight,
   X,
+  ArrowRight,
+  Send,
+  Sparkles,
+  Mic2,
+  Code2,
+  GraduationCap,
+  Zap,
+  ExternalLink,
 } from 'lucide-react';
+
+const WHY_ATTEND = [
+  {
+    icon: Code2,
+    title: 'Build, Don\'t Just Watch',
+    text: 'Every session is hands-on. You leave with code written, problems solved, and something you can show — not just slides saved.',
+  },
+  {
+    icon: GraduationCap,
+    title: 'Mentors Who Ship',
+    text: 'Led by engineers and researchers actively building AI, blockchain, and software products — not career lecturers reading from a syllabus.',
+  },
+  {
+    icon: Sparkles,
+    title: 'Real-World Context',
+    text: 'Workshops shaped around African markets, local infrastructure, and problems our community actually faces — grounded in field research.',
+  },
+  {
+    icon: Mic2,
+    title: 'A Growing Network',
+    text: 'Meet founders, students, and builders across Kabale and East Africa. Past attendees have landed internships, collaborators, and startup co-founders.',
+  },
+];
+
+const EVENT_FORMATS = [
+  { label: 'Workshops', detail: 'Focused half-day or full-day skill sessions' },
+  { label: 'Bootcamps', detail: 'Intensive deep-dives with capstone builds' },
+  { label: 'Meetups', detail: 'Talks, demos, and open networking evenings' },
+  { label: 'Hackathons', detail: 'Team sprints on real challenges — coming soon' },
+];
+
+const CATEGORY_GRADIENTS = {
+  Bootcamp: 'from-purple-900/60 via-dark-200 to-gold-900/30',
+  Workshop: 'from-blue-900/50 via-dark-200 to-gold-900/20',
+  Meetup: 'from-emerald-900/40 via-dark-200 to-gold-900/20',
+  Hackathon: 'from-orange-900/50 via-dark-200 to-gold-900/30',
+};
+
+const formatDate = (dateString) => {
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return new Date(dateString).toLocaleDateString(undefined, options);
+};
+
+const formatDateParts = (dateString) => {
+  const d = new Date(dateString);
+  return {
+    day: d.getDate(),
+    month: d.toLocaleDateString(undefined, { month: 'short' }).toUpperCase(),
+    year: d.getFullYear(),
+  };
+};
+
+const getDaysUntilEvent = (eventDate) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const event = new Date(eventDate);
+  event.setHours(0, 0, 0, 0);
+  return Math.ceil((event - today) / (1000 * 60 * 60 * 24));
+};
+
+const categorizeEvents = (eventsData) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const upcoming = [];
+  const past = [];
+
+  (eventsData || []).forEach((event) => {
+    const eventDate = new Date(event.date);
+    eventDate.setHours(0, 0, 0, 0);
+
+    if (eventDate >= today) {
+      upcoming.push({ ...event, status: 'upcoming' });
+    } else {
+      past.push({ ...event, status: 'completed' });
+    }
+  });
+
+  upcoming.sort((a, b) => new Date(a.date) - new Date(b.date));
+  past.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  return { upcoming, past };
+};
+
+const EventBanner = ({ event, isPast, onOpenGallery }) => {
+  const gradient = CATEGORY_GRADIENTS[event.category] || CATEGORY_GRADIENTS.Workshop;
+  const hasImages = event.images && event.images.length > 0;
+
+  if (hasImages) {
+    return (
+      <button
+        type="button"
+        onClick={() => onOpenGallery(event)}
+        className="relative h-44 w-full overflow-hidden group/banner text-left"
+      >
+        <img
+          src={event.images[0]}
+          alt={event.title}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover/banner:scale-105"
+          onError={(e) => {
+            e.target.style.display = 'none';
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-dark-200 via-dark-200/40 to-transparent" />
+        {event.images.length > 1 && (
+          <span className="absolute bottom-3 right-3 inline-flex items-center gap-1 text-xs text-white bg-black/60 px-2 py-1 rounded-full">
+            <ImageIcon size={12} />
+            +{event.images.length - 1}
+          </span>
+        )}
+      </button>
+    );
+  }
+
+  const parts = formatDateParts(event.date);
+
+  return (
+    <div className={`relative h-44 bg-gradient-to-br ${gradient} flex items-center justify-between px-6 border-b border-gray-800`}>
+      <div>
+        {event.category && (
+          <p className="text-xs font-semibold uppercase tracking-wider text-gold-500/80 mb-2">
+            {event.category}
+          </p>
+        )}
+        <p className="text-sm text-gray-400 max-w-[200px] leading-snug line-clamp-2">
+          {isPast ? 'Completed session' : 'Open for registration'}
+        </p>
+      </div>
+      <div className="text-center shrink-0">
+        <div className="w-16 h-16 rounded-xl border border-gold-500/30 bg-dark-200/80 flex flex-col items-center justify-center">
+          <span className="text-[10px] font-bold text-gold-500 tracking-wider">{parts.month}</span>
+          <span className="text-2xl font-bold text-white leading-none">{parts.day}</span>
+          <span className="text-[10px] text-gray-500">{parts.year}</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const EventCard = ({ event, isPast, onOpenGallery }) => {
+  const daysUntil = !isPast ? getDaysUntilEvent(event.date) : null;
+
+  const countdownLabel = () => {
+    if (daysUntil === 0) return 'Today';
+    if (daysUntil === 1) return 'Tomorrow';
+    if (daysUntil <= 7) return `${daysUntil} days away`;
+    return `In ${daysUntil} days`;
+  };
+
+  return (
+    <article className="rounded-xl border border-gray-800 bg-dark-100 overflow-hidden flex flex-col h-full hover:border-gold-500/30 transition-colors">
+      <EventBanner event={event} isPast={isPast} onOpenGallery={onOpenGallery} />
+
+      <div className="p-5 md:p-6 flex flex-col flex-1">
+        <div className="flex items-center justify-between gap-2 mb-3">
+          {isPast ? (
+            <span className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full bg-blue-500/15 text-blue-400 border border-blue-500/25">
+              <CheckCircle size={12} />
+              Completed
+            </span>
+          ) : (
+            <span
+              className={`inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full border ${
+                daysUntil <= 7
+                  ? 'bg-orange-500/15 text-orange-400 border-orange-500/25'
+                  : 'bg-green-500/15 text-green-400 border-green-500/25'
+              }`}
+            >
+              <Zap size={12} />
+              {countdownLabel()}
+            </span>
+          )}
+          <span className="inline-flex items-center gap-1 text-xs text-gray-500">
+            <Users size={12} />
+            {isPast ? `${event.attendees} attended` : `${event.attendees} seats`}
+          </span>
+        </div>
+
+        {!event.images?.length && event.category && (
+          <p className="text-xs font-semibold uppercase tracking-wider text-gold-500 mb-1 leading-snug">
+            {event.category}
+          </p>
+        )}
+
+        <h3 className="text-lg md:text-xl font-bold text-white mb-2 leading-snug">{event.title}</h3>
+
+        <div className="space-y-1.5 mb-3">
+          <div className="flex items-center gap-2 text-sm text-gray-400">
+            <Calendar className="text-gold-500 shrink-0" size={14} />
+            {formatDate(event.date)}
+          </div>
+          <div className="flex items-center gap-2 text-sm text-gray-400">
+            <Clock className="text-gold-500 shrink-0" size={14} />
+            {event.time}
+          </div>
+          <div className="flex items-start gap-2 text-sm text-gray-400">
+            <MapPin className="text-gold-500 shrink-0 mt-0.5" size={14} />
+            <span className="leading-snug">{event.location}</span>
+          </div>
+        </div>
+
+        <p className="text-sm text-gray-400 leading-snug mb-4 flex-1">{event.description}</p>
+
+        {event.highlights?.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mb-4">
+            {event.highlights.map((highlight) => (
+              <span
+                key={highlight}
+                className="px-2 py-0.5 text-xs text-gold-400/90 bg-gold-500/10 border border-gold-500/15 rounded-md"
+              >
+                {highlight}
+              </span>
+            ))}
+          </div>
+        )}
+
+        <div className="mt-auto pt-4 border-t border-gray-800">
+          {!isPast && event.registrationLink ? (
+            <a
+              href={event.registrationLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary w-full inline-flex items-center justify-center text-sm"
+            >
+              Register Now
+              <ExternalLink className="ml-2" size={14} />
+            </a>
+          ) : isPast && event.images?.length > 0 ? (
+            <button
+              type="button"
+              onClick={() => onOpenGallery(event)}
+              className="btn-secondary w-full inline-flex items-center justify-center text-sm"
+            >
+              <ImageIcon className="mr-2" size={14} />
+              View Photos ({event.images.length})
+            </button>
+          ) : !isPast ? (
+            <button
+              type="button"
+              onClick={() => {
+                window.location.href = '/#contact';
+              }}
+              className="btn-secondary w-full inline-flex items-center justify-center text-sm"
+            >
+              <Send className="mr-2" size={14} />
+              Request a Seat
+            </button>
+          ) : null}
+        </div>
+      </div>
+    </article>
+  );
+};
+
+const FeaturedEvent = ({ event, onOpenGallery }) => {
+  const daysUntil = getDaysUntilEvent(event.date);
+  const parts = formatDateParts(event.date);
+
+  return (
+    <article className="rounded-xl border border-gold-500/30 bg-dark-100 overflow-hidden">
+      <div className="grid lg:grid-cols-5 gap-0">
+        <div className="lg:col-span-2 relative min-h-[220px] bg-gradient-to-br from-gold-900/30 via-dark-200 to-purple-900/40 flex items-center justify-center p-8 border-b lg:border-b-0 lg:border-r border-gray-800">
+          <div className="text-center">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-gold-500 mb-3">
+              Next Up
+            </p>
+            <div className="inline-flex flex-col items-center justify-center w-24 h-24 rounded-2xl border-2 border-gold-500/40 bg-dark-200/90 mb-3">
+              <span className="text-xs font-bold text-gold-500">{parts.month}</span>
+              <span className="text-4xl font-bold text-white leading-none">{parts.day}</span>
+              <span className="text-xs text-gray-500">{parts.year}</span>
+            </div>
+            <p className="text-sm text-gray-400">{event.time}</p>
+          </div>
+        </div>
+
+        <div className="lg:col-span-3 p-6 md:p-8 flex flex-col">
+          <div className="flex flex-wrap items-center gap-2 mb-3">
+            {event.category && (
+              <span className="text-xs font-semibold uppercase tracking-wider text-gold-500">
+                {event.category}
+              </span>
+            )}
+            <span className="text-xs text-gray-600">·</span>
+            <span className="inline-flex items-center gap-1 text-xs text-green-400">
+              <Zap size={12} />
+              {daysUntil === 0 ? 'Happening today' : daysUntil === 1 ? 'Tomorrow' : `${daysUntil} days to go`}
+            </span>
+          </div>
+
+          <h2 className="text-2xl md:text-3xl font-bold text-white font-heading mb-3 leading-tight">
+            {event.title}
+          </h2>
+
+          <p className="text-sm md:text-base text-gray-400 leading-snug mb-4 flex-1">
+            {event.description}
+          </p>
+
+          <div className="flex items-start gap-2 text-sm text-gray-400 mb-4">
+            <MapPin className="text-gold-500 shrink-0 mt-0.5" size={16} />
+            <span>{event.location}</span>
+          </div>
+
+          {event.highlights?.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-5">
+              {event.highlights.map((h) => (
+                <span
+                  key={h}
+                  className="px-2.5 py-1 text-xs text-gold-400 bg-gold-500/10 border border-gold-500/20 rounded-lg"
+                >
+                  {h}
+                </span>
+              ))}
+            </div>
+          )}
+
+          <div className="flex flex-col sm:flex-row gap-3">
+            {event.registrationLink ? (
+              <a
+                href={event.registrationLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary inline-flex items-center justify-center text-sm"
+              >
+                Reserve Your Spot
+                <ArrowRight className="ml-2" size={16} />
+              </a>
+            ) : (
+              <a href="/#contact" className="btn-primary inline-flex items-center justify-center text-sm">
+                <Send className="mr-2" size={16} />
+                Request a Seat
+              </a>
+            )}
+            {event.images?.length > 0 && (
+              <button
+                type="button"
+                onClick={() => onOpenGallery(event)}
+                className="btn-secondary inline-flex items-center justify-center text-sm"
+              >
+                <ImageIcon className="mr-2" size={16} />
+                Preview
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+};
 
 const Events = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('upcoming');
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [eventsData, setEventsData] = useState(null);
+  const [eventsData, setEventsData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Listen for updates from admin panel
   useEffect(() => {
     const loadData = async () => {
-      const data = await getEventsData();
-      setEventsData(data);
+      try {
+        const data = await getEventsData();
+        setEventsData(Array.isArray(data) ? data : []);
+      } catch (error) {
+        console.error('Error loading events:', error);
+        setEventsData([]);
+      } finally {
+        setLoading(false);
+      }
     };
     loadData();
-  }, []);
 
-  // Real-time listener for Firebase updates
-  useEffect(() => {
-    const handleUpdate = () => {
-      getEventsData().then(data => setEventsData(data));
-    };
+    const handleUpdate = () => loadData();
     window.addEventListener('eventsDataUpdated', handleUpdate);
     return () => window.removeEventListener('eventsDataUpdated', handleUpdate);
   }, []);
 
-  // ============================================================
-  // AUTO-CATEGORIZE EVENTS BASED ON DATE
-  // ============================================================
-  const categorizeEvents = () => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const upcoming = [];
-    const past = [];
-
-    (eventsData || []).forEach(event => {
-      const eventDate = new Date(event.date);
-      eventDate.setHours(0, 0, 0, 0);
-
-      if (eventDate >= today) {
-        upcoming.push({ ...event, status: 'upcoming' });
-      } else {
-        past.push({ ...event, status: 'completed' });
-      }
-    });
-
-    // Sort upcoming by nearest first
-    upcoming.sort((a, b) => new Date(a.date) - new Date(b.date));
-    // Sort past by most recent first
-    past.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-    return { upcoming, past };
-  };
-
-  const { upcoming, past } = categorizeEvents();
-  const eventsList = eventsData || [];
-
-  const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
-
-  const getDaysUntilEvent = (eventDate) => {
-    const today = new Date();
-    const event = new Date(eventDate);
-    const diffTime = event - today;
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
-  };
+  const { upcoming, past } = useMemo(() => categorizeEvents(eventsData), [eventsData]);
+  const totalAttendees = useMemo(
+    () => eventsData.reduce((sum, e) => sum + (e.attendees || 0), 0),
+    [eventsData]
+  );
+  const featuredEvent = upcoming[0] || null;
 
   const openGallery = (event, imageIndex = 0) => {
-    if (event.images && event.images.length > 0) {
+    if (event.images?.length > 0) {
       setSelectedEvent(event);
       setCurrentImageIndex(imageIndex);
     }
@@ -100,374 +420,348 @@ const Events = () => {
   };
 
   const nextImage = () => {
-    if (selectedEvent && selectedEvent.images.length > 0) {
-      setCurrentImageIndex((prev) => 
+    if (selectedEvent?.images?.length > 0) {
+      setCurrentImageIndex((prev) =>
         prev === selectedEvent.images.length - 1 ? 0 : prev + 1
       );
     }
   };
 
   const prevImage = () => {
-    if (selectedEvent && selectedEvent.images.length > 0) {
-      setCurrentImageIndex((prev) => 
+    if (selectedEvent?.images?.length > 0) {
+      setCurrentImageIndex((prev) =>
         prev === 0 ? selectedEvent.images.length - 1 : prev - 1
       );
     }
   };
 
-  // ============================================================
-  // EVENT CARD COMPONENT
-  // ============================================================
-  const EventCard = ({ event, isPast = false }) => (
-    <div className={`card p-6 group hover:border-gold-500/50 transition-all duration-300 ${
-      isPast ? 'border-gray-600/30' : 'border-2 border-gold-500/30'
-    }`}>
-      {/* Event Images Preview */}
-      {event.images && event.images.length > 0 && (
-        <div 
-          className="relative h-48 mb-4 rounded-lg overflow-hidden cursor-pointer group/image"
-          onClick={() => openGallery(event)}
-        >
-          <img 
-            src={event.images[0]} 
-            alt={event.title}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover/image:scale-110"
-            onError={(e) => {
-              e.target.src = 'https://via.placeholder.com/400x200?text=Event+Photo';
-            }}
-          />
-          {event.images.length > 1 && (
-            <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full flex items-center">
-              <ImageIcon size={12} className="mr-1" />
-              +{event.images.length - 1} more
-            </div>
-          )}
-          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <span className="text-white font-medium">View Gallery</span>
-          </div>
-        </div>
-      )}
-
-      {/* No images placeholder for past events */}
-      {isPast && (!event.images || event.images.length === 0) && (
-        <div className="h-32 mb-4 rounded-lg bg-dark-200 flex items-center justify-center border border-gray-700">
-          <div className="text-center">
-            <ImageIcon size={32} className="text-gray-600 mx-auto mb-2" />
-            <span className="text-gray-500 text-xs">No photos yet</span>
-          </div>
-        </div>
-      )}
-
-      {/* Status Badge */}
-      <div className="flex items-center justify-between mb-4">
-        {isPast ? (
-          <span className="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-xs font-medium flex items-center">
-            <CheckCircle className="mr-1" size={12} />
-            Completed
-          </span>
-        ) : (
-          <span className={`px-3 py-1 rounded-full text-xs font-medium flex items-center ${
-            getDaysUntilEvent(event.date) <= 7 
-              ? 'bg-orange-500/20 text-orange-400' 
-              : 'bg-green-500/20 text-green-400'
-          }`}>
-            <CheckCircle className="mr-1" size={12} />
-            {getDaysUntilEvent(event.date) === 0 ? 'Today' : 
-             getDaysUntilEvent(event.date) === 1 ? 'Tomorrow' : 
-             `In ${getDaysUntilEvent(event.date)} days`}
-          </span>
-        )}
-        <span className="text-gray-400 text-sm font-medium flex items-center">
-          <Users className="mr-1" size={14} />
-          {isPast ? `${event.attendees} attended` : `${event.attendees} spots`}
-        </span>
-      </div>
-
-      {/* Event Title */}
-      <h3 className="text-xl font-bold font-heading text-gold-500 mb-3 group-hover:text-gold-400 transition-colors duration-300">
-        {event.title}
-      </h3>
-
-      {/* Event Details */}
-      <div className="space-y-2 mb-4">
-        <div className="flex items-center text-gray-400 text-sm">
-          <Calendar className="mr-2 text-gold-500 flex-shrink-0" size={16} />
-          {formatDate(event.date)}
-        </div>
-        <div className="flex items-center text-gray-400 text-sm">
-          <Clock className="mr-2 text-gold-500 flex-shrink-0" size={16} />
-          {event.time}
-        </div>
-        <div className="flex items-center text-gray-400 text-sm">
-          <MapPin className="mr-2 text-gold-500 flex-shrink-0" size={16} />
-          {event.location}
-        </div>
-      </div>
-
-      {/* Description */}
-      <p className="text-gray-400 text-sm mb-4 leading-relaxed line-clamp-3">
-        {event.description}
-      </p>
-
-      {/* Highlights */}
-      {event.highlights && event.highlights.length > 0 && (
-        <div className="flex flex-wrap gap-2 mb-4">
-          {event.highlights.map((highlight, i) => (
-            <span key={i} className="px-2 py-1 bg-gold-500/10 text-gold-400 rounded text-xs">
-              {highlight}
-            </span>
-          ))}
-        </div>
-      )}
-
-      {/* Action Button */}
-      {!isPast && event.registrationLink && (
-        <a 
-          href={event.registrationLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-full btn-primary text-center block"
-        >
-          Register Now
-        </a>
-      )}
-
-      {isPast && event.images && event.images.length > 0 && (
-        <button 
-          onClick={() => openGallery(event)}
-          className="w-full btn-secondary flex items-center justify-center"
-        >
-          <ImageIcon size={16} className="mr-2" />
-          View Photos ({event.images.length})
-        </button>
-      )}
-    </div>
-  );
-
   return (
     <>
-      <SEO 
-        title="Tech Workshops & Events - AI, Blockchain & More"
-        description="Join Beta Tech Hub's upcoming workshops and training events in Kabale, Uganda. Learn AI, machine learning, Blockchain, Web3, and software development."
-        keywords="tech workshops Uganda, AI workshop Kabale, Blockchain bootcamp, Web3 training, tech events Uganda"
-        ogUrl="https://www.beta-techlabs.com/events"
-        ogImage="https://www.beta-techlabs.com/images/og-events.svg"
+      <SEO
+        title="Workshops & Events - AI, Blockchain & Engineering"
+        description={`Join ${SITE.name} workshops, bootcamps, and tech meetups in ${SITE.location}. Hands-on sessions in AI, blockchain, Web3, and software engineering — built for builders.`}
+        keywords="tech workshops Uganda, AI workshop Kabale, blockchain bootcamp East Africa, Web3 training, developer events Uganda, Beta Tech Labs events"
+        ogUrl={`${SITE.url}/events`}
+        ogImage={`${SITE.url}/images/og-events.svg`}
       />
 
-      <div className="min-h-screen bg-dark-200">
-        {/* Hero Section */}
-        <section className="pt-32 pb-20 bg-gold-gradient relative overflow-hidden">
-          <div className="absolute inset-0 opacity-5">
-            <div className="absolute top-20 left-10 w-72 h-72 bg-gold-500 rounded-full blur-3xl"></div>
-            <div className="absolute bottom-20 right-10 w-96 h-96 bg-gold-300 rounded-full blur-3xl"></div>
-          </div>
+      <div className="min-h-screen bg-dark-200 flex flex-col">
+        <Header />
 
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <button 
-              onClick={() => navigate('/services')}
-              className="inline-flex items-center text-gold-500 hover:text-gold-400 transition-colors duration-300 font-medium group mb-8"
-            >
-              <ArrowLeft className="mr-2 group-hover:-translate-x-1 transition-transform duration-300" size={18} />
-              Back to Services
-            </button>
-
-            <div className="text-center">
-              <h1 className="text-4xl md:text-6xl font-bold font-heading text-white mb-6">
-                Tech <span className="gold-gradient-text">Workshops & Events</span>
-              </h1>
-              <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                Explore our upcoming workshops and browse through our past events. Join us to learn, 
-                network, and grow together in the tech community.
+        <main className="flex-1">
+          {/* Hero */}
+          <section className="pt-20 pb-8 md:pb-10 bg-gold-gradient border-b border-gray-800/50">
+            <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-500 mb-2">
+                Learn · Build · Connect
               </p>
-              
-              {/* Stats */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12 max-w-2xl mx-auto">
-                <div className="text-center">
-                  <div className="text-2xl font-bold font-heading text-gold-500">{eventsList.length}</div>
-                  <div className="text-gray-400 text-sm">Total Events</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold font-heading text-green-400">{upcoming.length}</div>
-                  <div className="text-gray-400 text-sm">Upcoming</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold font-heading text-blue-400">{past.length}</div>
-                  <div className="text-gray-400 text-sm">Completed</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold font-heading text-gold-500">
-                    {eventsList.reduce((sum, event) => sum + (event.attendees || 0), 0)}+
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white font-heading leading-tight mb-3 max-w-3xl">
+                Where Kabale&apos;s{' '}
+                <span className="text-gold-500">Builders Show Up</span>
+              </h1>
+              <p className="text-sm md:text-base text-gray-400 leading-snug max-w-2xl">
+                Workshops, bootcamps, and meetups led by engineers who ship real products.
+                Whether you are learning AI, diving into blockchain, or levelling up your
+                frontend skills — this is where research meets hands-on practice.
+              </p>
+
+              {!loading && (
+                <div className="flex flex-wrap gap-6 mt-6 pt-5 border-t border-gray-800/80">
+                  <div>
+                    <p className="text-xl font-bold text-white">{eventsData.length}</p>
+                    <p className="text-xs text-gray-500">Events hosted</p>
                   </div>
-                  <div className="text-gray-400 text-sm">Total Attendees</div>
+                  <div>
+                    <p className="text-xl font-bold text-gold-500">{upcoming.length}</p>
+                    <p className="text-xs text-gray-500">Upcoming</p>
+                  </div>
+                  <div>
+                    <p className="text-xl font-bold text-white">{past.length}</p>
+                    <p className="text-xs text-gray-500">Completed</p>
+                  </div>
+                  <div>
+                    <p className="text-xl font-bold text-white">{totalAttendees}+</p>
+                    <p className="text-xs text-gray-500">Total attendees</p>
+                  </div>
+                  <div>
+                    <p className="text-xl font-bold text-white">{STATS.studentsTrained}</p>
+                    <p className="text-xs text-gray-500">Builders trained</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </section>
+
+          {/* Why attend */}
+          <section className="py-8 md:py-10 bg-dark-100 border-b border-gray-800/50">
+            <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
+              <div className="mb-6 md:mb-8 max-w-2xl">
+                <h2 className="text-2xl md:text-3xl font-bold text-white font-heading mb-2 leading-tight">
+                  Why People Come Back
+                </h2>
+                <p className="text-sm text-gray-400 leading-snug">
+                  We do not run lecture halls. We run rooms where you write code, ask hard
+                  questions, and walk out closer to shipping something real.
+                </p>
+              </div>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+                {WHY_ATTEND.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <div
+                      key={item.title}
+                      className="rounded-xl border border-gray-800 bg-dark-200 p-4 md:p-5"
+                    >
+                      <div className="w-9 h-9 rounded-lg bg-gold-500/10 border border-gold-500/20 flex items-center justify-center mb-3">
+                        <Icon className="text-gold-500" size={16} />
+                      </div>
+                      <h3 className="text-sm font-bold text-white mb-1.5 leading-snug">
+                        {item.title}
+                      </h3>
+                      <p className="text-xs text-gray-500 leading-snug">{item.text}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+
+          {/* Event formats */}
+          <section className="py-6 bg-dark-200 border-b border-gray-800/50">
+            <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                {EVENT_FORMATS.map((fmt) => (
+                  <div
+                    key={fmt.label}
+                    className="rounded-lg border border-gray-800/80 bg-dark-100 px-4 py-3"
+                  >
+                    <p className="text-sm font-semibold text-gold-500">{fmt.label}</p>
+                    <p className="text-xs text-gray-500 mt-0.5 leading-snug">{fmt.detail}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Featured upcoming */}
+          {!loading && featuredEvent && (
+            <section className="py-8 md:py-10 bg-dark-100 border-b border-gray-800/50">
+              <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
+                <FeaturedEvent event={featuredEvent} onOpenGallery={openGallery} />
+              </div>
+            </section>
+          )}
+
+          {/* Tab + grid */}
+          <section className="py-8 md:py-10 bg-dark-200">
+            <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
+              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6 md:mb-8">
+                <div>
+                  <h2 className="text-2xl md:text-3xl font-bold text-white font-heading mb-1 leading-tight">
+                    {activeTab === 'upcoming' ? 'Upcoming Sessions' : 'Past Events'}
+                  </h2>
+                  <p className="text-sm text-gray-400 leading-snug max-w-xl">
+                    {activeTab === 'upcoming'
+                      ? 'Register early — seats are limited and workshops fill fast.'
+                      : 'A record of what we have run. More galleries coming as we publish event photos.'}
+                  </p>
+                </div>
+                <div className="inline-flex rounded-lg border border-gray-800 bg-dark-100 p-1 self-start">
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab('upcoming')}
+                    className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                      activeTab === 'upcoming'
+                        ? 'bg-gold-500 text-dark-200'
+                        : 'text-gray-400 hover:text-white'
+                    }`}
+                  >
+                    Upcoming ({upcoming.length})
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab('past')}
+                    className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                      activeTab === 'past'
+                        ? 'bg-gold-500 text-dark-200'
+                        : 'text-gray-400 hover:text-white'
+                    }`}
+                  >
+                    Past ({past.length})
+                  </button>
+                </div>
+              </div>
+
+              {loading ? (
+                <div className="text-center py-12">
+                  <p className="text-sm text-gray-500">Loading events...</p>
+                </div>
+              ) : activeTab === 'upcoming' ? (
+                upcoming.length > 0 ? (
+                  <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5">
+                    {(featuredEvent ? upcoming.slice(1) : upcoming).map((event) => (
+                      <EventCard
+                        key={event.id}
+                        event={event}
+                        isPast={false}
+                        onOpenGallery={openGallery}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-16 rounded-xl border border-gray-800 bg-dark-100">
+                    <Calendar className="mx-auto text-gold-500/30 mb-4" size={48} />
+                    <p className="text-sm text-gray-400 mb-1">No upcoming events scheduled right now.</p>
+                    <p className="text-xs text-gray-500 mb-5">Follow us — new workshops drop regularly.</p>
+                    <a href={SOCIAL.x} target="_blank" rel="noopener noreferrer" className="btn-primary text-sm inline-flex items-center">
+                      Follow on X
+                    </a>
+                  </div>
+                )
+              ) : past.length > 0 ? (
+                <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5">
+                  {past.map((event) => (
+                    <EventCard
+                      key={event.id}
+                      event={event}
+                      isPast
+                      onOpenGallery={openGallery}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-16 rounded-xl border border-gray-800 bg-dark-100">
+                  <ImageIcon className="mx-auto text-gray-600 mb-4" size={48} />
+                  <p className="text-sm text-gray-400">Past events will appear here after they run.</p>
+                </div>
+              )}
+            </div>
+          </section>
+
+          {/* Host CTA */}
+          <section className="py-8 md:py-10 bg-dark-100 border-b border-gray-800/50">
+            <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
+              <div className="rounded-xl border border-gray-800 bg-dark-200 p-6 md:p-8 grid md:grid-cols-2 gap-6 items-center">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-gold-500 mb-2">
+                    For Partners & Institutions
+                  </p>
+                  <h2 className="text-xl md:text-2xl font-bold text-white font-heading mb-2 leading-tight">
+                    Want to Co-Host a Workshop?
+                  </h2>
+                  <p className="text-sm text-gray-400 leading-snug">
+                    Universities, startups, and organizations partner with us to run tailored
+                    sessions — AI literacy for students, blockchain pilots for teams, or
+                    custom engineering intensives. We handle curriculum, mentors, and delivery.
+                  </p>
+                </div>
+                <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row gap-3 md:justify-end">
+                  <button
+                    type="button"
+                    onClick={() => navigate('/#contact')}
+                    className="btn-primary inline-flex items-center justify-center text-sm"
+                  >
+                    <Send className="mr-2" size={16} />
+                    Partner With Us
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => navigate('/services')}
+                    className="btn-secondary inline-flex items-center justify-center text-sm"
+                  >
+                    Our Services
+                    <ArrowRight className="ml-2" size={16} />
+                  </button>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* Tab Navigation */}
-        <section className="bg-dark-100 border-b border-gray-800 sticky top-0 z-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-center space-x-4 py-4">
-              <button
-                onClick={() => setActiveTab('upcoming')}
-                className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
-                  activeTab === 'upcoming' 
-                    ? 'bg-gold-500 text-dark-200' 
-                    : 'bg-dark-200 text-gray-400 hover:text-gold-500'
-                }`}
-              >
-                🚀 Upcoming Events ({upcoming.length})
-              </button>
-              <button
-                onClick={() => setActiveTab('past')}
-                className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
-                  activeTab === 'past' 
-                    ? 'bg-gold-500 text-dark-200' 
-                    : 'bg-dark-200 text-gray-400 hover:text-gold-500'
-                }`}
-              >
-                📸 Past Events ({past.length})
-              </button>
+          {/* Stay updated */}
+          <section className="py-8 md:py-10 bg-dark-200">
+            <div className="max-w-3xl mx-auto px-3 sm:px-4 lg:px-5 text-center">
+              <h2 className="text-2xl md:text-3xl font-bold text-white font-heading mb-2 leading-tight">
+                Never Miss a Session
+              </h2>
+              <p className="text-sm text-gray-400 leading-snug mb-5">
+                New workshops, bootcamps, and meetups are announced on our social channels first.
+                Follow along and be the first to grab a seat.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <a
+                  href={SOCIAL.x}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary inline-flex items-center justify-center text-sm"
+                >
+                  Follow on X
+                </a>
+                <a
+                  href={SOCIAL.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-secondary inline-flex items-center justify-center text-sm"
+                >
+                  Connect on LinkedIn
+                </a>
+              </div>
             </div>
-          </div>
-        </section>
-
-        {/* Events Content */}
-        <section className="py-20 bg-dark-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            
-            {/* Upcoming Events */}
-            {activeTab === 'upcoming' && (
-              <>
-                <div className="text-center mb-12">
-                  <h2 className="text-3xl font-bold font-heading text-gold-500 mb-4">
-                    Upcoming Events
-                  </h2>
-                  <p className="text-gray-400 max-w-2xl mx-auto">
-                    {upcoming.length > 0 
-                      ? "Register now and don't miss out on these learning opportunities!"
-                      : "No upcoming events scheduled. Check back soon for new workshops!"
-                    }
-                  </p>
-                </div>
-
-                {upcoming.length > 0 ? (
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {upcoming.map(event => (
-                      <EventCard key={event.id} event={event} isPast={false} />
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-16">
-                    <Calendar className="mx-auto text-gold-500/30 mb-4" size={64} />
-                    <p className="text-gray-400 text-lg">No upcoming events at the moment</p>
-                    <p className="text-gray-500 mt-2">We're planning new workshops - stay tuned!</p>
-                  </div>
-                )}
-              </>
-            )}
-
-            {/* Past Events */}
-            {activeTab === 'past' && (
-              <>
-                <div className="text-center mb-12">
-                  <h2 className="text-3xl font-bold font-heading text-gold-500 mb-4">
-                    Past Events & Gallery
-                  </h2>
-                  <p className="text-gray-400 max-w-2xl mx-auto">
-                    Take a look at the workshops and events we've conducted. Click on any event to view photos!
-                  </p>
-                </div>
-
-                {past.length > 0 ? (
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {past.map(event => (
-                      <EventCard key={event.id} event={event} isPast={true} />
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-16">
-                    <ImageIcon className="mx-auto text-gray-500/30 mb-4" size={64} />
-                    <p className="text-gray-400 text-lg">No past events to display yet</p>
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="py-20 bg-dark-100">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold font-heading text-gold-500 mb-6">
-              Want to Stay Updated?
-            </h2>
-            <p className="text-gray-400 text-lg mb-8 max-w-2xl mx-auto">
-              Follow us on social media to get notified about upcoming events, workshops, 
-              and the latest developments in AI and Blockchain.
-            </p>
-            <div className="flex justify-center gap-4">
-              <a href={SOCIAL.x} target="_blank" rel="noopener noreferrer" className="btn-primary">
-                Follow on X
-              </a>
-              <a href={SOCIAL.linkedin} target="_blank" rel="noopener noreferrer" className="btn-secondary">
-                Connect on LinkedIn
-              </a>
-            </div>
-          </div>
-        </section>
+          </section>
+        </main>
 
         <Footer />
       </div>
 
-      {/* Image Gallery Modal */}
-      {selectedEvent && selectedEvent.images && selectedEvent.images.length > 0 && (
+      {/* Gallery modal */}
+      {selectedEvent?.images?.length > 0 && (
         <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
-          {/* Close Button */}
-          <button 
+          <button
+            type="button"
             onClick={closeGallery}
             className="absolute top-4 right-4 text-white hover:text-gold-500 transition-colors z-10"
+            aria-label="Close gallery"
           >
             <X size={32} />
           </button>
 
-          {/* Event Info */}
-          <div className="absolute top-4 left-4 text-white z-10">
-            <h3 className="text-xl font-bold font-heading text-gold-500">{selectedEvent.title}</h3>
-            <p className="text-gray-400">{formatDate(selectedEvent.date)} • {selectedEvent.venue}</p>
+          <div className="absolute top-4 left-4 text-white z-10 max-w-[80%]">
+            <h3 className="text-lg font-bold text-gold-500">{selectedEvent.title}</h3>
+            <p className="text-sm text-gray-400">
+              {formatDate(selectedEvent.date)} · {selectedEvent.venue || selectedEvent.location}
+            </p>
           </div>
 
-          {/* Navigation */}
           {selectedEvent.images.length > 1 && (
             <>
-              <button 
+              <button
+                type="button"
                 onClick={prevImage}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-gold-500 transition-colors bg-black/50 p-2 rounded-full"
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-gold-500 bg-black/50 p-2 rounded-full"
+                aria-label="Previous image"
               >
                 <ChevronLeft size={32} />
               </button>
-              <button 
+              <button
+                type="button"
                 onClick={nextImage}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-gold-500 transition-colors bg-black/50 p-2 rounded-full"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-gold-500 bg-black/50 p-2 rounded-full"
+                aria-label="Next image"
               >
                 <ChevronRight size={32} />
               </button>
             </>
           )}
 
-          {/* Image */}
-          <img 
+          <img
             src={selectedEvent.images[currentImageIndex]}
-            alt={`${selectedEvent.title} - Photo ${currentImageIndex + 1}`}
+            alt={`${selectedEvent.title} — photo ${currentImageIndex + 1}`}
             className="max-w-full max-h-[80vh] object-contain rounded-lg"
             onError={(e) => {
-              e.target.src = 'https://via.placeholder.com/800x600?text=Photo+Not+Found';
+              e.target.alt = 'Photo unavailable';
             }}
           />
 
-          {/* Image Counter */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white bg-black/50 px-4 py-2 rounded-full">
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white bg-black/50 px-4 py-2 rounded-full text-sm">
             {currentImageIndex + 1} / {selectedEvent.images.length}
           </div>
         </div>

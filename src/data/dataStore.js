@@ -51,57 +51,132 @@ const defaultTeamData = {
 const defaultEventsData = [
   {
     id: 101,
+    title: 'Web3 & Smart Contracts Bootcamp',
+    date: '2026-03-20',
+    time: '2:00 PM – 6:00 PM',
+    location: 'Beta Tech Labs, Kabale Main Town',
+    venue: 'Beta Tech Labs HQ',
+    category: 'Bootcamp',
+    description:
+      'A hands-on afternoon building on-chain — from Solidity fundamentals to deploying your first smart contract. Participants left with a working dApp prototype and a clear mental model of Web3 security pitfalls.',
+    attendees: 42,
+    images: [],
+    highlights: ['Solidity', 'Web3.js', 'Smart Contract Security'],
+    registrationLink: '',
+  },
+  {
+    id: 105,
+    title: 'Stellar & Soroban Developer Day',
+    date: '2026-02-08',
+    time: '10:00 AM – 4:00 PM',
+    location: 'Kabale University, Computer Science Lab',
+    venue: 'Kabale University',
+    category: 'Workshop',
+    description:
+      'East Africa\'s growing Stellar ecosystem came to Kabale. Students and developers built Soroban smart contracts, connected Freighter wallets, and explored real use cases for cross-border payments and tokenized assets.',
+    attendees: 38,
+    images: [],
+    highlights: ['Stellar', 'Soroban', 'Freighter Wallet'],
+    registrationLink: '',
+  },
+  {
+    id: 106,
+    title: 'AI Fundamentals for Builders',
+    date: '2025-11-22',
+    time: '9:00 AM – 3:00 PM',
+    location: 'Beta Tech Labs, Kabale Main Town',
+    venue: 'Beta Tech Labs HQ',
+    category: 'Workshop',
+    description:
+      'A full-day introduction to machine learning for students and early-career developers. Covered data pipelines, model training, and deploying a simple computer-vision demo — no PhD required, just curiosity and a laptop.',
+    attendees: 55,
+    images: [],
+    highlights: ['Machine Learning', 'Computer Vision', 'Python'],
+    registrationLink: '',
+  },
+  {
+    id: 107,
+    title: 'Kabale Tech Innovation Meetup',
+    date: '2026-01-18',
+    time: '3:00 PM – 6:00 PM',
+    location: 'Numba Cafe, Kabale Main Town',
+    venue: 'Numba Cafe',
+    category: 'Meetup',
+    description:
+      'An open evening for founders, students, and engineers to share what they are building. Lightning talks on AI products, blockchain pilots, and student startup ideas — followed by networking over coffee.',
+    attendees: 60,
+    images: [],
+    highlights: ['Networking', 'Lightning Talks', 'Startups'],
+    registrationLink: '',
+  },
+  {
+    id: 103,
+    title: 'React & Modern Frontend Workshop',
+    date: '2026-07-05',
+    time: '10:00 AM – 3:00 PM',
+    location: 'Beta Tech Labs, Kabale Main Town',
+    venue: 'Beta Tech Labs HQ',
+    category: 'Workshop',
+    description:
+      'Ship interfaces that feel production-ready. This workshop covers React component architecture, state management patterns, API integration, and performance basics — with a capstone mini-app you build and deploy the same day.',
+    attendees: 35,
+    images: [],
+    highlights: ['React.js', 'State Management', 'UI Engineering'],
+    registrationLink: 'https://forms.gle/placeholder-register',
+  },
+  {
+    id: 104,
     title: 'Advanced AI & Deep Learning',
     date: '2026-08-15',
-    time: '9:00 AM - 4:00 PM',
-    location: 'Beta Tech Hub, Kabale',
-    venue: 'Beta Tech Hub',
-    description: 'Deep dive into neural networks, computer vision, and natural language processing. Build advanced AI models.',
+    time: '9:00 AM – 4:00 PM',
+    location: 'Beta Tech Labs, Kabale Main Town',
+    venue: 'Beta Tech Labs HQ',
+    category: 'Bootcamp',
+    description:
+      'Go beyond tutorials. Neural network architectures, transfer learning, NLP pipelines, and computer-vision workflows — taught through live coding sessions and a team challenge you present at the end of the day.',
     attendees: 30,
     images: [],
     highlights: ['Deep Learning', 'Computer Vision', 'NLP'],
-    registrationLink: 'https://forms.gle/placeholder-register'
+    registrationLink: 'https://forms.gle/placeholder-register',
   },
   {
     id: 102,
     title: 'Rust & Solana Development',
     date: '2026-09-10',
-    time: '10:00 AM - 5:00 PM',
+    time: '10:00 AM – 5:00 PM',
     location: 'Kabale University, Tech Lab',
     venue: 'Kabale University',
-    description: 'Learn Rust and build high-performance applications on Solana blockchain.',
+    category: 'Bootcamp',
+    description:
+      'High-performance blockchain development from the ground up. Learn Rust syntax and patterns, then apply them to Solana programs — building, testing, and deploying on devnet with mentor support throughout.',
     attendees: 25,
     images: [],
-    highlights: ['Rust Programming', 'Solana Blockchain', 'DeFi'],
-    registrationLink: 'https://forms.gle/placeholder-register'
+    highlights: ['Rust', 'Solana', 'On-Chain Programs'],
+    registrationLink: 'https://forms.gle/placeholder-register',
   },
-  {
-    id: 103,
-    title: 'Web3 & Smart Contracts Bootcamp',
-    date: '2026-03-20',
-    time: '2:00 PM - 6:00 PM',
-    location: 'Beta Tech Hub, Kabale',
-    venue: 'Beta Tech Hub',
-    description: 'Hands-on bootcamp for learning smart contracts and Web3 development.',
-    attendees: 40,
-    images: [],
-    highlights: ['Solidity', 'Web3.js', 'Security'],
-    registrationLink: 'https://forms.gle/placeholder-register'
-  },
-  {
-    id: 104,
-    title: 'React & Frontend Development Workshop',
-    date: '2026-07-05',
-    time: '10:00 AM - 3:00 PM',
-    location: 'Beta Tech Hub, Kabale',
-    venue: 'Beta Tech Hub',
-    description: 'Master React, state management, and modern frontend practices.',
-    attendees: 35,
-    images: [],
-    highlights: ['React.js', 'State Management', 'UI/UX'],
-    registrationLink: 'https://forms.gle/placeholder-register'
-  }
 ];
+const mergeEventsWithDefaults = (stored) => {
+  if (!stored || !Array.isArray(stored) || stored.length === 0) {
+    return defaultEventsData;
+  }
+
+  const merged = defaultEventsData.map((def) => {
+    const match = stored.find(
+      (e) => e.id === def.id || e.title?.toLowerCase() === def.title?.toLowerCase()
+    );
+    return match ? { ...def, ...match, title: def.title } : def;
+  });
+
+  stored.forEach((event) => {
+    const known = defaultEventsData.some(
+      (d) => d.id === event.id || d.title?.toLowerCase() === event.title?.toLowerCase()
+    );
+    if (!known) merged.push(event);
+  });
+
+  return merged;
+};
+
 const defaultServicesData = {
   core: [
     {
@@ -365,7 +440,7 @@ export const resetTeamData = async () => {
 export const getEventsData = async () => {
   try {
     const data = await firebaseGet('betaTechLabs/events');
-    return data || defaultEventsData;
+    return mergeEventsWithDefaults(data);
   } catch (e) {
     console.error('Error getting events data:', e);
     return defaultEventsData;
