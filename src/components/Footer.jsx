@@ -1,113 +1,58 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Brain,
-  Link as LinkIcon,
-  Settings,
   Mail,
   MapPin,
   Phone,
   Clock,
   Send,
-  Handshake,
-  MessageCircle,
-  Heart,
   ChevronUp,
-  ChevronRight,
-  Check,
   Twitter,
   Linkedin,
   Github,
-  X,
-  MessageCircleMore,
-  PhoneCall,
   CheckCircle,
 } from 'lucide-react';
+import logo from '../assets/logo.png';
 import { SITE, CONTACT, SOCIAL } from '../config/site';
+
+const QUICK_LINKS = [
+  { name: 'Home', href: '/' },
+  { name: 'How We Work', href: '/#about' },
+  { name: 'Our Focus', href: '/#our-focus' },
+  { name: 'Team', href: '/#team' },
+  { name: 'Projects', href: '/projects' },
+  { name: 'Events', href: '/events' },
+  { name: 'Contact', href: '/#contact' },
+];
+
+const FOCUS_AREAS = [
+  'Research & Innovation',
+  'Product Development',
+  'Solution Engineering',
+  'Talent Development',
+];
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  const [showConversationOptions, setShowConversationOptions] = useState(false);
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterStatus, setNewsletterStatus] = useState(null);
 
-  const quickLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'About Us', href: '/#about' },
-    { name: 'Projects', href: '/projects' },
-    { name: 'Events', href: '/events' },
-    { name: 'Contact', href: '/contact' },
-  ];
-
-  const services = [
-    'AI Research & Development',
-    'Blockchain Solutions',
-    'Software Engineering',
-    'Student Internships',
-    'Final Year Projects',
-    'Tech Consultancy',
-  ];
-
   const contactInfo = [
-    { icon: MapPin, text: SITE.location },
+    {
+      icon: MapPin,
+      text: CONTACT.address.headline,
+      sub: CONTACT.address.area,
+      link: CONTACT.mapLinkUrl,
+    },
     { icon: Mail, text: CONTACT.email, link: `mailto:${CONTACT.email}` },
     { icon: Phone, text: CONTACT.phone, link: `tel:${CONTACT.phoneTel}` },
     { icon: Clock, text: CONTACT.hours },
   ];
 
   const socialLinks = [
-    {
-      icon: Twitter,
-      name: 'X / Twitter',
-      href: SOCIAL.x,
-      color: 'hover:text-white hover:bg-black',
-      ariaLabel: 'Follow us on X',
-    },
-    {
-      icon: Linkedin,
-      name: 'LinkedIn',
-      href: SOCIAL.linkedin,
-      color: 'hover:text-white hover:bg-blue-600',
-      ariaLabel: 'Connect on LinkedIn',
-    },
-    {
-      icon: Github,
-      name: 'GitHub',
-      href: SOCIAL.github,
-      color: 'hover:text-white hover:bg-gray-800',
-      ariaLabel: 'View our GitHub',
-    },
-  ];
-
-  const conversationOptions = [
-    {
-      icon: Mail,
-      name: 'Email',
-      description: 'Send us an email',
-      action: () => window.open(`mailto:${CONTACT.email}`, '_blank'),
-      bgColor: 'bg-red-500/10',
-      textColor: 'text-red-400',
-      color: 'hover:bg-red-500 hover:text-white',
-    },
-    {
-      icon: MessageCircleMore,
-      name: 'WhatsApp',
-      description: 'Chat with us on WhatsApp',
-      action: () =>
-        window.open(`https://wa.me/${CONTACT.whatsapp}`, '_blank'),
-      bgColor: 'bg-green-500/10',
-      textColor: 'text-green-400',
-      color: 'hover:bg-green-500 hover:text-white',
-    },
-    {
-      icon: PhoneCall,
-      name: 'Phone Call',
-      description: 'Call us directly',
-      action: () => window.open(`tel:${CONTACT.phoneTel}`, '_blank'),
-      bgColor: 'bg-blue-500/10',
-      textColor: 'text-blue-400',
-      color: 'hover:bg-blue-500 hover:text-white',
-    },
+    { icon: Twitter, href: SOCIAL.x, label: 'X' },
+    { icon: Linkedin, href: SOCIAL.linkedin, label: 'LinkedIn' },
+    { icon: Github, href: SOCIAL.github, label: 'GitHub' },
   ];
 
   const handleNewsletter = (e) => {
@@ -122,253 +67,185 @@ const Footer = () => {
     setTimeout(() => setNewsletterStatus(null), 4000);
   };
 
+  const renderLink = (link) => {
+    const className = 'text-sm text-gray-400 hover:text-gold-500 transition-colors leading-snug';
+    if (link.href.startsWith('/#')) {
+      return (
+        <a href={link.href} className={className}>
+          {link.name}
+        </a>
+      );
+    }
+    return (
+      <Link to={link.href} className={className}>
+        {link.name}
+      </Link>
+    );
+  };
+
   return (
-    <>
-      <footer className="bg-dark-200 border-t border-gold-500/20 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute bottom-10 left-10 w-40 h-40 bg-gold-500 rounded-full blur-3xl" />
-          <div className="absolute top-10 right-10 w-32 h-32 bg-gold-300 rounded-full blur-3xl" />
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-            <div className="lg:col-span-1">
-              <div className="flex items-center space-x-3 mb-6">
-                <div className="w-12 h-12 bg-gold-500 rounded-lg flex items-center justify-center shadow-gold">
-                  <Brain className="text-dark-200" size={24} />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-gold-500">{SITE.name}</h3>
-                  <p className="text-sm text-gray-400 -mt-1">{SITE.tagline}</p>
-                </div>
+    <footer className="bg-dark-200 border-t border-gray-800 relative">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5 py-8 md:py-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-6 md:gap-8">
+          {/* Brand */}
+          <div className="lg:col-span-4">
+            <Link to="/" className="inline-flex items-center gap-3 mb-3">
+              <img
+                src={logo}
+                alt={`${SITE.name} logo`}
+                className="w-11 h-11 rounded-lg object-cover"
+              />
+              <div>
+                <p className="text-base font-bold text-gold-500 leading-snug">{SITE.name}</p>
+                <p className="text-xs text-gray-500 leading-snug">{SITE.tagline}</p>
               </div>
-              <p className="text-gray-400 mb-6 leading-relaxed">
-                Driving innovation in AI and Blockchain from {SITE.location}. Research-led
-                software for teams that want real results.
-              </p>
-              <div className="flex space-x-4">
-                {socialLinks.map((social) => {
-                  const SocialIcon = social.icon;
-                  return (
-                    <a
-                      key={social.name}
-                      href={social.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`w-10 h-10 bg-dark-100 rounded-lg flex items-center justify-center text-gray-400 border border-gray-700 transition-all duration-300 hover:border-gold-500 hover:scale-110 ${social.color}`}
-                      aria-label={social.ariaLabel}
-                    >
-                      <SocialIcon size={18} />
-                    </a>
-                  );
-                })}
-              </div>
+            </Link>
+            <p className="text-sm text-gray-400 leading-snug mb-4 max-w-sm">
+              Research-led AI and blockchain engineering from {SITE.location}. We help teams turn
+              ideas into products that work in the real world.
+            </p>
+            <div className="flex gap-2">
+              {socialLinks.map((social) => {
+                const Icon = social.icon;
+                return (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-9 h-9 rounded-lg border border-gray-700 bg-dark-100 flex items-center justify-center text-gray-400 hover:text-gold-500 hover:border-gold-500/30 transition-colors"
+                    aria-label={social.label}
+                  >
+                    <Icon size={16} />
+                  </a>
+                );
+              })}
             </div>
+          </div>
 
-            <div>
-              <h4 className="text-gold-500 font-semibold text-lg mb-6 flex items-center">
-                <LinkIcon className="mr-2" size={20} />
-                Quick Links
-              </h4>
-              <ul className="space-y-3">
-                {quickLinks.map((link) => (
-                  <li key={link.name}>
-                    {link.href.startsWith('/#') ? (
-                      <a
-                        href={link.href}
-                        className="text-gray-400 hover:text-gold-500 transition-colors duration-300 flex items-center group"
-                      >
-                        <ChevronRight className="text-gold-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300" size={14} />
-                        {link.name}
-                      </a>
-                    ) : (
-                      <Link
-                        to={link.href}
-                        className="text-gray-400 hover:text-gold-500 transition-colors duration-300 flex items-center group"
-                      >
-                        <ChevronRight className="text-gold-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300" size={14} />
-                        {link.name}
-                      </Link>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
+          {/* Quick links */}
+          <div className="lg:col-span-2">
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-gold-500 mb-3">
+              Quick Links
+            </h4>
+            <ul className="space-y-2">
+              {QUICK_LINKS.map((link) => (
+                <li key={link.name}>{renderLink(link)}</li>
+              ))}
+            </ul>
+          </div>
 
-            <div>
-              <h4 className="text-gold-500 font-semibold text-lg mb-6 flex items-center">
-                <Settings className="mr-2" size={20} />
-                Our Services
-              </h4>
-              <ul className="space-y-3">
-                {services.map((service) => (
-                  <li key={service}>
-                    <Link
-                      to="/services"
-                      className="text-gray-400 hover:text-gold-500 transition-colors duration-300 flex items-center group"
-                    >
-                      <Check className="text-gold-500 mr-2 opacity-70" size={14} />
-                      {service}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          {/* Focus areas */}
+          <div className="lg:col-span-3">
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-gold-500 mb-3">
+              What We Do
+            </h4>
+            <ul className="space-y-2">
+              {FOCUS_AREAS.map((area) => (
+                <li key={area}>
+                  <Link
+                    to="/#our-focus"
+                    className="text-sm text-gray-400 hover:text-gold-500 transition-colors leading-snug flex items-start gap-2"
+                  >
+                    <span className="text-gold-500/60 mt-0.5">·</span>
+                    {area}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-            <div>
-              <h4 className="text-gold-500 font-semibold text-lg mb-6 flex items-center">
-                <Mail className="mr-2" size={20} />
-                Get In Touch
-              </h4>
-              <ul className="space-y-4">
-                {contactInfo.map((contact, index) => {
-                  const ContactIcon = contact.icon;
-                  return (
-                    <li key={index} className="flex items-start space-x-3">
-                      <ContactIcon className="text-gold-500 mt-0.5 flex-shrink-0" size={16} />
-                      {contact.link ? (
-                        <a href={contact.link} className="text-gray-400 hover:text-gold-500 transition-colors duration-300">
-                          {contact.text}
+          {/* Contact */}
+          <div className="lg:col-span-3">
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-gold-500 mb-3">
+              Contact
+            </h4>
+            <ul className="space-y-2.5 mb-4">
+              {contactInfo.map((item, index) => {
+                const Icon = item.icon;
+                return (
+                  <li key={index} className="flex items-start gap-2.5">
+                    <Icon className="text-gold-500/80 flex-shrink-0 mt-0.5" size={14} />
+                    <div className="min-w-0">
+                      {item.link ? (
+                        <a
+                          href={item.link}
+                          target={item.link.startsWith('http') ? '_blank' : undefined}
+                          rel={item.link.startsWith('http') ? 'noopener noreferrer' : undefined}
+                          className="text-sm text-gray-400 hover:text-gold-500 transition-colors leading-snug block"
+                        >
+                          {item.text}
                         </a>
                       ) : (
-                        <span className="text-gray-400">{contact.text}</span>
+                        <span className="text-sm text-gray-400 leading-snug block">{item.text}</span>
                       )}
-                    </li>
-                  );
-                })}
-              </ul>
+                      {item.sub && (
+                        <span className="text-xs text-gray-500 leading-snug block">{item.sub}</span>
+                      )}
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
 
-              <form onSubmit={handleNewsletter} className="mt-6">
-                <h5 className="text-gold-400 font-medium mb-3">Stay Updated</h5>
-                <div className="flex">
-                  <input
-                    type="email"
-                    value={newsletterEmail}
-                    onChange={(e) => setNewsletterEmail(e.target.value)}
-                    placeholder="Enter your email"
-                    required
-                    className="flex-1 px-4 py-2 bg-dark-100 border border-gray-700 rounded-l-lg focus:outline-none focus:border-gold-500 text-white placeholder-gray-500"
-                  />
-                  <button
-                    type="submit"
-                    className="bg-gold-500 hover:bg-gold-600 text-dark-200 px-4 py-2 rounded-r-lg transition-colors duration-300 font-medium flex items-center"
-                  >
-                    <Send size={16} />
-                  </button>
-                </div>
-                {newsletterStatus === 'success' && (
-                  <p className="text-green-400 text-xs mt-2 flex items-center">
-                    <CheckCircle size={12} className="mr-1" />
-                    Check your email client to confirm.
-                  </p>
-                )}
-              </form>
-            </div>
-          </div>
-
-          <div className="mt-12 pt-8 border-t border-gray-700">
-            <div className="bg-gold-500/10 border border-gold-500/30 rounded-xl p-6 text-center">
-              <h4 className="text-gold-500 font-semibold text-lg mb-2 flex items-center justify-center">
-                <Handshake className="mr-2" size={20} />
-                Looking to Partner With Us?
-              </h4>
-              <p className="text-gray-400 mb-4">
-                Collaborations, research partnerships, and joint projects in AI and Blockchain.
-              </p>
-              <button onClick={() => setShowConversationOptions(true)} className="btn-primary">
-                <MessageCircle className="mr-2" size={16} />
-                Start Conversation
-              </button>
-            </div>
+            <form onSubmit={handleNewsletter}>
+              <p className="text-xs font-medium text-gray-500 mb-2">Stay updated</p>
+              <div className="flex">
+                <input
+                  type="email"
+                  value={newsletterEmail}
+                  onChange={(e) => setNewsletterEmail(e.target.value)}
+                  placeholder="Your email"
+                  required
+                  className="flex-1 min-w-0 px-3 py-2 text-sm bg-dark-100 border border-gray-700 rounded-l-lg focus:outline-none focus:border-gold-500 text-white placeholder-gray-500"
+                />
+                <button
+                  type="submit"
+                  className="bg-gold-500 hover:bg-gold-600 text-dark-200 px-3 py-2 rounded-r-lg transition-colors"
+                  aria-label="Subscribe"
+                >
+                  <Send size={15} />
+                </button>
+              </div>
+              {newsletterStatus === 'success' && (
+                <p className="text-green-400 text-xs mt-1.5 flex items-center gap-1 leading-snug">
+                  <CheckCircle size={12} />
+                  Check your email client to confirm.
+                </p>
+              )}
+            </form>
           </div>
         </div>
+      </div>
 
-        <div className="border-t border-gray-800 relative">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-              <div className="text-gray-500 text-sm">
-                &copy; {currentYear} {SITE.name}. All rights reserved.
-              </div>
-              <div className="flex items-center space-x-4 text-sm text-gray-500">
-                <span className="flex items-center">
-                  Made with <Heart className="text-red-500 mx-1" size={14} fill="currentColor" /> in Uganda
-                </span>
-              </div>
-              <div className="flex space-x-6">
-                <Link to="/privacy" className="text-gray-500 hover:text-gold-500 transition-colors duration-300 text-sm">
-                  Privacy Policy
-                </Link>
-                <Link to="/terms" className="text-gray-500 hover:text-gold-500 transition-colors duration-300 text-sm">
-                  Terms of Service
-                </Link>
-                <Link to="/cookies" className="text-gray-500 hover:text-gold-500 transition-colors duration-300 text-sm">
-                  Cookies
-                </Link>
-              </div>
-            </div>
-          </div>
-          <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-gold-500 to-transparent" />
-        </div>
-
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="fixed bottom-8 right-8 w-12 h-12 bg-gold-500 hover:bg-gold-600 text-dark-200 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110 flex items-center justify-center z-40"
-          aria-label="Back to top"
-        >
-          <ChevronUp size={20} />
-        </button>
-      </footer>
-
-      {showConversationOptions && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-dark-100 border border-gold-500/30 rounded-2xl shadow-2xl max-w-md w-full mx-auto animate-scale-in">
-            <div className="flex items-center justify-between p-6 border-b border-gray-700">
-              <h3 className="text-xl font-bold text-gold-500 flex items-center">
-                <MessageCircle className="mr-2" size={20} />
-                Start a Conversation
-              </h3>
-              <button
-                onClick={() => setShowConversationOptions(false)}
-                className="text-gray-400 hover:text-gold-500 transition-colors duration-300 p-1 rounded-lg hover:bg-gold-500/10"
-              >
-                <X size={20} />
-              </button>
-            </div>
-            <div className="p-6">
-              <p className="text-gray-400 mb-6 text-center">Choose your preferred way to get in touch</p>
-              <div className="space-y-4">
-                {conversationOptions.map((option, index) => {
-                  const OptionIcon = option.icon;
-                  return (
-                    <button
-                      key={index}
-                      onClick={() => {
-                        option.action();
-                        setShowConversationOptions(false);
-                      }}
-                      className={`w-full p-4 rounded-xl border border-gray-700 transition-all duration-300 transform hover:scale-105 flex items-center space-x-4 ${option.bgColor} ${option.color} group`}
-                    >
-                      <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${option.bgColor} group-hover:bg-white/20 transition-colors duration-300`}>
-                        <OptionIcon className={`${option.textColor} group-hover:text-white transition-colors duration-300`} size={24} />
-                      </div>
-                      <div className="text-left flex-1">
-                        <h4 className={`font-semibold ${option.textColor} group-hover:text-white transition-colors duration-300`}>
-                          {option.name}
-                        </h4>
-                        <p className="text-gray-400 group-hover:text-gray-300 transition-colors duration-300 text-sm">
-                          {option.description}
-                        </p>
-                      </div>
-                      <ChevronRight className="text-gray-400 group-hover:text-white transition-colors duration-300" size={16} />
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
+      {/* Bottom bar */}
+      <div className="border-t border-gray-800">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <p className="text-xs text-gray-500 leading-snug">
+            &copy; {currentYear} {SITE.name}. All rights reserved.
+          </p>
+          <div className="flex flex-wrap gap-x-5 gap-y-1">
+            <Link to="/privacy" className="text-xs text-gray-500 hover:text-gold-500 transition-colors">
+              Privacy Policy
+            </Link>
+            <Link to="/terms" className="text-xs text-gray-500 hover:text-gold-500 transition-colors">
+              Terms of Service
+            </Link>
+            <Link to="/cookies" className="text-xs text-gray-500 hover:text-gold-500 transition-colors">
+              Cookies
+            </Link>
           </div>
         </div>
-      )}
-    </>
+      </div>
+
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        className="fixed bottom-6 right-6 w-10 h-10 bg-gold-500 hover:bg-gold-600 text-dark-200 rounded-full shadow-lg transition-colors flex items-center justify-center z-40"
+        aria-label="Back to top"
+      >
+        <ChevronUp size={18} />
+      </button>
+    </footer>
   );
 };
 

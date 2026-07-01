@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import SEO from '../components/SEO';
 import Header from '../components/Header';
 import Hero from '../components/Hero';
-import Partners from '../components/Partners';
 import About from '../components/About';
-import HireUs from '../components/HireUs';
+import OurFocus from '../components/OurFocus';
 import Team from '../components/Team';
 import Testimonials from '../components/Testimonials';
 import Contact from '../components/Contact';
@@ -12,6 +11,16 @@ import Footer from '../components/Footer';
 import { SITE } from '../config/site';
 
 const Home = () => {
+  useEffect(() => {
+    if (window.location.hash) {
+      const id = window.location.hash.slice(1);
+      const el = document.getElementById(id);
+      if (el) {
+        setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 100);
+      }
+    }
+  }, []);
+
   return (
     <>
       <SEO
@@ -26,18 +35,11 @@ const Home = () => {
         <Header />
         <main className="flex-1">
           <Hero />
-          <Partners />
-          <div className="section-spacing">
-            <About />
-          </div>
-          <HireUs />
-          <div className="section-spacing">
-            <Team />
-          </div>
+          <About />
+          <OurFocus />
+          <Team />
           <Testimonials />
-          <div className="section-spacing">
-            <Contact />
-          </div>
+          <Contact />
         </main>
         <Footer className="footer-fix" />
       </div>

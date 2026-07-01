@@ -13,6 +13,7 @@ const StructuredData = () => {
     foundingDate: SITE.foundedYear,
     address: {
       '@type': 'PostalAddress',
+      streetAddress: CONTACT.address.headline,
       addressLocality: 'Kabale',
       addressRegion: 'Western Region',
       addressCountry: 'UG',
@@ -55,6 +56,7 @@ const StructuredData = () => {
     email: CONTACT.email,
     address: {
       '@type': 'PostalAddress',
+      streetAddress: CONTACT.address.headline,
       addressLocality: 'Kabale',
       addressRegion: 'Western Region',
       addressCountry: 'UG',

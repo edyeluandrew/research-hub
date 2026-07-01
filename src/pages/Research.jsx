@@ -10,7 +10,7 @@ const Research = () => {
   const navigate = useNavigate();
 
   const handleContactResearchTeam = () => {
-    navigate('/contact');
+    navigate('/#contact');
   };
 
   return (

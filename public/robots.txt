@@ -6,7 +6,6 @@ Allow: /
 Allow: /services
 Allow: /research
 Allow: /events
-Allow: /contact
 Allow: /privacy
 Allow: /terms
 Allow: /cookies

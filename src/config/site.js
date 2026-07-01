@@ -3,7 +3,7 @@ export const SITE = {
   shortName: 'BetaTech',
   tagline: 'AI & Blockchain Research Hub',
   url: 'https://www.beta-techlabs.com',
-  location: 'Kabale, Uganda',
+  location: 'Kabale Main Town, Uganda',
   foundedYear: '2024',
   gaMeasurementId: import.meta.env.VITE_GA_MEASUREMENT_ID || 'G-DQ38RGHM64',
 };
@@ -16,8 +16,18 @@ export const CONTACT = {
   officePhoneTel: '+256791018086',
   whatsapp: '256764331334',
   hours: 'Mon - Fri: 9:00 AM - 5:00 PM',
+  address: {
+    headline: 'Behind Kabale Central Police Station',
+    area: 'Kabale Main Town, Uganda',
+    road: 'Kabale–Kisoro Road',
+    landmark: 'Opposite Numba Cafe · Near All Saints Church',
+    directions:
+      'On Kabale–Kisoro Road in main town. Numba Cafe sits opposite the police station, next to All Saints Church. Beta-Tech Labs is in the building behind the station.',
+  },
   mapEmbedUrl:
-    'https://maps.google.com/maps?q=Kabale%2C%20Uganda&z=13&output=embed',
+    'https://maps.google.com/maps?q=Kabale+Central+Police+Station,+Kabale-Kisoro+Road,+Kabale,+Uganda&z=18&output=embed',
+  mapLinkUrl:
+    'https://www.google.com/maps/search/?api=1&query=Kabale+Central+Police+Station,+Kabale,+Uganda',
 };
 
 export const SOCIAL = {
@@ -29,7 +39,7 @@ export const SOCIAL = {
 };
 
 export const STATS = {
-  projects: '5+',
+  projects: '6+',
   studentsTrained: '33+',
   researchPapers: '3+',
   teamMembers: 5,
@@ -39,21 +49,27 @@ export const STATS = {
 export const TESTIMONIALS = [
   {
     quote:
-      'Beta Tech Labs delivered a solid AI prototype for our agri-tech pilot. Their research-first approach gave us confidence before we invested further.',
-    name: 'Sarah N.',
-    role: 'Startup Founder, Kampala',
+      'We had an agri-tech idea but no clear technical path. Beta-Tech Labs spent time understanding our farmers first, then built a crop-monitoring prototype that ran on the devices we already had. That research-first discipline saved us from building the wrong product.',
+    name: 'Nakamatte Patricia',
+    role: 'Founder',
+    organization: 'GreenHarvest Solutions',
+    location: 'Kampala, Uganda',
   },
   {
     quote:
-      'The internship program transformed how our students approach real-world software projects. Practical, rigorous, and locally grounded.',
-    name: 'Dr. James M.',
-    role: 'Faculty Advisor, Kabale',
+      'Our students needed exposure to how software is actually built and shipped. The collaboration with Beta-Tech Labs gave them structured mentorship, real deliverables, and a standard we now expect in every project cycle.',
+    name: 'Dr. Okello Emmanuel',
+    role: 'Senior Lecturer, Computer Science',
+    organization: 'Kabale University',
+    location: 'Kabale, Uganda',
   },
   {
     quote:
-      'We needed blockchain consulting without the hype. They mapped our use case honestly and built a working proof of concept on schedule.',
-    name: 'Daniel K.',
-    role: 'Product Lead',
+      'We approached them for blockchain consulting and expected the usual hype. Instead, they challenged our assumptions, scoped an honest proof of concept, and delivered working code with clear documentation — on the timeline we agreed.',
+    name: 'Mugisha Brian',
+    role: 'Product Manager',
+    organization: 'SwiftPay Africa',
+    location: 'Mbarara, Uganda',
   },
 ];
 
