@@ -26,6 +26,8 @@ import {
   saveTeamData, 
   getEventsData, 
   saveEventsData,
+  getServicesData,
+  saveServicesData,
   getProjectsData,
   saveProjectsData
 } from '../data/dataStore';
@@ -64,10 +66,15 @@ const Admin = () => {
         if (projectsData) {
           setProjects(Array.isArray(projectsData) ? projectsData : []);
         }
-        
-        // Load services from localStorage (no Firebase sync for services yet)
-        const savedServices = localStorage.getItem('betaTechHubServices');
-        if (savedServices) setServices(JSON.parse(savedServices));
+
+        const servicesData = await getServicesData();
+        if (servicesData) {
+          const flatServices = [
+            ...(servicesData.core || []).map((s) => ({ ...s, isCore: true })),
+            ...(servicesData.additional || []).map((s) => ({ ...s, isCore: false })),
+          ];
+          setServices(flatServices);
+        }
       } catch (error) {
         console.error('Error loading data:', error);
       } finally {
@@ -78,59 +85,21 @@ const Admin = () => {
     loadData();
   }, []);
 
-  // Sync team data to Firebase
-  useEffect(() => {
-    if (teamMembers.length > 0 && !loading) {
-      const syncTeamData = async () => {
-        const currentTeamData = await getTeamData();
-        const updatedTeamData = {
-          ...currentTeamData,
-          ceo: teamMembers[0], // First member is CEO
-          topRow: teamMembers.slice(1, 3), // Next 2 are top row
-          bottomRow: teamMembers.slice(3) // Rest are bottom row
-        };
-        await saveTeamData(updatedTeamData);
-      };
-      syncTeamData();
-    }
-  }, [teamMembers, loading]);
+  const persistTeam = async (members) => {
+    if (members.length === 0) return;
+    await saveTeamData({
+      ceo: members[0],
+      topRow: members.slice(1, 3),
+      bottomRow: members.slice(3),
+    });
+  };
 
-  // Sync events data to Firebase
-  useEffect(() => {
-    if (!loading) {
-      const syncEventsData = async () => {
-        await saveEventsData(events);
-      };
-      syncEventsData();
-    }
-  }, [events, loading]);
-
-  // Sync projects data to Firebase
-  useEffect(() => {
-    if (!loading) {
-      const syncProjectsData = async () => {
-        await saveProjectsData(projects);
-      };
-      syncProjectsData();
-    }
-  }, [projects, loading]);
-
-  // Save data to localStorage whenever it changes (backup)
-  useEffect(() => {
-    localStorage.setItem('betaTechHubEvents', JSON.stringify(events));
-  }, [events]);
-
-  useEffect(() => {
-    localStorage.setItem('betaTechHubTeam', JSON.stringify(teamMembers));
-  }, [teamMembers]);
-
-  useEffect(() => {
-    localStorage.setItem('betaTechHubServices', JSON.stringify(services));
-  }, [services]);
-
-  useEffect(() => {
-    localStorage.setItem('betaTechHubProjects', JSON.stringify(projects));
-  }, [projects]);
+  const persistServices = async (flatServices) => {
+    await saveServicesData({
+      core: flatServices.filter((s) => s.isCore),
+      additional: flatServices.filter((s) => !s.isCore),
+    });
+  };
 
   const handleLogout = () => {
     sessionStorage.removeItem('adminToken');
@@ -149,23 +118,34 @@ const Admin = () => {
       title: 'New Event',
       date: new Date().toISOString().split('T')[0],
       time: '10:00 AM - 4:00 PM',
-      location: 'Beta Tech Hub, Kabale',
+      location: 'Beta Tech Labs, Kabale Main Town',
+      venue: 'Beta Tech Labs HQ',
+      category: 'Workshop',
       description: 'Event description',
-      attendees: 25
+      attendees: 25,
+      images: [],
+      highlights: [],
+      registrationLink: '',
     };
-    setEvents(prev => [...prev, newEvent]);
+    const updated = [...events, newEvent];
+    setEvents(updated);
+    saveEventsData(updated);
     setIsEditing(newEvent.id);
     setEditData(newEvent);
   };
 
   const updateEvent = (id, updates) => {
-    setEvents(prev => prev.map(event => 
+    const updated = events.map((event) =>
       event.id === id ? { ...event, ...updates } : event
-    ));
+    );
+    setEvents(updated);
+    saveEventsData(updated);
   };
 
   const deleteEvent = (id) => {
-    setEvents(prev => prev.filter(event => event.id !== id));
+    const updated = events.filter((event) => event.id !== id);
+    setEvents(updated);
+    saveEventsData(updated);
   };
 
   // Team Management
@@ -182,19 +162,25 @@ const Admin = () => {
         github: 'username'
       }
     };
-    setTeamMembers(prev => [...prev, newMember]);
+    const updated = [...teamMembers, newMember];
+    setTeamMembers(updated);
+    persistTeam(updated);
     setIsEditing(`team-${newMember.id}`);
     setEditData(newMember);
   };
 
   const updateTeamMember = (id, updates) => {
-    setTeamMembers(prev => prev.map(member => 
+    const updated = teamMembers.map((member) =>
       member.id === id ? { ...member, ...updates } : member
-    ));
+    );
+    setTeamMembers(updated);
+    persistTeam(updated);
   };
 
   const deleteTeamMember = (id) => {
-    setTeamMembers(prev => prev.filter(member => member.id !== id));
+    const updated = teamMembers.filter((member) => member.id !== id);
+    setTeamMembers(updated);
+    persistTeam(updated);
   };
 
   // Services Management
@@ -206,19 +192,25 @@ const Admin = () => {
       features: ['Feature 1', 'Feature 2'],
       isCore: false
     };
-    setServices(prev => [...prev, newService]);
+    const updated = [...services, newService];
+    setServices(updated);
+    persistServices(updated);
     setIsEditing(`service-${newService.id}`);
     setEditData(newService);
   };
 
   const updateService = (id, updates) => {
-    setServices(prev => prev.map(service => 
+    const updated = services.map((service) =>
       service.id === id ? { ...service, ...updates } : service
-    ));
+    );
+    setServices(updated);
+    persistServices(updated);
   };
 
   const deleteService = (id) => {
-    setServices(prev => prev.filter(service => service.id !== id));
+    const updated = services.filter((service) => service.id !== id);
+    setServices(updated);
+    persistServices(updated);
   };
 
   // Projects Management
@@ -241,22 +233,25 @@ const Admin = () => {
       githubRepo: '',
       githubRepoPrivate: false
     };
-    setProjects(prev => [...prev, newProject]);
+    const updated = [...projects, newProject];
+    setProjects(updated);
+    saveProjectsData(updated);
     setIsEditing(`project-${newProject.id}`);
     setEditData(newProject);
   };
 
   const updateProject = (id, updates) => {
-    setProjects(prev => prev.map(project => 
+    const updated = projects.map((project) =>
       project.id === id ? { ...project, ...updates } : project
-    ));
+    );
+    setProjects(updated);
+    saveProjectsData(updated);
   };
 
   const deleteProject = (id) => {
-    const updatedProjects = projects.filter(project => project.id !== id);
-    setProjects(updatedProjects);
-    // Explicitly save to Firebase after deletion
-    saveProjectsData(updatedProjects).catch(err => console.error('Error deleting project:', err));
+    const updated = projects.filter((project) => project.id !== id);
+    setProjects(updated);
+    saveProjectsData(updated);
   };
 
   const startEditing = (type, id, data) => {
@@ -343,6 +338,59 @@ const Admin = () => {
     reader.readAsDataURL(file);
   };
 
+  const handleEventImagesText = (text) => {
+    const images = text
+      .split('\n')
+      .map((line) => line.trim())
+      .filter(Boolean);
+    handleEditChange('images', images);
+  };
+
+  const handleEventGalleryUpload = (e) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+
+    const validFiles = files.filter((file) => {
+      if (file.size > 2 * 1024 * 1024) {
+        alert(`${file.name} is over 2MB and was skipped`);
+        return false;
+      }
+      if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+        alert(`${file.name} is not a supported image type and was skipped`);
+        return false;
+      }
+      return true;
+    });
+
+    if (!validFiles.length) return;
+
+    Promise.all(
+      validFiles.map(
+        (file) =>
+          new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = (ev) => resolve(ev.target?.result || null);
+            reader.readAsDataURL(file);
+          })
+      )
+    ).then((uploaded) => {
+      const newImages = uploaded.filter(Boolean);
+      setEditData((prev) => ({
+        ...prev,
+        images: [...(prev.images || []), ...newImages],
+      }));
+    });
+
+    e.target.value = '';
+  };
+
+  const removeEventImage = (index) => {
+    setEditData((prev) => ({
+      ...prev,
+      images: (prev.images || []).filter((_, i) => i !== index),
+    }));
+  };
+
   const handleFeatureChange = (index, value) => {
     const newFeatures = [...(editData.features || [])];
     newFeatures[index] = value;
@@ -423,7 +471,7 @@ const Admin = () => {
                 <Settings className="text-dark-200" size={20} />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gold-500">Beta Tech Hub Admin</h1>
+                <h1 className="text-xl font-bold text-gold-500">Beta Tech Labs Admin</h1>
                 <p className="text-xs text-gray-400 -mt-1">Management Panel</p>
               </div>
             </div>
@@ -540,6 +588,65 @@ const Admin = () => {
                         className="form-input text-sm"
                         placeholder="Attendees"
                       />
+                      <input
+                        type="text"
+                        value={editData.category || ''}
+                        onChange={(e) => handleEditChange('category', e.target.value)}
+                        className="form-input text-sm"
+                        placeholder="Category (Workshop, Bootcamp, Meetup)"
+                      />
+                      <input
+                        type="text"
+                        value={editData.registrationLink || ''}
+                        onChange={(e) => handleEditChange('registrationLink', e.target.value)}
+                        className="form-input text-sm"
+                        placeholder="Registration link (optional)"
+                      />
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1">
+                          Gallery images, one URL per line (e.g. /images/events/photo.jpg)
+                        </label>
+                        <textarea
+                          value={(editData.images || []).join('\n')}
+                          onChange={(e) => handleEventImagesText(e.target.value)}
+                          className="form-input text-sm font-mono"
+                          rows="4"
+                          placeholder="/images/events/workshop-1.jpg&#10;https://example.com/photo.jpg"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1">
+                          Or upload photos (JPEG, PNG, WebP, max 2MB each)
+                        </label>
+                        <input
+                          type="file"
+                          accept="image/jpeg,image/png,image/webp"
+                          multiple
+                          onChange={handleEventGalleryUpload}
+                          className="form-input text-sm"
+                        />
+                      </div>
+                      {(editData.images || []).length > 0 && (
+                        <div className="grid grid-cols-3 gap-2">
+                          {(editData.images || []).map((src, index) => (
+                            <div key={`${index}-${src.slice(0, 24)}`} className="relative group">
+                              <img
+                                src={src}
+                                alt={`Gallery ${index + 1}`}
+                                className="w-full h-16 object-cover rounded-lg border border-gray-700"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => removeEventImage(index)}
+                                className="absolute top-1 right-1 bg-red-500/80 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                                aria-label="Remove image"
+                              >
+                                <X size={12} />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                       <div className="flex space-x-2">
                         <button
                           onClick={saveEdit}
@@ -564,6 +671,11 @@ const Admin = () => {
                       <p className="text-gray-400 text-sm mb-2">{event.location}</p>
                       <p className="text-gray-400 text-sm mb-4">{event.description}</p>
                       <p className="text-gold-400 text-sm">Attendees: {event.attendees}</p>
+                      {(event.images || []).length > 0 && (
+                        <p className="text-gray-500 text-xs mt-1">
+                          Gallery: {(event.images || []).length} photo(s)
+                        </p>
+                      )}
                       <div className="flex space-x-2 mt-4">
                         <button
                           onClick={() => startEditing('event', event.id, event)}
@@ -973,13 +1085,6 @@ const Admin = () => {
                           Keep Live Site Link Private
                         </label>
                       </div>
-                      <input
-                        type="url"
-                        value={editData.githubRepo || ''}
-                        onChange={(e) => handleEditChange('githubRepo', e.target.value)}
-                        className="form-input text-sm"
-                        placeholder="GitHub Repository URL"
-                      />
                       <div className="flex items-center space-x-2">
                         <input
                           type="checkbox"

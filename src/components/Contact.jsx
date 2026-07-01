@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
-import { 
-  MapPin, 
-  Mail, 
-  Phone, 
-  Clock, 
-  MessageCircle, 
-  User, 
-  Tag, 
-  ChevronDown, 
+import {
+  MapPin,
+  Mail,
+  Phone,
+  Clock,
+  User,
+  ChevronDown,
   Send,
-  Map,
   Twitter,
   Linkedin,
   Github,
@@ -18,33 +15,75 @@ import {
   Youtube,
   CheckCircle,
   AlertCircle,
-  Loader
+  Loader,
+  ArrowUpRight,
 } from 'lucide-react';
+import { CONTACT, SOCIAL, SITE } from '../config/site';
+
+const CONTACT_CHANNELS = [
+  {
+    icon: Mail,
+    label: 'Email',
+    value: CONTACT.email,
+    hint: 'Best for detailed proposals and documents',
+    href: `mailto:${CONTACT.email}`,
+  },
+  {
+    icon: Phone,
+    label: 'Phone & WhatsApp',
+    value: CONTACT.phone,
+    hint: `${CONTACT.hours} · Weekend by appointment`,
+    href: `https://wa.me/${CONTACT.whatsapp}?text=${encodeURIComponent('Hello Beta-Tech Labs, I would like to discuss a project.')}`,
+  },
+  {
+    icon: MapPin,
+    label: 'Visit us',
+    value: CONTACT.address.headline,
+    hint: `${CONTACT.address.landmark} · ${CONTACT.address.area}`,
+    href: CONTACT.mapLinkUrl,
+  },
+  {
+    icon: Clock,
+    label: 'Response time',
+    value: 'Within 24 hours',
+    hint: 'Business days · Urgent requests via WhatsApp',
+  },
+];
+
+const SOCIAL_LINKS = [
+  { icon: Twitter, href: SOCIAL.x, name: 'X' },
+  { icon: Linkedin, href: SOCIAL.linkedin, name: 'LinkedIn' },
+  { icon: Github, href: SOCIAL.github, name: 'GitHub' },
+  { icon: MessageSquare, href: SOCIAL.discord, name: 'Discord' },
+  { icon: Youtube, href: SOCIAL.youtube, name: 'YouTube' },
+];
+
+const SUBJECT_OPTIONS = [
+  { value: 'research', label: 'Research Collaboration' },
+  { value: 'product', label: 'Product Development' },
+  { value: 'engineering', label: 'Solution Engineering' },
+  { value: 'partnership', label: 'Partnership Inquiry' },
+  { value: 'talent', label: 'Talent & Training Programs' },
+  { value: 'other', label: 'General Inquiry' },
+];
 
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     subject: '',
-    message: ''
+    message: '',
   });
-
   const [isLoading, setIsLoading] = useState(false);
-  const [status, setStatus] = useState(null); // 'success', 'error', or null
+  const [status, setStatus] = useState(null);
   const [statusMessage, setStatusMessage] = useState('');
 
-  // Initialize EmailJS on component mount
   useEffect(() => {
-    // Initialize EmailJS with your public key
-    // Create an account at https://www.emailjs.com/ if you haven't already
     emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'YOUR_PUBLIC_KEY');
   }, []);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
@@ -53,203 +92,67 @@ const Contact = () => {
     setStatus(null);
 
     try {
-      // Prepare email template parameters
-      const emailParams = {
-        to_email: 'betatechlabs10@gmail.com',
-        from_name: formData.name,
-        from_email: formData.email,
-        subject: formData.subject,
-        message: formData.message
-      };
-
-      // Send email using EmailJS
-      // Replace 'YOUR_SERVICE_ID' and 'YOUR_TEMPLATE_ID' with actual IDs from EmailJS
       await emailjs.send(
         import.meta.env.VITE_EMAILJS_SERVICE_ID || 'YOUR_SERVICE_ID',
         import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'YOUR_TEMPLATE_ID',
-        emailParams
+        {
+          to_email: CONTACT.email,
+          from_name: formData.name,
+          from_email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+        }
       );
 
       setStatus('success');
-      setStatusMessage('Message sent successfully! We will get back to you within 24 hours.');
-      
-      // Reset form
+      setStatusMessage('Thank you. We received your message and will respond within one business day.');
       setFormData({ name: '', email: '', subject: '', message: '' });
-      
-      // Clear success message after 5 seconds
       setTimeout(() => setStatus(null), 5000);
     } catch (error) {
       console.error('Email sending error:', error);
       setStatus('error');
-      setStatusMessage('Failed to send message. Please try again or contact us directly at betatechlabs10@gmail.com');
-      
-      // Clear error message after 5 seconds
+      setStatusMessage(`Something went wrong. Email us directly at ${CONTACT.email} or message us on WhatsApp.`);
       setTimeout(() => setStatus(null), 5000);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const contactMethods = [
-    {
-      icon: MapPin,
-      title: 'Visit Us',
-      details: 'Kabale, Uganda',
-      description: 'Come visit our research hub in beautiful Kabale'
-    },
-    {
-      icon: Mail,
-      title: 'Email Us',
-      details: 'betatechlabs10@gmail.com',
-      description: 'Send us an email anytime'
-    },
-    {
-      icon: Phone,
-      title: 'Call Us',
-      details: '+256 791018086',
-      description: 'Mon to Fri, 9am to 5pm'
-    },
-    {
-      icon: Clock,
-      title: 'Working Hours',
-      details: 'Mon - Fri: 9:00 - 17:00',
-      description: 'Weekend research by appointment'
-    }
-  ];
-
-  const socialLinks = [
-    {
-      icon: Twitter,
-      href: 'https://twitter.com/betatechlabs',
-      name: 'Twitter'
-    },
-    {
-      icon: Linkedin,
-      href: 'https://www.linkedin.com/company/betatechlabs',
-      name: 'LinkedIn'
-    },
-    {
-      icon: Github,
-      href: 'https://github.com/betatechlabs',
-      name: 'GitHub'
-    },
-    {
-      icon: MessageSquare,
-      href: 'https://discord.gg/betatechlabs',
-      name: 'Discord'
-    },
-    {
-      icon: Youtube,
-      href: 'https://www.youtube.com/@betatechlabs',
-      name: 'YouTube'
-    }
-  ];
-
   return (
-    <section id="contact" className="py-20 relative overflow-hidden">
-      {/* Background with gradient and blur */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gold-500/5 via-dark-200 to-gold-300/5"></div>
-      
-      {/* Animated background elements */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-gold-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/3 right-1/3 w-80 h-80 bg-gold-300/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/3 right-1/4 w-48 h-48 bg-gold-500/5 rounded-full blur-3xl animate-pulse delay-500"></div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="section-title">Get In Touch</h2>
-          <p className="section-subtitle">
-            Ready to collaborate on research or discuss your project? We'd love to hear from you.
+    <section id="contact" className="py-8 md:py-10 bg-dark-100 relative overflow-hidden border-t border-gray-800/50">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5 relative z-10">
+        <div className="text-center max-w-2xl mx-auto mb-6 md:mb-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-500 mb-1.5">
+            Contact
+          </p>
+          <h2 className="text-3xl md:text-4xl font-bold text-white font-heading mb-2 leading-tight">
+            Let&apos;s Build Something{' '}
+            <span className="text-gold-500">Together</span>
+          </h2>
+          <p className="text-sm md:text-base text-gray-400 leading-snug">
+            Tell us about your research goals, product idea, or engineering challenge. We work with
+            founders, institutions, and teams who need serious technology delivered with clarity.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
-          {/* Contact Information - Glassmorphism Cards */}
-          <div className="space-y-6">
-            <div className="glass-card p-8">
-              <h3 className="text-2xl font-bold text-gold-500 mb-6 flex items-center">
-                <MessageCircle className="mr-3" size={24} />
-                Let's Start a Conversation
-              </h3>
-              <p className="text-gray-300 mb-8 leading-relaxed">
-                Whether you're interested in research collaboration, software development, 
-                internships, or just want to learn more about our work, we're here to help 
-                bring your ideas to life.
+        <div className="grid lg:grid-cols-12 gap-4 md:gap-5 items-start">
+          {/* Contact form, primary column */}
+          <div className="lg:col-span-7 rounded-xl border border-gray-800 bg-dark-200 p-4 md:p-6">
+            <div className="mb-4">
+              <h3 className="text-lg font-bold text-white mb-1">Send a message</h3>
+              <p className="text-sm text-gray-500 leading-snug">
+                Share as much context as you can, scope, timeline, and what success looks like for you.
               </p>
-
-              {/* Contact Methods Grid */}
-              <div className="grid sm:grid-cols-2 gap-6">
-                {contactMethods.map((method, index) => {
-                  const IconComponent = method.icon;
-                  return (
-                    <div 
-                      key={index}
-                      className="glass-card-inner p-6 group hover:transform hover:scale-105 transition-all duration-500"
-                    >
-                      <div className="w-14 h-14 bg-gradient-to-br from-gold-500 to-gold-300 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                        <IconComponent className="text-dark-200" size={24} />
-                      </div>
-                      <h4 className="text-gold-500 font-semibold mb-2">{method.title}</h4>
-                      <p className="text-white font-medium mb-1">{method.details}</p>
-                      <p className="text-gray-400 text-sm">{method.description}</p>
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Social Links */}
-              <div className="mt-8 pt-6 border-t border-white/10">
-                <h4 className="text-gold-500 font-semibold mb-4">Follow Our Journey</h4>
-                <div className="flex space-x-4">
-                  {socialLinks.map((social, index) => {
-                    const SocialIcon = social.icon;
-                    return (
-                      <a
-                        key={index}
-                        href={social.href}
-                        className="w-12 h-12 glass-card-inner rounded-xl flex items-center justify-center text-gold-500 hover:text-gold-300 hover:scale-110 transition-all duration-300"
-                        aria-label={social.name}
-                      >
-                        <SocialIcon size={20} />
-                      </a>
-                    );
-                  })}
-                </div>
-              </div>
             </div>
 
-            {/* Location Map Placeholder */}
-            <div className="glass-card p-6">
-              <div className="flex items-center space-x-3 mb-4">
-                <Map className="text-gold-500" size={20} />
-                <h4 className="text-gold-500 font-semibold">Our Location</h4>
-              </div>
-              <div className="bg-gradient-to-br from-gold-500/20 to-gold-300/20 rounded-xl h-48 flex items-center justify-center border border-gold-500/30">
-                <div className="text-center">
-                  <Map className="text-gold-500 mx-auto mb-2" size={32} />
-                  <p className="text-gold-500 font-semibold">Kabale, Uganda</p>
-                  <p className="text-gray-400 text-sm">Tech Research Hub</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Contact Form - Glassmorphism */}
-          <div className="glass-card p-8">
-            <h3 className="text-2xl font-bold text-gold-500 mb-2">Send us a Message</h3>
-            <p className="text-gray-400 mb-8">We typically respond within 24 hours</p>
-
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid sm:grid-cols-2 gap-6">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid sm:grid-cols-2 gap-3">
                 <div className="form-group">
                   <label htmlFor="name" className="form-label">
-                    Full Name *
+                    Full name *
                   </label>
                   <div className="relative">
-                    <User className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gold-500" size={18} />
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gold-500/70" size={16} />
                     <input
                       type="text"
                       id="name"
@@ -257,18 +160,18 @@ const Contact = () => {
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="form-input pl-12"
-                      placeholder="Enter your full name"
+                      className="form-input pl-10 py-3"
+                      placeholder="Your name"
                     />
                   </div>
                 </div>
 
                 <div className="form-group">
                   <label htmlFor="email" className="form-label">
-                    Email Address *
+                    Work email *
                   </label>
                   <div className="relative">
-                    <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gold-500" size={18} />
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gold-500/70" size={16} />
                     <input
                       type="email"
                       id="email"
@@ -276,8 +179,8 @@ const Contact = () => {
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="form-input pl-12"
-                      placeholder="Enter your email"
+                      className="form-input pl-10 py-3"
+                      placeholder="you@company.com"
                     />
                   </div>
                 </div>
@@ -285,96 +188,198 @@ const Contact = () => {
 
               <div className="form-group">
                 <label htmlFor="subject" className="form-label">
-                  Subject *
+                  How can we help? *
                 </label>
                 <div className="relative">
-                  <Tag className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gold-500" size={18} />
                   <select
                     id="subject"
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
                     required
-                    className="form-input pl-12 appearance-none bg-dark-100 border border-white/10 text-white rounded-xl py-4 px-4 focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20 transition-all duration-300 backdrop-blur-sm cursor-pointer"
+                    className="form-input appearance-none bg-dark-100 py-3 cursor-pointer"
                   >
-                    <option value="" className="bg-dark-100 text-gray-400">Select a subject</option>
-                    <option value="research" className="bg-dark-100 text-white">Research Collaboration</option>
-                    <option value="software" className="bg-dark-100 text-white">Software Development</option>
-                    <option value="internship" className="bg-dark-100 text-white">Internship Program</option>
-                    <option value="project" className="bg-dark-100 text-white">Final Year Project</option>
-                    <option value="partnership" className="bg-dark-100 text-white">Partnership</option>
-                    <option value="other" className="bg-dark-100 text-white">Other</option>
+                    <option value="" className="bg-dark-100 text-gray-400">
+                      Select a topic
+                    </option>
+                    {SUBJECT_OPTIONS.map((opt) => (
+                      <option key={opt.value} value={opt.value} className="bg-dark-100 text-white">
+                        {opt.label}
+                      </option>
+                    ))}
                   </select>
-                  <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gold-500 pointer-events-none" size={16} />
+                  <ChevronDown
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gold-500/70 pointer-events-none"
+                    size={16}
+                  />
                 </div>
               </div>
 
               <div className="form-group">
                 <label htmlFor="message" className="form-label">
-                  Message *
+                  Project details *
                 </label>
-                <div className="relative">
-                  <MessageCircle className="absolute left-4 top-4 text-gold-500" size={18} />
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                    rows="6"
-                    className="form-input pl-12 resize-none"
-                    placeholder="Tell us about your project or inquiry..."
-                  ></textarea>
-                </div>
+                <textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                  rows="5"
+                  className="form-input resize-none py-3 leading-snug"
+                  placeholder="Describe your challenge, goals, timeline, and any constraints we should know about..."
+                />
               </div>
 
               <button
                 type="submit"
                 disabled={isLoading}
-                className={`w-full font-bold py-4 px-6 rounded-xl transition-all duration-300 transform flex items-center justify-center ${
-                  isLoading
-                    ? 'bg-gray-500 text-gray-300 cursor-not-allowed'
-                    : 'bg-gradient-to-r from-gold-500 to-gold-300 hover:from-gold-600 hover:to-gold-400 text-dark-200 hover:scale-105 hover:shadow-gold-lg focus:outline-none focus:ring-2 focus:ring-gold-400 focus:ring-opacity-50'
+                className={`btn-primary w-full flex items-center justify-center py-3 ${
+                  isLoading ? 'opacity-60 cursor-not-allowed' : ''
                 }`}
               >
                 {isLoading ? (
                   <>
-                    <Loader className="mr-2 animate-spin" size={18} />
+                    <Loader className="mr-2 animate-spin" size={16} />
                     Sending...
                   </>
                 ) : (
                   <>
-                    <Send className="mr-2" size={18} />
-                    Send Message
+                    <Send className="mr-2" size={16} />
+                    Send message
                   </>
                 )}
               </button>
 
-              {/* Status Messages */}
               {status === 'success' && (
-                <div className="bg-green-500/20 border border-green-500/50 rounded-xl p-4 flex items-start space-x-3">
-                  <CheckCircle className="text-green-400 mt-0.5 flex-shrink-0" size={20} />
+                <div className="rounded-lg border border-green-500/30 bg-green-500/10 p-3 flex items-start gap-2">
+                  <CheckCircle className="text-green-400 flex-shrink-0 mt-0.5" size={18} />
                   <div>
-                    <p className="text-green-400 font-semibold">Message Sent!</p>
-                    <p className="text-green-300 text-sm">{statusMessage}</p>
+                    <p className="text-green-400 text-sm font-semibold leading-snug">Message sent</p>
+                    <p className="text-green-300/90 text-xs leading-snug">{statusMessage}</p>
                   </div>
                 </div>
               )}
 
               {status === 'error' && (
-                <div className="bg-red-500/20 border border-red-500/50 rounded-xl p-4 flex items-start space-x-3">
-                  <AlertCircle className="text-red-400 mt-0.5 flex-shrink-0" size={20} />
+                <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-3 flex items-start gap-2">
+                  <AlertCircle className="text-red-400 flex-shrink-0 mt-0.5" size={18} />
                   <div>
-                    <p className="text-red-400 font-semibold">Error Sending Message</p>
-                    <p className="text-red-300 text-sm">{statusMessage}</p>
+                    <p className="text-red-400 text-sm font-semibold leading-snug">Could not send</p>
+                    <p className="text-red-300/90 text-xs leading-snug">{statusMessage}</p>
                   </div>
                 </div>
               )}
 
-              <p className="text-gray-400 text-sm text-center">
-                By submitting this form, you agree to our privacy policy and terms of service.
+              <p className="text-xs text-gray-500 text-center leading-snug">
+                By submitting, you agree to our privacy policy. We never share your information.
               </p>
             </form>
+          </div>
+
+          {/* Contact channels, sidebar */}
+          <div className="lg:col-span-5 space-y-3 md:space-y-4">
+            <div className="rounded-xl border border-gray-800 bg-dark-200 p-4 md:p-5">
+              <h3 className="text-base font-bold text-white mb-3">Direct contact</h3>
+              <ul className="space-y-3">
+                {CONTACT_CHANNELS.map((channel) => {
+                  const Icon = channel.icon;
+                  const content = (
+                    <>
+                      <div className="w-9 h-9 rounded-lg bg-gold-500/10 border border-gold-500/20 flex items-center justify-center flex-shrink-0">
+                        <Icon className="text-gold-500" size={16} />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-xs font-medium uppercase tracking-wide text-gray-500 leading-snug">
+                          {channel.label}
+                        </p>
+                        <p className="text-sm font-semibold text-white leading-snug break-all">
+                          {channel.value}
+                        </p>
+                        <p className="text-xs text-gray-500 leading-snug">{channel.hint}</p>
+                      </div>
+                      {channel.href && (
+                        <ArrowUpRight className="text-gold-500/50 flex-shrink-0" size={14} />
+                      )}
+                    </>
+                  );
+
+                  return (
+                    <li key={channel.label}>
+                      {channel.href ? (
+                        <a
+                          href={channel.href}
+                          target={channel.href.startsWith('http') ? '_blank' : undefined}
+                          rel={channel.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                          className="flex items-start gap-3 p-2 -mx-2 rounded-lg hover:bg-white/5 transition-colors"
+                        >
+                          {content}
+                        </a>
+                      ) : (
+                        <div className="flex items-start gap-3 p-2 -mx-2">{content}</div>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+
+            <div className="rounded-xl border border-gray-800 bg-dark-200 p-4 md:p-5">
+              <h3 className="text-base font-bold text-white mb-3">Connect online</h3>
+              <div className="flex flex-wrap gap-2">
+                {SOCIAL_LINKS.map((social) => {
+                  const SocialIcon = social.icon;
+                  return (
+                    <a
+                      key={social.name}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-10 h-10 rounded-lg border border-gray-700 bg-dark-100 flex items-center justify-center text-gray-400 hover:text-gold-500 hover:border-gold-500/30 transition-colors"
+                      aria-label={social.name}
+                    >
+                      <SocialIcon size={18} />
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-gray-800 bg-dark-200 overflow-hidden">
+              <div className="px-4 py-3 border-b border-gray-800">
+                <div className="flex items-start gap-2">
+                  <MapPin className="text-gold-500 flex-shrink-0 mt-0.5" size={16} />
+                  <div>
+                    <p className="text-sm font-semibold text-white leading-snug">
+                      {CONTACT.address.headline}
+                    </p>
+                    <p className="text-xs text-gray-500 leading-snug mt-0.5">
+                      {CONTACT.address.road} · {CONTACT.address.landmark}
+                    </p>
+                    <p className="text-xs text-gray-400 leading-snug mt-1.5">
+                      {CONTACT.address.directions}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <iframe
+                title="Beta-Tech Labs near Kabale Central Police Station, Uganda"
+                src={CONTACT.mapEmbedUrl}
+                className="w-full h-44 md:h-48 border-0"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+              <div className="px-4 py-2.5 border-t border-gray-800">
+                <a
+                  href={CONTACT.mapLinkUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-gold-500 hover:text-gold-400 transition-colors"
+                >
+                  Open in Google Maps →
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -1,13 +1,103 @@
 import React, { useState, useEffect } from 'react';
-import { getProjectsData } from '../data/dataStore';
+import { useNavigate } from 'react-router-dom';
+import { getProjectsData, PROJECT_LOGOS } from '../data/dataStore';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { Globe, Github } from 'lucide-react';
+import SEO from '../components/SEO';
+import {
+  Globe,
+  Github,
+  ArrowRight,
+  Send,
+  Layers,
+} from 'lucide-react';
+import { SITE, STATS } from '../config/site';
+
+const STATUS_STYLES = {
+  Launched: 'bg-green-500/15 text-green-400 border-green-500/30',
+  'In Development': 'bg-blue-500/15 text-blue-400 border-blue-500/30',
+  'In Testing': 'bg-yellow-500/15 text-yellow-400 border-yellow-500/30',
+  'In Planning': 'bg-gray-500/15 text-gray-400 border-gray-500/30',
+};
+
+const ProjectCard = ({ project }) => {
+  const statusClass = STATUS_STYLES[project.status] || STATUS_STYLES['In Planning'];
+
+  return (
+    <article className="rounded-xl border border-gray-800 bg-dark-100 overflow-hidden flex flex-col h-full">
+      {/* Logo banner */}
+      <div className="relative h-36 md:h-40 bg-dark-200 border-b border-gray-800 flex items-center justify-center p-6">
+        {project.image || PROJECT_LOGOS[project.title?.toLowerCase().trim()] ? (
+          <img
+            src={project.image || PROJECT_LOGOS[project.title?.toLowerCase().trim()]}
+            alt={`${project.title} logo`}
+            className="max-h-full max-w-[220px] w-auto object-contain"
+            loading="lazy"
+          />
+        ) : (
+          <div className="w-16 h-16 rounded-xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center">
+            <Layers className="text-gold-500" size={28} />
+          </div>
+        )}
+        {project.status && (
+          <span
+            className={`absolute top-3 right-3 text-xs px-2.5 py-1 rounded-full border font-medium ${statusClass}`}
+          >
+            {project.status}
+          </span>
+        )}
+      </div>
+
+      <div className="p-5 md:p-6 flex flex-col flex-1">
+        {project.category && (
+          <p className="text-xs font-semibold uppercase tracking-wider text-gold-500 mb-1.5 leading-snug">
+            {project.category}
+          </p>
+        )}
+        <h3 className="text-xl font-bold text-white mb-2 leading-snug">{project.title}</h3>
+        <p className="text-sm text-gray-400 leading-snug mb-4 flex-1">
+          {project.description || '\u00A0'}
+        </p>
+
+        <div className="flex flex-wrap gap-2 mt-auto pt-4 border-t border-gray-800">
+          {!project.liveUrlPrivate && project.liveUrl && (
+            <a
+              href={project.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gold-400 border border-gold-500/30 rounded-lg bg-gold-500/10 hover:bg-gold-500/20 transition-colors"
+            >
+              <Globe size={14} />
+              Live Site
+            </a>
+          )}
+          {!project.liveUrlPrivate && !project.liveUrl && project.liveUrlStatus === 'coming-soon' && (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-500 border border-gray-700 rounded-lg bg-dark-200">
+              <Globe size={14} />
+              Coming Soon
+            </span>
+          )}
+          {!project.githubRepoPrivate && project.githubRepo && (
+            <a
+              href={project.githubRepo}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-400 border border-gray-700 rounded-lg bg-dark-200 hover:border-gray-600 transition-colors"
+            >
+              <Github size={14} />
+              GitHub
+            </a>
+          )}
+        </div>
+      </div>
+    </article>
+  );
+};
 
 const Projects = () => {
+  const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     const loadProjects = async () => {
@@ -23,141 +113,126 @@ const Projects = () => {
     };
 
     loadProjects();
-
-    // Listen for updates
-    const handleUpdate = () => {
-      loadProjects();
-    };
-
+    const handleUpdate = () => loadProjects();
     window.addEventListener('projectsDataUpdated', handleUpdate);
     return () => window.removeEventListener('projectsDataUpdated', handleUpdate);
   }, []);
 
-  // Use all projects without filtering
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'Launched':
-        return 'bg-green-500/20 text-green-400 border border-green-500/30';
-      case 'In Development':
-        return 'bg-blue-500/20 text-blue-400 border border-blue-500/30';
-      case 'In Testing':
-        return 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30';
-      default:
-        return 'bg-gray-500/20 text-gray-400 border border-gray-500/30';
-    }
-  };
+  const launchedCount = projects.filter((p) => p.status === 'Launched').length;
+  const activeCount = projects.filter(
+    (p) => p.status === 'In Development' || p.status === 'In Testing'
+  ).length;
 
   return (
-    <div className="min-h-screen bg-dark-200">
-      <Header />
+    <>
+      <SEO
+        title="Our Projects - AI, Blockchain, IoT & Software"
+        description={`Explore products from ${SITE.name}, Fasiri, Cultural Hub, StellarIDE, Rowan, RetiSight, Numba, and more from ${SITE.location}.`}
+        keywords="Beta Tech Labs projects, Stellar Uganda, blockchain products Kabale, software portfolio East Africa, IoT AI projects"
+        ogUrl={`${SITE.url}/projects`}
+        ogImage={`${SITE.url}/images/og-image.svg`}
+      />
 
-      {/* Page Hero */}
-      <section className="pt-20 pb-12 bg-gradient-to-b from-dark-100 to-dark-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-gold-500 mb-4">
-            Our Projects
-          </h1>
-          <p className="text-gray-400 text-lg max-w-2xl">
-            Cutting-edge projects in AI, blockchain, and advanced software solutions. 
-            Explore the innovations we're building at Beta Tech Labs.
-          </p>
-        </div>
-      </section>
+      <div className="min-h-screen bg-dark-200 flex flex-col">
+        <Header />
 
-      {/* Filters */}
-      <section className="py-8 border-b border-gray-800 bg-dark-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-gray-400">
-            Showing {showAll ? projects.length : Math.min(3, projects.length)} of {projects.length} projects
-          </p>
-        </div>
-      </section>
+        <main className="flex-1">
+          {/* Hero */}
+          <section className="pt-20 pb-8 md:pb-10 bg-gold-gradient border-b border-gray-800/50">
+            <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white font-heading leading-tight mb-3 max-w-3xl">
+                Products We&apos;ve{' '}
+                <span className="text-gold-500">Built & Shipped</span>
+              </h1>
+              <p className="text-sm md:text-base text-gray-400 leading-snug max-w-2xl">
+                Real platforms in AI, blockchain, IoT, and web engineering, researched, designed,
+                and delivered by the Beta-Tech Labs team from Kabale, Uganda.
+              </p>
 
-      {/* Projects Grid */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {loading ? (
-            <div className="text-center py-12">
-              <p className="text-gray-400">Loading projects...</p>
-            </div>
-          ) : projects.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-gray-400">No projects yet. Check back soon!</p>
-            </div>
-          ) : (
-            <>
-              <div className="grid md:grid-cols-2 lg:grid-cols-1 gap-8">
-                {(showAll ? projects : projects.slice(0, 3)).map((project) => (
-                  <div
-                    key={project.id}
-                    className="card p-8 hover:border-gold-500/50 transition-all duration-300 group"
-                  >
-                    <div className="flex items-start justify-between mb-3">
-                      <h3 className="text-2xl font-bold text-gold-500 group-hover:text-gold-400 transition-colors duration-200">
-                        {project.title}
-                      </h3>
-                    </div>
-
-                    <p className="text-gray-400 mb-6 leading-relaxed">
-                      {project.description}
-                    </p>
-
-                    {/* Links */}
-                    <div className="flex gap-3">
-                      {!project.liveUrlPrivate && (
-                        <>
-                          {project.liveUrlStatus === 'coming-soon' ? (
-                            <span className="flex items-center gap-2 px-4 py-2 bg-gold-500/10 text-gold-400 border border-gold-500/30 rounded-lg">
-                              <Globe size={16} />
-                              <span className="text-sm font-medium">Coming Soon</span>
-                            </span>
-                          ) : project.liveUrl ? (
-                            <a
-                              href={project.liveUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-2 px-4 py-2 bg-gold-500/10 text-gold-400 hover:bg-gold-500/20 border border-gold-500/30 rounded-lg transition-all duration-300"
-                            >
-                              <Globe size={16} />
-                              <span className="text-sm font-medium">Live Site</span>
-                            </a>
-                          ) : null}
-                        </>
-                      )}
-                      {!project.githubRepoPrivate && project.githubRepo && (
-                        <a
-                          href={project.githubRepo}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 px-4 py-2 bg-gray-600/10 text-gray-400 hover:bg-gray-600/20 border border-gray-600/30 rounded-lg transition-all duration-300"
-                        >
-                          <Github size={16} />
-                          <span className="text-sm font-medium">GitHub</span>
-                        </a>
-                      )}
-                    </div>
+              {!loading && projects.length > 0 && (
+                <div className="flex flex-wrap gap-6 mt-6 pt-5 border-t border-gray-800/80">
+                  <div>
+                    <p className="text-xl font-bold text-white">{projects.length}</p>
+                    <p className="text-xs text-gray-500">Total projects</p>
                   </div>
-                ))}
-              </div>
-              
-              {projects.length > 3 && !showAll && (
-                <div className="flex justify-center mt-12">
-                  <button
-                    onClick={() => setShowAll(true)}
-                    className="btn-primary px-8 py-3 text-base flex items-center gap-2"
-                  >
-                    View All Projects ({projects.length})
-                  </button>
+                  <div>
+                    <p className="text-xl font-bold text-gold-500">{launchedCount}</p>
+                    <p className="text-xs text-gray-500">Launched</p>
+                  </div>
+                  <div>
+                    <p className="text-xl font-bold text-white">{activeCount}</p>
+                    <p className="text-xs text-gray-500">In active build</p>
+                  </div>
+                  <div>
+                    <p className="text-xl font-bold text-white">{STATS.researchPapers}</p>
+                    <p className="text-xs text-gray-500">Research outputs</p>
+                  </div>
                 </div>
               )}
-            </>
-          )}
-        </div>
-      </section>
+            </div>
+          </section>
 
-      <Footer />
-    </div>
+          {/* Projects grid */}
+          <section className="py-8 md:py-10 bg-dark-100 border-b border-gray-800/50">
+            <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
+              {loading ? (
+                <div className="text-center py-12">
+                  <p className="text-sm text-gray-500">Loading projects...</p>
+                </div>
+              ) : projects.length === 0 ? (
+                <div className="text-center py-12 rounded-xl border border-gray-800 bg-dark-200">
+                  <p className="text-sm text-gray-400 mb-4">New projects are on the way.</p>
+                  <button
+                    onClick={() => navigate('/#contact')}
+                    className="btn-primary text-sm inline-flex items-center"
+                  >
+                    <Send className="mr-2" size={16} />
+                    Discuss a project with us
+                  </button>
+                </div>
+              ) : (
+                <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5">
+                  {projects.map((project) => (
+                    <ProjectCard key={project.id} project={project} />
+                  ))}
+                </div>
+              )}
+            </div>
+          </section>
+
+          {/* CTA */}
+          <section className="py-8 md:py-10 bg-dark-200">
+            <div className="max-w-3xl mx-auto px-3 sm:px-4 lg:px-5 text-center">
+              <h2 className="text-2xl md:text-3xl font-bold text-white font-heading mb-2 leading-tight">
+                Have a Product Idea?
+              </h2>
+              <p className="text-sm text-gray-400 leading-snug mb-5">
+                We partner with founders, institutions, and teams to research, build, and launch
+                technology that holds up in production, from first prototype to deployed platform.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <button
+                  onClick={() => navigate('/#contact')}
+                  className="btn-primary inline-flex items-center justify-center text-sm"
+                >
+                  <Send className="mr-2" size={16} />
+                  Contact Us
+                </button>
+                <button
+                  onClick={() => navigate('/services')}
+                  className="btn-secondary inline-flex items-center justify-center text-sm"
+                >
+                  Our Services
+                  <ArrowRight className="ml-2" size={16} />
+                </button>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <Footer />
+      </div>
+    </>
   );
 };
 

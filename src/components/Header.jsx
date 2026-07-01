@@ -1,122 +1,106 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Send, Menu, X, ArrowRight } from 'lucide-react';
+import { Send, Menu, X } from 'lucide-react';
 import logo from '../assets/logo.png';
+import { SITE } from '../config/site';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
     { name: 'Home', href: '/' },
-    { name: 'About', href: '#about' },
-    { name: 'Team', href: '#team' },
+    { name: 'How We Work', href: '/#about' },
+    { name: 'Team', href: '/#team' },
     { name: 'Services', href: '/services' },
     { name: 'Projects', href: '/projects' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Events', href: '/events' },
+    { name: 'Contact', href: '/#contact' },
   ];
+
+  const isRoute = (href) => href.startsWith('/') && !href.includes('#');
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-dark-200/95 backdrop-blur-md border-b border-gold-500/20 gold-border-top">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          {/* Use the imported Beta Tech Labs logo asset here so the navbar stays branded. */}
-          <Link 
-            to="/" 
-            className="flex items-center space-x-3"
+          <Link
+            to="/"
+            className="flex items-center gap-3"
             onClick={() => setIsMenuOpen(false)}
           >
-            <img 
-              src={logo} 
-              alt="Beta Tech Labs Logo" 
-              className="w-12 h-12 rounded-lg shadow-lg hover:shadow-gold transition-shadow duration-300 object-cover"
+            <img
+              src={logo}
+              alt={`${SITE.name} Logo`}
+              className="w-11 h-11 rounded-lg object-cover"
             />
-            <div>
-              <h1 className="text-xl font-bold text-gold-500">Beta Tech Hub</h1>
-              <p className="text-xs text-gray-400 -mt-1">AI & Blockchain Hub</p>
+            <div className="hidden sm:block">
+              <h1 className="text-lg font-bold text-gold-500 leading-tight">{SITE.name}</h1>
+              <p className="text-xs text-gray-400 -mt-0.5">{SITE.tagline}</p>
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8">
-            {navItems.map((item) => (
-              item.href.startsWith('/') ? (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className="nav-link relative group"
-                >
+          <nav className="hidden lg:flex items-center gap-7">
+            {navItems.map((item) =>
+              isRoute(item.href) ? (
+                <Link key={item.name} to={item.href} className="nav-link relative group text-sm">
                   {item.name}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gold-500 transition-all group-hover:w-full duration-300"></span>
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gold-500 transition-all group-hover:w-full duration-300" />
                 </Link>
               ) : (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className="nav-link relative group"
-                >
+                <a key={item.name} href={item.href} className="nav-link relative group text-sm">
                   {item.name}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gold-500 transition-all group-hover:w-full duration-300"></span>
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gold-500 transition-all group-hover:w-full duration-300" />
                 </a>
               )
-            ))}
+            )}
           </nav>
 
-          {/* CTA Button - Desktop */}
-          <div className="hidden md:block">
-            <a 
-              href="#contact" 
-              className="btn-primary flex items-center"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              <Send className="mr-2" size={16} />
+          <div className="hidden lg:block">
+            <a href="/#contact" className="btn-primary inline-flex items-center text-sm py-2 px-4" onClick={() => setIsMenuOpen(false)}>
+              <Send className="mr-2" size={15} />
               Get Started
             </a>
           </div>
 
-          {/* Mobile menu button */}
           <button
-            className="md:hidden p-2 rounded-lg text-gold-500 hover:bg-gold-500/10 transition-colors duration-200"
+            className="lg:hidden p-2 rounded-lg text-gold-500 hover:bg-gold-500/10 transition-colors"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
           >
-            {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
 
-        {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-gray-700 bg-dark-200/95 backdrop-blur-md">
-            <nav className="flex flex-col space-y-4">
-              {navItems.map((item) => (
-                item.href.startsWith('/') ? (
+          <div className="lg:hidden py-4 border-t border-gray-700 bg-dark-200/95 backdrop-blur-md">
+            <nav className="flex flex-col gap-1">
+              {navItems.map((item) =>
+                isRoute(item.href) ? (
                   <Link
                     key={item.name}
                     to={item.href}
-                    className="nav-link py-2 px-4 rounded-lg hover:bg-gold-500/10 transition-colors duration-200 flex items-center group"
+                    className="nav-link py-2.5 px-3 rounded-lg hover:bg-gold-500/10"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    <ArrowRight className="mr-2 text-gold-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" size={14} />
                     {item.name}
                   </Link>
                 ) : (
                   <a
                     key={item.name}
                     href={item.href}
-                    className="nav-link py-2 px-4 rounded-lg hover:bg-gold-500/10 transition-colors duration-200 flex items-center group"
+                    className="nav-link py-2.5 px-3 rounded-lg hover:bg-gold-500/10"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    <ArrowRight className="mr-2 text-gold-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" size={14} />
                     {item.name}
                   </a>
                 )
-              ))}
-              <a 
-                href="#contact" 
-                className="btn-primary w-full mt-4 text-center flex items-center justify-center" 
+              )}
+              <a
+                href="/#contact"
+                className="btn-primary w-full mt-3 text-center flex items-center justify-center"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <Send className="mr-2" size={16} />
+                <Send className="mr-2" size={15} />
                 Get Started
               </a>
             </nav>

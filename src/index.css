@@ -89,6 +89,23 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
   }
+
+  /* Hero, static panels (no hover glow) */
+  .hero-panel {
+    @apply bg-dark-100/90 rounded-2xl border border-gray-700/60;
+  }
+
+  .hero-capability {
+    @apply rounded-xl border border-gray-800/80 bg-dark-200/50 p-4;
+  }
+
+  .btn-hero-primary {
+    @apply bg-gold-500 hover:bg-gold-600 text-dark-200 font-semibold py-2.5 px-5 rounded-lg transition-colors duration-200;
+  }
+
+  .btn-hero-secondary {
+    @apply border border-gray-600 text-gray-200 hover:border-gold-500/40 hover:text-gold-400 font-medium py-2.5 px-5 rounded-lg transition-colors duration-200;
+  }
   
   /* Section styles */
   .section-title {
@@ -288,6 +305,36 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   animation: pulse-slow 2s ease-in-out infinite;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out;
+}
+
+@keyframes scale-in {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-scale-in {
+  animation: scale-in 0.2s ease-out;
 }
 
 .animate-eye-glow {

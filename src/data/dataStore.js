@@ -5,29 +5,26 @@ const defaultTeamData = {
   ceo: { 
     id: 'ceo-1', 
     name: 'Edyelu Andrew', 
-    role: 'Co-Founder', 
+    role: 'Co-Founder & Technical Lead', 
     image: '/images/team/edyelu-andrew.jpg', 
-    // skills: ['Rust', 'React', 'Solana', 'Node.js'],
-    description: 'Full-stack Developer',
+    description: 'Full-stack engineer building scalable web platforms and blockchain products.',
     handles: { x: 'https://x.com/edyeluandrew1', linkedin: 'https://linkedin.com/in/edyelu', github: 'https://github.com/edyeluandrew' }
   },
   topRow: [
     { 
       id: 'member-1', 
       name: 'Ahmed Umar Khemis', 
-      role: 'Co-Founder', 
+      role: 'Co-Founder & Edge AI Engineer', 
       image: '/images/team/ahmed-umar-khemis.jpg',
-      // skills: ['Python', 'TensorFlow', 'Django'],
-      description: 'Edge AI Engineer | Embedded Systems Developer | Backend Developer.',
+      description: 'Specializes in edge AI, embedded systems, and production-grade backend architecture.',
       handles: { x: 'https://x.com/ahmed', linkedin: 'https://linkedin.com/in/ahmed', github: 'https://github.com/ahmed' }
     },
     { 
       id: 'member-2', 
       name: 'Aliho Gilbert', 
-      role: 'Co-Founder', 
+      role: 'Co-Founder & ML Engineer', 
       image: '/images/team/aliho-gilbert.jpg',
-      // skills: ['Python', 'React', 'Backend'],
-      description: 'Backend Egineer | AI & Machine Learning Practitioner.',
+      description: 'Backend engineer focused on applied machine learning and intelligent systems.',
       handles: { x: 'https://x.com/aliho', linkedin: 'https://linkedin.com/in/aliho', github: 'https://github.com/aliho' }
     }
   ],
@@ -35,22 +32,18 @@ const defaultTeamData = {
     { 
       id: 'member-3', 
       name: 'Muhereza Alouzious', 
-      role: 'Co-Founder', 
+      role: 'Co-Founder & Full-Stack Engineer', 
       image: '/images/team/muhereza-alouzious.jpg',
-      // skills: ['React', 'Node.js', 'Web3'],
-      description: 'Fullstack Web3 Developer',
+      description: 'Delivers end-to-end Web3 platforms and modern full-stack web applications.',
       handles: { x: 'https://x.com/muhereza', linkedin: 'https://linkedin.com/in/muhereza', github: 'https://github.com/muhereza' }
     },
     { 
       id: 'member-4', 
       name: 'Kyomugisha Evelyne', 
-      role: 'IT specialist and Business Analyst', 
+      role: 'Business Analyst & IT Strategist', 
       image: '/images/team/kyomugisha-evelyn.jpg',
-      // skills: ['Docker', 'Kubernetes', 'AWS'],
-      // description: 'Infrastructure and deployment specialist.',
-      handles: { x: 'https://x.com/kyomugisha', linkedin: 'https://linkedin.com/in/kyomugisha'
-        
-       }
+      description: 'Aligns business goals with technical delivery, systems analysis, and product strategy.',
+      handles: { x: 'https://x.com/kyomugisha', linkedin: 'https://linkedin.com/in/kyomugisha' }
     }
   ]
 };
@@ -58,137 +51,348 @@ const defaultTeamData = {
 const defaultEventsData = [
   {
     id: 101,
+    title: 'Web3 & Smart Contracts Bootcamp',
+    date: '2026-03-20',
+    time: '2:00 PM - 6:00 PM',
+    location: 'Beta Tech Labs, Kabale Main Town',
+    venue: 'Beta Tech Labs HQ',
+    category: 'Bootcamp',
+    description:
+      'A hands-on afternoon building on-chain, from Solidity fundamentals to deploying your first smart contract. Participants left with a working dApp prototype and a clear mental model of Web3 security pitfalls.',
+    attendees: 42,
+    images: [],
+    highlights: ['Solidity', 'Web3.js', 'Smart Contract Security'],
+    registrationLink: '',
+  },
+  {
+    id: 105,
+    title: 'Stellar & Soroban Developer Day',
+    date: '2026-02-08',
+    time: '10:00 AM - 4:00 PM',
+    location: 'Kabale University, Computer Science Lab',
+    venue: 'Kabale University',
+    category: 'Workshop',
+    description:
+      'East Africa\'s growing Stellar ecosystem came to Kabale. Students and developers built Soroban smart contracts, connected Freighter wallets, and explored real use cases for cross-border payments and tokenized assets.',
+    attendees: 38,
+    images: [],
+    highlights: ['Stellar', 'Soroban', 'Freighter Wallet'],
+    registrationLink: '',
+  },
+  {
+    id: 106,
+    title: 'AI Fundamentals for Builders',
+    date: '2025-11-22',
+    time: '9:00 AM - 3:00 PM',
+    location: 'Beta Tech Labs, Kabale Main Town',
+    venue: 'Beta Tech Labs HQ',
+    category: 'Workshop',
+    description:
+      'A full-day introduction to machine learning for students and early-career developers. Covered data pipelines, model training, and deploying a simple computer-vision demo, no PhD required, just curiosity and a laptop.',
+    attendees: 55,
+    images: [],
+    highlights: ['Machine Learning', 'Computer Vision', 'Python'],
+    registrationLink: '',
+  },
+  {
+    id: 107,
+    title: 'Kabale Tech Innovation Meetup',
+    date: '2026-01-18',
+    time: '3:00 PM - 6:00 PM',
+    location: 'Numba Cafe, Kabale Main Town',
+    venue: 'Numba Cafe',
+    category: 'Meetup',
+    description:
+      'An open evening for founders, students, and engineers to share what they are building. Lightning talks on AI products, blockchain pilots, and student startup ideas, followed by networking over coffee.',
+    attendees: 60,
+    images: [],
+    highlights: ['Networking', 'Lightning Talks', 'Startups'],
+    registrationLink: '',
+  },
+  {
+    id: 103,
+    title: 'React & Modern Frontend Workshop',
+    date: '2026-07-05',
+    time: '10:00 AM - 3:00 PM',
+    location: 'Beta Tech Labs, Kabale Main Town',
+    venue: 'Beta Tech Labs HQ',
+    category: 'Workshop',
+    description:
+      'Ship interfaces that feel production-ready. This workshop covers React component architecture, state management patterns, API integration, and performance basics, with a capstone mini-app you build and deploy the same day.',
+    attendees: 35,
+    images: [],
+    highlights: ['React.js', 'State Management', 'UI Engineering'],
+    registrationLink: 'https://forms.gle/placeholder-register',
+  },
+  {
+    id: 104,
     title: 'Advanced AI & Deep Learning',
-    date: '2025-05-15',
+    date: '2026-08-15',
     time: '9:00 AM - 4:00 PM',
-    location: 'Beta Tech Hub, Kabale',
-    venue: 'Beta Tech Hub',
-    description: 'Deep dive into neural networks, computer vision, and natural language processing. Build advanced AI models.',
+    location: 'Beta Tech Labs, Kabale Main Town',
+    venue: 'Beta Tech Labs HQ',
+    category: 'Bootcamp',
+    description:
+      'Go beyond tutorials. Neural network architectures, transfer learning, NLP pipelines, and computer-vision workflows, taught through live coding sessions and a team challenge you present at the end of the day.',
     attendees: 30,
     images: [],
     highlights: ['Deep Learning', 'Computer Vision', 'NLP'],
-    registrationLink: '#'
+    registrationLink: 'https://forms.gle/placeholder-register',
   },
   {
     id: 102,
     title: 'Rust & Solana Development',
-    date: '2025-06-10',
+    date: '2026-09-10',
     time: '10:00 AM - 5:00 PM',
     location: 'Kabale University, Tech Lab',
     venue: 'Kabale University',
-    description: 'Learn Rust and build high-performance applications on Solana blockchain.',
+    category: 'Bootcamp',
+    description:
+      'High-performance blockchain development from the ground up. Learn Rust syntax and patterns, then apply them to Solana programs, building, testing, and deploying on devnet with mentor support throughout.',
     attendees: 25,
     images: [],
-    highlights: ['Rust Programming', 'Solana Blockchain', 'DeFi'],
-    registrationLink: '#'
+    highlights: ['Rust', 'Solana', 'On-Chain Programs'],
+    registrationLink: 'https://forms.gle/placeholder-register',
   },
-  {
-    id: 103,
-    title: 'Web3 & Smart Contracts Bootcamp',
-    date: '2025-04-20',
-    time: '2:00 PM - 6:00 PM',
-    location: 'Beta Tech Hub, Kabale',
-    venue: 'Beta Tech Hub',
-    description: 'Hands-on bootcamp for learning smart contracts and Web3 development.',
-    attendees: 40,
-    images: [],
-    highlights: ['Solidity', 'Web3.js', 'Security'],
-    registrationLink: '#'
-  },
-  {
-    id: 104,
-    title: 'React & Frontend Development Workshop',
-    date: '2025-07-05',
-    time: '10:00 AM - 3:00 PM',
-    location: 'Beta Tech Hub, Kabale',
-    venue: 'Beta Tech Hub',
-    description: 'Master React, state management, and modern frontend practices.',
-    attendees: 35,
-    images: [],
-    highlights: ['React.js', 'State Management', 'UI/UX'],
-    registrationLink: '#'
-  }
 ];
-const defaultServicesData = { 
+const mergeEventsWithDefaults = (stored) => {
+  if (!stored || !Array.isArray(stored) || stored.length === 0) {
+    return defaultEventsData;
+  }
+
+  const merged = defaultEventsData.map((def) => {
+    const match = stored.find(
+      (e) => e.id === def.id || e.title?.toLowerCase() === def.title?.toLowerCase()
+    );
+    return match
+      ? {
+          ...def,
+          ...match,
+          title: def.title,
+          images: match.images?.length ? match.images : def.images || [],
+        }
+      : def;
+  });
+
+  stored.forEach((event) => {
+    const known = defaultEventsData.some(
+      (d) => d.id === event.id || d.title?.toLowerCase() === event.title?.toLowerCase()
+    );
+    if (!known) merged.push(event);
+  });
+
+  return merged;
+};
+
+const defaultServicesData = {
   core: [
     {
       id: 'service-1',
       icon: 'Search',
-      title: 'Research & Development',
-      description: 'Our primary focus. We conduct cutting-edge research in AI and Blockchain.',
+      title: 'Research & Innovation',
+      description: 'Problem-led research in AI, blockchain, IoT, and emerging technologies.',
       features: [
-        'AI Model Research & Development',
-        'Blockchain Protocol Studies',
-        'Academic Research Publications',
-        'Industry Problem Analysis'
-      ]
+        'Problem Discovery & Needs Assessment',
+        'User, Market & Field Research',
+        'Applied AI & Machine Learning Research',
+        'Blockchain & Distributed Systems R&D',
+        'IoT & Edge Computing Exploration',
+        'Technical Reports & Documentation',
+      ],
     },
     {
       id: 'service-2',
-      icon: 'Settings',
-      title: 'Solution Engineering',
-      description: 'Building practical solutions based on our research findings.',
+      icon: 'Package',
+      title: 'Product Development',
+      description: 'Research-backed products, from AI platforms to IoT dashboards.',
       features: [
-        'Research-Based Software Development',
-        'Proof of Concept Implementation',
-        'Prototype Development',
-        'Solution Scaling & Deployment'
-      ]
-    }
-  ], 
-  additional: [
+        'AI-Powered Products & Platforms',
+        'Mobile Applications',
+        'Web Platforms & Business Systems',
+        'IoT Devices & Monitoring Dashboards',
+        'Data & Analytics Platforms',
+      ],
+    },
     {
       id: 'service-3',
-      icon: 'Code',
-      title: 'Software Engineering',
-      description: 'End-to-end software development services.',
+      icon: 'Settings',
+      title: 'Solution Engineering',
+      description: 'Custom engineering from proof of concept to production deployment.',
       features: [
-        'Web Application Development',
-        'Mobile App Development',
-        'Desktop Software Solutions',
-        'API & Backend Development'
-      ]
+        'Custom Software & Full-Stack Development',
+        'AI Automation & Intelligent Workflows',
+        'Blockchain & Web3 Applications',
+        'API Design & System Integrations',
+        'Cloud Deployment & Production Scaling',
+      ],
     },
     {
       id: 'service-4',
       icon: 'GraduationCap',
-      title: 'Student Internships',
-      description: 'Hands-on programs for computing students.',
+      title: 'Talent Development',
+      description: 'Internships, training, and mentorship through real project delivery.',
       features: [
-        'Research Methodology Training',
-        'Practical Tech Skill Development',
-        'Project-Based Learning',
-        'Career Mentorship'
-      ]
+        'Structured Internships & Research Training',
+        'Industry Collaboration Projects',
+        'Technical Workshops & Events',
+        'Mentorship & Career Development',
+      ],
     },
+  ],
+  additional: [
     {
       id: 'service-5',
       icon: 'Brain',
-      title: 'AI Consulting',
-      description: 'Expert AI implementation services.',
-      features: [
-        'AI Strategy Development',
-        'Machine Learning Solutions',
-        'Computer Vision Systems',
-        'Natural Language Processing'
-      ]
+      title: 'AI & Machine Learning',
+      description: 'ML models, NLP, computer vision, and predictive systems.',
+      features: ['Model Development', 'Computer Vision', 'NLP Solutions', 'AI Strategy'],
     },
     {
       id: 'service-6',
       icon: 'Link',
-      title: 'Blockchain Solutions',
-      description: 'Comprehensive blockchain development.',
-      features: [
-        'Smart Contract Development',
-        'DeFi Protocol Design',
-        'NFT Platform Development',
-        'Web3 Integration'
-      ]
-    }
-  ]
+      title: 'Blockchain & Web3',
+      description: 'Smart contracts, DeFi, and on-chain integrations.',
+      features: ['Smart Contracts', 'DeFi Protocols', 'Web3 Integration', 'NFT Platforms'],
+    },
+    {
+      id: 'service-7',
+      icon: 'Cpu',
+      title: 'IoT & Edge Systems',
+      description: 'Embedded devices, edge AI, and field monitoring tools.',
+      features: ['Embedded Development', 'Edge AI', 'Sensor Integration', 'IoT Dashboards'],
+    },
+    {
+      id: 'service-8',
+      icon: 'Code',
+      title: 'Software Engineering',
+      description: 'Web, mobile, API, and business system development.',
+      features: ['Web Applications', 'Mobile Apps', 'API & Backend', 'Business Systems'],
+    },
+  ],
 };
 
-const defaultProjectsData = [];
+// Project logos in /public/images
+export const PROJECT_LOGOS = {
+  stellaride: '/images/Stellarlogo.png',
+  stellar: '/images/Stellarlogo.png',
+  fasiri: '/images/fasiri-icon.png',
+  'cultural hub': '/images/logo_cultural_hub-bg.png',
+};
+
+const enrichProject = (project) => {
+  const titleKey = project.title?.toLowerCase().trim();
+  const defaults = defaultProjectsData.find((d) => d.title.toLowerCase() === titleKey);
+  if (!defaults) return project;
+
+  return {
+    ...defaults,
+    image: defaults.image || PROJECT_LOGOS[titleKey] || project.image || '',
+    githubRepo: project.githubRepo || defaults.githubRepo,
+    githubRepoPrivate: project.githubRepoPrivate ?? defaults.githubRepoPrivate,
+    liveUrlPrivate: project.liveUrlPrivate ?? defaults.liveUrlPrivate,
+  };
+};
+
+const mergeProjectsWithDefaults = (stored) => {
+  if (!stored || !Array.isArray(stored) || stored.length === 0) {
+    return defaultProjectsData;
+  }
+
+  return defaultProjectsData.map((def) => {
+    const match = stored.find(
+      (p) =>
+        p.id === def.id ||
+        p.title?.toLowerCase() === def.title.toLowerCase() ||
+        (def.title === 'StellarIDE' && p.title?.toLowerCase() === 'stellar') ||
+        (def.title === 'Numba' && p.title?.toLowerCase() === 'nuba')
+    );
+    return enrichProject(match ? { ...match, title: def.title } : def);
+  });
+};
+
+const defaultProjectsData = [
+  {
+    id: 1,
+    title: 'Fasiri',
+    description:
+      'African language AI, one API away. Translate, transcribe, and synthesise speech across 19+ African languages. Sunbird AI, Khaya AI, and HuggingFace, unified behind a single, consistent interface.',
+    status: 'Launched',
+    category: 'African Language API',
+    image: '/images/fasiri-icon.png',
+    liveUrl: 'https://www.fasiri-ai.com/',
+    liveUrlStatus: 'available',
+    liveUrlPrivate: false,
+    githubRepo: 'https://github.com/beta-techlabs',
+    githubRepoPrivate: false,
+  },
+  {
+    id: 2,
+    title: 'Cultural Hub',
+    description:
+      'Discover culture through real experiences, not just stories. Explore cultural destinations, watch real experiences, and connect with local providers. Everything is designed to help you understand a place before you visit it, or even from wherever you are.',
+    status: 'Launched',
+    category: 'Cultural Community Platform',
+    image: '/images/logo_cultural_hub-bg.png',
+    liveUrl: 'http://cultural-hub-psi.vercel.app/',
+    liveUrlStatus: 'available',
+    liveUrlPrivate: false,
+    githubRepo: 'https://github.com/beta-techlabs',
+    githubRepoPrivate: false,
+  },
+  {
+    id: 3,
+    title: 'StellarIDE',
+    description:
+      'StellarIDE is a browser-native IDE for Soroban smart contract development on Stellar. Write, compile, test, and deploy directly from your browser with zero local setup, powered by Monaco Editor, built-in Stellar CLI, and wallet integration for Testnet and Mainnet.',
+    status: 'Launched',
+    category: 'Blockchain / Developer Tools',
+    image: '/images/Stellarlogo.png',
+    liveUrl: 'http://stellaride.dev/',
+    liveUrlStatus: 'available',
+    liveUrlPrivate: false,
+    githubRepo: 'https://github.com/beta-techlabs',
+    githubRepoPrivate: false,
+  },
+  {
+    id: 4,
+    title: 'Rowan',
+    description:
+      'Rowan is a peer-to-peer crypto-to-fiat liquidity bridge on Stellar, converting XLM to local currency through mobile money networks across East Africa. Built with escrow-backed trades, real-time DEX pricing, trader verification, and a mobile-first experience for UGX, KES, and TZS.',
+    status: 'In Development',
+    category: 'FinTech / Blockchain',
+    liveUrl: '',
+    liveUrlStatus: 'coming-soon',
+    liveUrlPrivate: false,
+    githubRepo: 'https://github.com/edyeluandrew/rowan',
+    githubRepoPrivate: false,
+  },
+  {
+    id: 5,
+    title: 'RetiSight',
+    description:
+      'A digital platform that uses AI to assist with eye disease screening and detection, developed to improve access to timely eye diagnostics in Uganda.',
+    status: 'In Development',
+    category: 'AI / Healthcare',
+    liveUrl: '',
+    liveUrlStatus: 'coming-soon',
+    liveUrlPrivate: false,
+    githubRepo: 'https://github.com/beta-techlabs',
+    githubRepoPrivate: false,
+  },
+  {
+    id: 6,
+    title: 'Numba',
+    description:
+      'A system that allows customers to scan the QR code and are redirected to the menu where they can make orders and checkout.',
+    status: 'In Development',
+    category: 'Web Platform / Hospitality',
+    liveUrl: '',
+    liveUrlStatus: 'coming-soon',
+    liveUrlPrivate: false,
+    githubRepo: 'https://github.com/edyeluandrew/numba',
+    githubRepoPrivate: false,
+  },
+];
 
 // Initialize Firebase
 export const initializeFirebaseData = async () => {
@@ -202,8 +406,7 @@ export const initializeFirebaseData = async () => {
     const services = await firebaseGet('betaTechLabs/services');
     if (!services) await firebaseSet('betaTechLabs/services', defaultServicesData);
 
-    const projects = await firebaseGet('betaTechLabs/projects');
-    if (!projects) await firebaseSet('betaTechLabs/projects', defaultProjectsData);
+    await firebaseSet('betaTechLabs/projects', defaultProjectsData);
   } catch (error) {
     console.error('Error initializing Firebase:', error);
   }
@@ -244,7 +447,7 @@ export const resetTeamData = async () => {
 export const getEventsData = async () => {
   try {
     const data = await firebaseGet('betaTechLabs/events');
-    return data || defaultEventsData;
+    return mergeEventsWithDefaults(data);
   } catch (e) {
     console.error('Error getting events data:', e);
     return defaultEventsData;
@@ -317,7 +520,7 @@ export const resetAllData = async () => {
 export const getProjectsData = async () => {
   try {
     const data = await firebaseGet('betaTechLabs/projects');
-    return data || defaultProjectsData;
+    return mergeProjectsWithDefaults(data);
   } catch (e) {
     console.error('Error getting projects data:', e);
     return defaultProjectsData;
