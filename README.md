@@ -1,4 +1,4 @@
-# Beta Tech Labs
+# Beta-Tech Labs Company Limited
 
 <div align="center">
 
@@ -6,7 +6,9 @@
 [![Location](https://img.shields.io/badge/Location-Kabale%2C%20Uganda-green?style=flat-square)](#contact)
 [![Stack](https://img.shields.io/badge/Stack-React%20%2B%20Vite%20%2B%20Tailwind-61dafb?style=flat-square)](#tech-stack)
 
-**Research-led AI & Blockchain from Kabale, Uganda**
+**Dream It. Built It.**
+
+*Turning Research into Real-World Solutions*
 
 [Website](https://www.beta-techlabs.com) · [X](https://x.com/betatechlabs) · [LinkedIn](https://www.linkedin.com/in/betatech-labs-06398039b) · [GitHub](https://github.com/beta-techlabs)
 
@@ -16,14 +18,16 @@
 
 ## About
 
-**Beta Tech Labs** is a research and product studio based in Kabale Main Town, Uganda. We investigate real problems, build AI and blockchain products, run technical workshops, and partner with organizations that want technology grounded in research, not hype.
+**Beta-Tech Labs Company Limited** is a research-driven technology company based in Kabale Main Town, Uganda. We transform ideas and real-world challenges into innovative products and technology solutions through research, engineering, and continuous innovation.
 
-| Focus | What we do |
-|-------|------------|
-| **Research** | Applied AI, blockchain, and IoT exploration with documented outputs |
-| **Products** | Platforms shipped to production (Fasiri, Cultural Hub, StellarIDE, and more) |
-| **Engineering** | Custom software, integrations, and proof-of-concept builds for partners |
-| **Community** | Workshops, bootcamps, and meetups for builders across Western Uganda |
+**Philosophy:** Research First. Innovation Always. Impact Forever.
+
+| Pillar | Focus |
+|--------|-------|
+| **Research & Innovation** | Problem discovery, applied research, emerging technology exploration |
+| **Product Innovation** | AI products, mobile apps, web platforms, enterprise systems |
+| **Solution Engineering** | Custom solutions for organizations and partners |
+| **Talent Development** | Internships, mentorship, workshops, industry collaboration |
 
 ---
 
@@ -157,6 +161,6 @@ research-hub/
 
 <div align="center">
 
-**Beta Tech Labs** · Kabale, Uganda · Est. 2024
+**Beta-Tech Labs Company Limited** · Kabale, Uganda · Est. 2024
 
 </div>

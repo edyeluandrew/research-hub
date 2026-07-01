@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Twitter, Linkedin, Github, Crown } from 'lucide-react';
 import { getTeamData } from '../data/dataStore';
+import Reveal from './Reveal';
 
 const SocialHandle = ({ platform, url }) => {
   const platforms = {
@@ -18,7 +19,7 @@ const SocialHandle = ({ platform, url }) => {
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className={`w-9 h-9 bg-dark-200 rounded-lg flex items-center justify-center text-gray-400 border border-gray-700 transition-colors duration-300 ${platformInfo.color}`}
+      className={`w-9 h-9 bg-dark-200 rounded-lg flex items-center justify-center text-gray-400 border border-gray-700 transition-all duration-300 hover:scale-110 ${platformInfo.color}`}
       aria-label={`Visit ${platformInfo.name} profile`}
     >
       <IconComponent size={16} />
@@ -28,8 +29,8 @@ const SocialHandle = ({ platform, url }) => {
 
 const TeamCard = ({ member, isLead = false }) => (
   <article
-    className={`relative flex flex-col h-full rounded-xl border bg-dark-200 overflow-hidden ${
-      isLead ? 'border-gold-500/40' : 'border-gray-800'
+    className={`group interactive-card rounded-xl flex flex-col h-full overflow-hidden ${
+      isLead ? '!border-gold-500/40 hover:!border-gold-500/60' : ''
     }`}
   >
     {isLead && (
@@ -41,7 +42,7 @@ const TeamCard = ({ member, isLead = false }) => (
     <div className="p-4 md:p-5 flex flex-col flex-1">
       <div className="mb-3">
         <div
-          className={`mx-auto rounded-full overflow-hidden border-2 ${
+          className={`mx-auto rounded-full overflow-hidden border-2 transition-all duration-500 group-hover:scale-105 group-hover:border-gold-500 ${
             isLead ? 'w-20 h-20 border-gold-500' : 'w-[4.5rem] h-[4.5rem] border-gold-500/30'
           }`}
         >
@@ -66,7 +67,7 @@ const TeamCard = ({ member, isLead = false }) => (
       </div>
 
       <div className="text-center flex-1">
-        <h3 className="text-base font-bold font-heading text-white mb-0.5 leading-snug">
+        <h3 className="text-base font-bold font-heading text-white mb-0.5 leading-snug transition-colors duration-300 group-hover:text-gold-50">
           {member.name || 'Team Member'}
         </h3>
         <p className="text-sm font-medium text-gold-500 mb-2 leading-snug">{member.role || 'Team Member'}</p>
@@ -120,35 +121,38 @@ const Team = () => {
       <div className="absolute top-0 left-0 w-48 h-48 bg-gold-500/5 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5 relative z-10">
-        <div className="text-center max-w-2xl mx-auto mb-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-500 mb-1.5">
+        <Reveal className="text-center max-w-2xl mx-auto mb-6 group">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-500 mb-1.5 section-eyebrow">
             Our Team
           </p>
           <h2 className="text-3xl md:text-4xl font-bold text-white font-heading mb-2 leading-tight">
             The People Behind the Work
           </h2>
           <p className="text-sm md:text-base text-gray-400 leading-snug">
-            Engineers, researchers, and strategists building AI and blockchain products from
-            Uganda, the same caliber of talent you would expect from a world-class tech team.
+            Researchers, engineers, and strategists united by a shared belief: technology should
+            create meaningful impact, measured not by complexity, but by the value it delivers.
           </p>
-        </div>
+        </Reveal>
 
         <div className="space-y-3 md:space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
             {firstRow.map((member, index) => (
-              <TeamCard key={member.id || `row1-${index}`} member={member} isLead={member.id === ceo?.id} />
+              <Reveal key={member.id || `row1-${index}`} delay={index * 80}>
+                <TeamCard member={member} isLead={member.id === ceo?.id} />
+              </Reveal>
             ))}
           </div>
 
           {secondRow.length > 0 && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 md:gap-4">
               {secondRow.map((member, index) => (
-                <div
+                <Reveal
                   key={member.id || `row2-${index}`}
+                  delay={index * 80}
                   className={`lg:col-span-2 ${index === 0 ? 'lg:col-start-2' : ''}`}
                 >
                   <TeamCard member={member} />
-                </div>
+                </Reveal>
               ))}
             </div>
           )}

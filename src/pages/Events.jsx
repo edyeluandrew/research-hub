@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import SEO from '../components/SEO';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { getEventsData } from '../data/dataStore';
 import { SITE, SOCIAL, STATS } from '../config/site';
+import { navigateToHomeSection } from '../utils/homeNavigation';
+import Reveal from '../components/Reveal';
+import EventGalleryModal from '../components/EventGalleryModal';
 import {
   Calendar,
   Clock,
@@ -12,9 +15,6 @@ import {
   Users,
   CheckCircle,
   Image as ImageIcon,
-  ChevronLeft,
-  ChevronRight,
-  X,
   ArrowRight,
   Send,
   Sparkles,
@@ -163,7 +163,7 @@ const EventBanner = ({ event, isPast, onOpenGallery }) => {
   );
 };
 
-const EventCard = ({ event, isPast, onOpenGallery }) => {
+const EventCard = ({ event, isPast, onOpenGallery, onRequestSeat }) => {
   const daysUntil = !isPast ? getDaysUntilEvent(event.date) : null;
 
   const countdownLabel = () => {
@@ -174,7 +174,7 @@ const EventCard = ({ event, isPast, onOpenGallery }) => {
   };
 
   return (
-    <article className="rounded-xl border border-gray-800 bg-dark-100 overflow-hidden flex flex-col h-full hover:border-gold-500/30 transition-colors">
+    <article className="group interactive-card-light rounded-xl overflow-hidden flex flex-col h-full">
       <EventBanner event={event} isPast={isPast} onOpenGallery={onOpenGallery} />
 
       <div className="p-5 md:p-6 flex flex-col flex-1">
@@ -208,7 +208,9 @@ const EventCard = ({ event, isPast, onOpenGallery }) => {
           </p>
         )}
 
-        <h3 className="text-lg md:text-xl font-bold text-white mb-2 leading-snug">{event.title}</h3>
+        <h3 className="text-lg md:text-xl font-bold text-white mb-2 leading-snug transition-colors duration-300 group-hover:text-gold-50">
+          {event.title}
+        </h3>
 
         <div className="space-y-1.5 mb-3">
           <div className="flex items-center gap-2 text-sm text-gray-400">
@@ -240,8 +242,8 @@ const EventCard = ({ event, isPast, onOpenGallery }) => {
           </div>
         )}
 
-        <div className="mt-auto pt-4 border-t border-gray-800">
-          {!isPast && event.registrationLink ? (
+        <div className="mt-auto pt-4 border-t border-gray-800 space-y-2">
+          {!isPast && event.registrationLink && (
             <a
               href={event.registrationLink}
               target="_blank"
@@ -251,46 +253,48 @@ const EventCard = ({ event, isPast, onOpenGallery }) => {
               Register Now
               <ExternalLink className="ml-2" size={14} />
             </a>
-          ) : isPast && event.images?.length > 0 ? (
+          )}
+          {event.images?.length > 0 && (
             <button
               type="button"
               onClick={() => onOpenGallery(event)}
-              className="btn-secondary w-full inline-flex items-center justify-center text-sm"
+              className={`w-full inline-flex items-center justify-center text-sm ${
+                !isPast && event.registrationLink ? 'btn-secondary' : 'btn-primary'
+              }`}
             >
               <ImageIcon className="mr-2" size={14} />
-              View Photos ({event.images.length})
+              View Gallery ({event.images.length} photo{event.images.length !== 1 ? 's' : ''})
             </button>
-          ) : !isPast ? (
+          )}
+          {!isPast && !event.registrationLink && (
             <button
               type="button"
-              onClick={() => {
-                window.location.href = '/#contact';
-              }}
+              onClick={onRequestSeat}
               className="btn-secondary w-full inline-flex items-center justify-center text-sm"
             >
               <Send className="mr-2" size={14} />
               Request a Seat
             </button>
-          ) : null}
+          )}
         </div>
       </div>
     </article>
   );
 };
 
-const FeaturedEvent = ({ event, onOpenGallery }) => {
+const FeaturedEvent = ({ event, onOpenGallery, onRequestSeat }) => {
   const daysUntil = getDaysUntilEvent(event.date);
   const parts = formatDateParts(event.date);
 
   return (
-    <article className="rounded-xl border border-gold-500/30 bg-dark-100 overflow-hidden">
+    <article className="group interactive-card-light rounded-xl overflow-hidden !border-gold-500/30 hover:!border-gold-500/50">
       <div className="grid lg:grid-cols-5 gap-0">
         <div className="lg:col-span-2 relative min-h-[220px] bg-gradient-to-br from-gold-900/30 via-dark-200 to-purple-900/40 flex items-center justify-center p-8 border-b lg:border-b-0 lg:border-r border-gray-800">
           <div className="text-center">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-gold-500 mb-3">
               Next Up
             </p>
-            <div className="inline-flex flex-col items-center justify-center w-24 h-24 rounded-2xl border-2 border-gold-500/40 bg-dark-200/90 mb-3">
+            <div className="inline-flex flex-col items-center justify-center w-24 h-24 rounded-2xl border-2 border-gold-500/40 bg-dark-200/90 mb-3 transition-all duration-500 group-hover:scale-105 group-hover:border-gold-500/60">
               <span className="text-xs font-bold text-gold-500">{parts.month}</span>
               <span className="text-4xl font-bold text-white leading-none">{parts.day}</span>
               <span className="text-xs text-gray-500">{parts.year}</span>
@@ -351,10 +355,14 @@ const FeaturedEvent = ({ event, onOpenGallery }) => {
                 <ArrowRight className="ml-2" size={16} />
               </a>
             ) : (
-              <a href="/#contact" className="btn-primary inline-flex items-center justify-center text-sm">
+              <button
+                type="button"
+                onClick={onRequestSeat}
+                className="btn-primary inline-flex items-center justify-center text-sm"
+              >
                 <Send className="mr-2" size={16} />
                 Request a Seat
-              </a>
+              </button>
             )}
             {event.images?.length > 0 && (
               <button
@@ -375,6 +383,8 @@ const FeaturedEvent = ({ event, onOpenGallery }) => {
 
 const Events = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const goToContact = () => navigateToHomeSection(navigate, location, 'contact');
   const [activeTab, setActiveTab] = useState('upcoming');
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -407,6 +417,14 @@ const Events = () => {
   );
   const featuredEvent = upcoming[0] || null;
 
+  const galleryEvents = useMemo(
+    () =>
+      [...upcoming, ...past]
+        .filter((event) => event.images?.length > 0)
+        .sort((a, b) => new Date(b.date) - new Date(a.date)),
+    [upcoming, past]
+  );
+
   const galleryItems = useMemo(
     () =>
       past.flatMap((event) =>
@@ -429,22 +447,6 @@ const Events = () => {
   const closeGallery = () => {
     setSelectedEvent(null);
     setCurrentImageIndex(0);
-  };
-
-  const nextImage = () => {
-    if (selectedEvent?.images?.length > 0) {
-      setCurrentImageIndex((prev) =>
-        prev === selectedEvent.images.length - 1 ? 0 : prev + 1
-      );
-    }
-  };
-
-  const prevImage = () => {
-    if (selectedEvent?.images?.length > 0) {
-      setCurrentImageIndex((prev) =>
-        prev === 0 ? selectedEvent.images.length - 1 : prev - 1
-      );
-    }
   };
 
   return (
@@ -497,6 +499,16 @@ const Events = () => {
                   </div>
                 </div>
               )}
+
+              {!loading && galleryEvents.length > 0 && (
+                <a
+                  href="#event-galleries"
+                  className="btn-secondary inline-flex items-center mt-5 text-sm"
+                >
+                  <ImageIcon className="mr-2" size={16} />
+                  Browse event photo galleries
+                </a>
+              )}
             </div>
           </section>
 
@@ -513,21 +525,24 @@ const Events = () => {
                 </p>
               </div>
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-                {WHY_ATTEND.map((item) => {
+                {WHY_ATTEND.map((item, index) => {
                   const Icon = item.icon;
                   return (
+                    <Reveal key={item.title} delay={index * 70}>
                     <div
-                      key={item.title}
-                      className="rounded-xl border border-gray-800 bg-dark-200 p-4 md:p-5"
+                      className="group interactive-card rounded-xl p-4 md:p-5 h-full"
                     >
-                      <div className="w-9 h-9 rounded-lg bg-gold-500/10 border border-gold-500/20 flex items-center justify-center mb-3">
-                        <Icon className="text-gold-500" size={16} />
+                      <div className="icon-box w-9 h-9 rounded-lg bg-gold-500/10 border border-gold-500/20 flex items-center justify-center mb-3">
+                        <Icon className="text-gold-500 transition-transform duration-300" size={16} />
                       </div>
-                      <h3 className="text-sm font-bold text-white mb-1.5 leading-snug">
+                      <h3 className="text-sm font-bold text-white mb-1.5 leading-snug transition-colors duration-300 group-hover:text-gold-50">
                         {item.title}
                       </h3>
-                      <p className="text-xs text-gray-500 leading-snug">{item.text}</p>
+                      <p className="text-xs text-gray-500 leading-snug transition-colors duration-300 group-hover:text-gray-400">
+                        {item.text}
+                      </p>
                     </div>
+                    </Reveal>
                   );
                 })}
               </div>
@@ -538,14 +553,19 @@ const Events = () => {
           <section className="py-6 bg-dark-200 border-b border-gray-800/50">
             <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                {EVENT_FORMATS.map((fmt) => (
+                {EVENT_FORMATS.map((fmt, index) => (
+                  <Reveal key={fmt.label} delay={index * 50}>
                   <div
-                    key={fmt.label}
-                    className="rounded-lg border border-gray-800/80 bg-dark-100 px-4 py-3"
+                    className="group interactive-card-light rounded-lg px-4 py-3 transition-all duration-300"
                   >
-                    <p className="text-sm font-semibold text-gold-500">{fmt.label}</p>
-                    <p className="text-xs text-gray-500 mt-0.5 leading-snug">{fmt.detail}</p>
+                    <p className="text-sm font-semibold text-gold-500 transition-colors duration-300 group-hover:text-gold-400">
+                      {fmt.label}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-0.5 leading-snug transition-colors duration-300 group-hover:text-gray-400">
+                      {fmt.detail}
+                    </p>
                   </div>
+                  </Reveal>
                 ))}
               </div>
             </div>
@@ -555,7 +575,64 @@ const Events = () => {
           {!loading && featuredEvent && (
             <section className="py-8 md:py-10 bg-dark-100 border-b border-gray-800/50">
               <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
-                <FeaturedEvent event={featuredEvent} onOpenGallery={openGallery} />
+                <FeaturedEvent event={featuredEvent} onOpenGallery={openGallery} onRequestSeat={goToContact} />
+              </div>
+            </section>
+          )}
+
+          {/* Company event photo galleries */}
+          {!loading && galleryEvents.length > 0 && (
+            <section id="event-galleries" className="py-8 md:py-10 bg-dark-200 border-b border-gray-800/50">
+              <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
+                <Reveal className="mb-6 md:mb-8 max-w-2xl">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-500 mb-2 section-eyebrow">
+                    Event Galleries
+                  </p>
+                  <h2 className="text-2xl md:text-3xl font-bold text-white font-heading mb-2 leading-tight">
+                    Photos From Our Events
+                  </h2>
+                  <p className="text-sm text-gray-400 leading-snug">
+                    Attended a workshop or meetup? Browse and download photos from each event below.
+                    Click any event to open its full gallery.
+                  </p>
+                </Reveal>
+
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+                  {galleryEvents.map((event, index) => (
+                    <Reveal key={event.id} delay={index * 60}>
+                      <button
+                        type="button"
+                        onClick={() => openGallery(event)}
+                        className="group interactive-card-light rounded-xl overflow-hidden text-left w-full h-full flex flex-col"
+                      >
+                        <div className="relative h-44 overflow-hidden">
+                          <img
+                            src={event.images[0]}
+                            alt={event.title}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-dark-200/90 via-transparent to-transparent" />
+                          <span className="absolute bottom-3 right-3 inline-flex items-center gap-1 text-xs text-white bg-black/60 px-2.5 py-1 rounded-full">
+                            <ImageIcon size={12} />
+                            {event.images.length} photo{event.images.length !== 1 ? 's' : ''}
+                          </span>
+                        </div>
+                        <div className="p-4 md:p-5 flex flex-col flex-1">
+                          <p className="text-xs text-gold-500 uppercase tracking-wider mb-1">
+                            {event.category || 'Event'}
+                          </p>
+                          <h3 className="text-base font-bold text-white mb-1 leading-snug group-hover:text-gold-50 transition-colors">
+                            {event.title}
+                          </h3>
+                          <p className="text-xs text-gray-500 mb-3">{formatDate(event.date)}</p>
+                          <span className="mt-auto text-sm font-medium text-gold-400 group-hover:text-gold-300 transition-colors">
+                            Open gallery →
+                          </span>
+                        </div>
+                      </button>
+                    </Reveal>
+                  ))}
+                </div>
               </div>
             </section>
           )}
@@ -607,13 +684,15 @@ const Events = () => {
               ) : activeTab === 'upcoming' ? (
                 upcoming.length > 0 ? (
                   <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5">
-                    {(featuredEvent ? upcoming.slice(1) : upcoming).map((event) => (
-                      <EventCard
-                        key={event.id}
-                        event={event}
-                        isPast={false}
-                        onOpenGallery={openGallery}
-                      />
+                    {(featuredEvent ? upcoming.slice(1) : upcoming).map((event, index) => (
+                      <Reveal key={event.id} delay={index * 70}>
+                        <EventCard
+                          event={event}
+                          isPast={false}
+                          onOpenGallery={openGallery}
+                          onRequestSeat={goToContact}
+                        />
+                      </Reveal>
                     ))}
                   </div>
                 ) : (
@@ -629,13 +708,15 @@ const Events = () => {
               ) : past.length > 0 ? (
                 <>
                   <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5">
-                    {past.map((event) => (
-                      <EventCard
-                        key={event.id}
-                        event={event}
-                        isPast
-                        onOpenGallery={openGallery}
-                      />
+                    {past.map((event, index) => (
+                      <Reveal key={event.id} delay={index * 70}>
+                        <EventCard
+                          event={event}
+                          isPast
+                          onOpenGallery={openGallery}
+                          onRequestSeat={goToContact}
+                        />
+                      </Reveal>
                     ))}
                   </div>
 
@@ -655,7 +736,7 @@ const Events = () => {
                             key={`${event.id}-${imageIndex}`}
                             type="button"
                             onClick={() => openGallery(event, imageIndex)}
-                            className="group relative aspect-[4/3] rounded-xl overflow-hidden border border-gray-800 bg-dark-100 hover:border-gold-500/40 transition-colors text-left"
+                            className="group relative aspect-[4/3] rounded-xl overflow-hidden interactive-card-light text-left"
                           >
                             <img
                               src={url}
@@ -703,7 +784,7 @@ const Events = () => {
                 <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row gap-3 md:justify-end">
                   <button
                     type="button"
-                    onClick={() => navigate('/#contact')}
+                    onClick={goToContact}
                     className="btn-primary inline-flex items-center justify-center text-sm"
                   >
                     <Send className="mr-2" size={16} />
@@ -757,60 +838,11 @@ const Events = () => {
         <Footer />
       </div>
 
-      {/* Gallery modal */}
-      {selectedEvent?.images?.length > 0 && (
-        <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
-          <button
-            type="button"
-            onClick={closeGallery}
-            className="absolute top-4 right-4 text-white hover:text-gold-500 transition-colors z-10"
-            aria-label="Close gallery"
-          >
-            <X size={32} />
-          </button>
-
-          <div className="absolute top-4 left-4 text-white z-10 max-w-[80%]">
-            <h3 className="text-lg font-bold text-gold-500">{selectedEvent.title}</h3>
-            <p className="text-sm text-gray-400">
-              {formatDate(selectedEvent.date)} · {selectedEvent.venue || selectedEvent.location}
-            </p>
-          </div>
-
-          {selectedEvent.images.length > 1 && (
-            <>
-              <button
-                type="button"
-                onClick={prevImage}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-gold-500 bg-black/50 p-2 rounded-full"
-                aria-label="Previous image"
-              >
-                <ChevronLeft size={32} />
-              </button>
-              <button
-                type="button"
-                onClick={nextImage}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-gold-500 bg-black/50 p-2 rounded-full"
-                aria-label="Next image"
-              >
-                <ChevronRight size={32} />
-              </button>
-            </>
-          )}
-
-          <img
-            src={selectedEvent.images[currentImageIndex]}
-            alt={`${selectedEvent.title}, photo ${currentImageIndex + 1}`}
-            className="max-w-full max-h-[80vh] object-contain rounded-lg"
-            onError={(e) => {
-              e.target.alt = 'Photo unavailable';
-            }}
-          />
-
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white bg-black/50 px-4 py-2 rounded-full text-sm">
-            {currentImageIndex + 1} / {selectedEvent.images.length}
-          </div>
-        </div>
-      )}
+      <EventGalleryModal
+        event={selectedEvent}
+        startIndex={currentImageIndex}
+        onClose={closeGallery}
+      />
     </>
   );
 };

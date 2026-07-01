@@ -1,57 +1,68 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Search, Code, Settings, GraduationCap } from 'lucide-react';
-import { STATS } from '../config/site';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { ArrowRight, Search, Package, Settings, GraduationCap } from 'lucide-react';
+import { SITE, STATS } from '../config/site';
+import { navigateToHomeSection } from '../utils/homeNavigation';
 
 const CAPABILITIES = [
   {
     icon: Search,
     title: 'Research & Innovation',
-    description: 'Exploring challenges and uncovering opportunities',
+    description: 'Understanding problems before choosing technology',
   },
   {
-    icon: Code,
-    title: 'Product Development',
-    description: 'Building innovative products from research insights',
+    icon: Package,
+    title: 'Product Innovation',
+    description: 'Transforming research into products we own and evolve',
   },
   {
     icon: Settings,
     title: 'Solution Engineering',
-    description: 'Custom technology solutions that create lasting impact',
+    description: 'Tailored technology solutions for partner organizations',
   },
   {
     icon: GraduationCap,
     title: 'Talent Development',
-    description: 'Growing the next generation of tech leaders',
+    description: 'Empowering the next generation of innovators',
   },
 ];
 
 const Hero = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const goToContact = () => navigateToHomeSection(navigate, location, 'contact');
 
   return (
     <section id="home" className="bg-gold-gradient relative overflow-hidden pt-16 pb-10 md:pb-12 border-b border-gray-800/50">
+      <div className="absolute top-1/4 right-0 w-96 h-96 bg-gold-500/5 rounded-full blur-3xl pointer-events-none hero-fade-in opacity-0" aria-hidden />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 md:pt-5 relative z-10">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
           <div className="text-center lg:text-left">
-            <p className="text-sm md:text-base text-gold-500/90 italic mb-4 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-              &ldquo;Every great solution begins with understanding the problem&rdquo;
+            <p className="hero-fade-in hero-delay-1 text-xs md:text-sm font-semibold uppercase tracking-[0.15em] text-gold-500 mb-3 section-eyebrow">
+              {SITE.positioning}
             </p>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-bold leading-tight mb-4">
-              <span className="text-white">Research-Led</span>{' '}
-              <span className="text-gold-500">AI & Blockchain</span>
+            <h1 className="hero-fade-in hero-delay-2 text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-[3.25rem] font-bold leading-[1.15] mb-3 max-w-2xl mx-auto lg:mx-0">
+              <span className="gold-shimmer">{SITE.brandPromise}</span>
             </h1>
 
-            <p className="text-base md:text-lg text-gray-400 mb-6 leading-relaxed max-w-xl mx-auto lg:mx-0">
-              At Beta-Tech Labs, research is the foundation of everything we build. We explore
-              challenges, uncover opportunities, and transform our findings into innovative products
-              and custom technology solutions that create lasting impact.
+            <p className="hero-fade-in hero-delay-3 text-lg md:text-xl lg:text-2xl text-white font-semibold mb-4">
+              {SITE.tagline}
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+            <p className="hero-fade-in hero-delay-3 text-base md:text-lg text-gray-400 mb-6 leading-relaxed max-w-xl mx-auto lg:mx-0">
+              Every meaningful innovation begins with understanding the problem. We combine research,
+              engineering, creativity, and continuous learning to transform ideas into technology
+              that creates lasting impact.
+            </p>
+
+            <p className="hero-fade-in hero-delay-4 text-sm text-gray-500 italic mb-6 max-w-xl mx-auto lg:mx-0">
+              &ldquo;{SITE.philosophy}&rdquo;
+            </p>
+
+            <div className="hero-fade-in hero-delay-4 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
               <button
-                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={goToContact}
                 className="btn-hero-primary inline-flex items-center justify-center"
               >
                 Contact Us
@@ -65,40 +76,47 @@ const Hero = () => {
               </button>
             </div>
 
-            <div className="grid grid-cols-3 gap-3 mt-8 pt-6 border-t border-gray-800">
-              <div className="text-center lg:text-left">
-                <div className="text-xl md:text-2xl font-bold text-white">{STATS.projects}</div>
-                <div className="text-xs md:text-sm text-gray-500">Projects</div>
+            <div className="hero-fade-in hero-delay-5 grid grid-cols-3 gap-3 mt-8 pt-6 border-t border-gray-800">
+              <div className="stat-block text-center lg:text-left">
+                <div className="stat-value text-xl md:text-2xl font-bold text-white">{STATS.projects}</div>
+                <div className="text-xs md:text-sm text-gray-500">Products</div>
               </div>
-              <div className="text-center lg:text-left">
-                <div className="text-xl md:text-2xl font-bold text-gold-500">{STATS.studentsTrained}</div>
-                <div className="text-xs md:text-sm text-gray-500">Students Trained</div>
+              <div className="stat-block text-center lg:text-left">
+                <div className="stat-value text-xl md:text-2xl font-bold text-gold-500">{STATS.studentsTrained}</div>
+                <div className="text-xs md:text-sm text-gray-500">Talent Developed</div>
               </div>
-              <div className="text-center lg:text-left">
-                <div className="text-xl md:text-2xl font-bold text-white">{STATS.researchPapers}</div>
-                <div className="text-xs md:text-sm text-gray-500">Research Papers</div>
+              <div className="stat-block text-center lg:text-left">
+                <div className="stat-value text-xl md:text-2xl font-bold text-white">{STATS.researchPapers}</div>
+                <div className="text-xs md:text-sm text-gray-500">Research Outputs</div>
               </div>
             </div>
           </div>
 
-          <div className="w-full max-w-lg mx-auto lg:mx-0 lg:ml-auto">
-            <div className="hero-panel p-5 md:p-6">
-              <div className="mb-4 pb-3 border-b border-gray-800">
-                <h2 className="text-sm font-semibold tracking-wide uppercase text-gray-300">
-                  Core Capabilities
+          <div className="hero-fade-in hero-delay-3 w-full max-w-lg mx-auto lg:mx-0 lg:ml-auto">
+            <div className="hero-panel group/panel p-5 md:p-6">
+              <div className="mb-4 pb-3 border-b border-gray-800 transition-colors duration-300 group-hover/panel:border-gold-500/20">
+                <h2 className="text-sm font-semibold tracking-wide uppercase text-gray-300 group-hover/panel:text-white transition-colors duration-300">
+                  Strategic Pillars
                 </h2>
+                <p className="text-xs text-gray-500 mt-1 group-hover/panel:text-gray-400 transition-colors duration-300">
+                  The Beta-Tech Way
+                </p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {CAPABILITIES.map(({ icon: Icon, title, description }) => (
-                  <div key={title} className="hero-capability">
+                  <div key={title} className="hero-capability group/cap">
                     <div className="flex items-start gap-3">
-                      <div className="w-9 h-9 rounded-lg bg-gold-500/10 border border-gold-500/20 flex items-center justify-center flex-shrink-0">
-                        <Icon className="text-gold-500" size={18} />
+                      <div className="w-9 h-9 rounded-lg bg-gold-500/10 border border-gold-500/20 flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover/cap:border-gold-500/50 group-hover/cap:bg-gold-500/15 group-hover/cap:scale-105">
+                        <Icon className="text-gold-500 transition-transform duration-300 group-hover/cap:scale-110" size={18} />
                       </div>
                       <div className="min-w-0">
-                        <h3 className="text-sm font-semibold text-white mb-0.5">{title}</h3>
-                        <p className="text-xs text-gray-500 leading-relaxed">{description}</p>
+                        <h3 className="text-sm font-semibold text-white mb-0.5 group-hover/cap:text-gold-400 transition-colors duration-300">
+                          {title}
+                        </h3>
+                        <p className="text-xs text-gray-500 leading-relaxed group-hover/cap:text-gray-400 transition-colors duration-300">
+                          {description}
+                        </p>
                       </div>
                     </div>
                   </div>

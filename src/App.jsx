@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import Home from './pages/Home';
 import Services from './pages/Services';
@@ -15,6 +15,7 @@ import NotFound from './pages/NotFound';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import Cookies from './pages/Cookies';
+import ContactRedirect from './components/ContactRedirect';
 import StructuredData from './components/StructuredData';
 import Analytics from './components/Analytics';
 import { registerServiceWorker } from './utils/pwaUtils';
@@ -49,7 +50,7 @@ function App() {
           }
         />
         <Route path="/research" element={<Research />} />
-        <Route path="/contact" element={<Navigate to="/#contact" replace />} />
+        <Route path="/contact" element={<ContactRedirect />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/cookies" element={<Cookies />} />

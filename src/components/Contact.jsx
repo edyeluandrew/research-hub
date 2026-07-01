@@ -19,6 +19,7 @@ import {
   ArrowUpRight,
 } from 'lucide-react';
 import { CONTACT, SOCIAL, SITE } from '../config/site';
+import Reveal from './Reveal';
 
 const CONTACT_CHANNELS = [
   {
@@ -121,23 +122,24 @@ const Contact = () => {
   return (
     <section id="contact" className="py-8 md:py-10 bg-dark-100 relative overflow-hidden border-t border-gray-800/50">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5 relative z-10">
-        <div className="text-center max-w-2xl mx-auto mb-6 md:mb-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-500 mb-1.5">
+        <Reveal className="text-center max-w-2xl mx-auto mb-6 md:mb-8 group">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-500 mb-1.5 section-eyebrow">
             Contact
           </p>
-          <h2 className="text-3xl md:text-4xl font-bold text-white font-heading mb-2 leading-tight">
-            Let&apos;s Build Something{' '}
-            <span className="text-gold-500">Together</span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white font-heading mb-3 leading-tight">
+            Dream it.{' '}
+            <span className="text-gold-500 accent-word">Build with us.</span>
           </h2>
           <p className="text-sm md:text-base text-gray-400 leading-snug">
             Tell us about your research goals, product idea, or engineering challenge. We work with
             founders, institutions, and teams who need serious technology delivered with clarity.
           </p>
-        </div>
+        </Reveal>
 
         <div className="grid lg:grid-cols-12 gap-4 md:gap-5 items-start">
           {/* Contact form, primary column */}
-          <div className="lg:col-span-7 rounded-xl border border-gray-800 bg-dark-200 p-4 md:p-6">
+          <Reveal className="lg:col-span-7" delay={80}>
+          <div className="interactive-card rounded-xl p-4 md:p-6 h-full">
             <div className="mb-4">
               <h3 className="text-lg font-bold text-white mb-1">Send a message</h3>
               <p className="text-sm text-gray-500 leading-snug">
@@ -276,10 +278,11 @@ const Contact = () => {
               </p>
             </form>
           </div>
+          </Reveal>
 
           {/* Contact channels, sidebar */}
-          <div className="lg:col-span-5 space-y-3 md:space-y-4">
-            <div className="rounded-xl border border-gray-800 bg-dark-200 p-4 md:p-5">
+          <Reveal className="lg:col-span-5 space-y-3 md:space-y-4" delay={160}>
+            <div className="interactive-card rounded-xl p-4 md:p-5">
               <h3 className="text-base font-bold text-white mb-3">Direct contact</h3>
               <ul className="space-y-3">
                 {CONTACT_CHANNELS.map((channel) => {
@@ -311,7 +314,7 @@ const Contact = () => {
                           href={channel.href}
                           target={channel.href.startsWith('http') ? '_blank' : undefined}
                           rel={channel.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                          className="flex items-start gap-3 p-2 -mx-2 rounded-lg hover:bg-white/5 transition-colors"
+                          className="group flex items-start gap-3 p-2 -mx-2 rounded-lg hover:bg-white/5 transition-all duration-300 hover:translate-x-0.5"
                         >
                           {content}
                         </a>
@@ -324,7 +327,7 @@ const Contact = () => {
               </ul>
             </div>
 
-            <div className="rounded-xl border border-gray-800 bg-dark-200 p-4 md:p-5">
+            <div className="interactive-card rounded-xl p-4 md:p-5">
               <h3 className="text-base font-bold text-white mb-3">Connect online</h3>
               <div className="flex flex-wrap gap-2">
                 {SOCIAL_LINKS.map((social) => {
@@ -335,7 +338,7 @@ const Contact = () => {
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-10 h-10 rounded-lg border border-gray-700 bg-dark-100 flex items-center justify-center text-gray-400 hover:text-gold-500 hover:border-gold-500/30 transition-colors"
+                      className="w-10 h-10 rounded-lg border border-gray-700 bg-dark-100 flex items-center justify-center text-gray-400 hover:text-gold-500 hover:border-gold-500/30 transition-all duration-300 hover:scale-110 hover:-translate-y-0.5"
                       aria-label={social.name}
                     >
                       <SocialIcon size={18} />
@@ -345,7 +348,7 @@ const Contact = () => {
               </div>
             </div>
 
-            <div className="rounded-xl border border-gray-800 bg-dark-200 overflow-hidden">
+            <div className="interactive-card rounded-xl overflow-hidden">
               <div className="px-4 py-3 border-b border-gray-800">
                 <div className="flex items-start gap-2">
                   <MapPin className="text-gold-500 flex-shrink-0 mt-0.5" size={16} />
@@ -380,7 +383,7 @@ const Contact = () => {
                 </a>
               </div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>

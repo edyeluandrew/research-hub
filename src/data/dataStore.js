@@ -1,4 +1,5 @@
 import { firebaseSet, firebaseGet } from '../firebase/config';
+import { COMPANY, CORE_VALUES, STRATEGIC_PILLARS, SITE } from '../config/site';
 
 // Default minimal data
 const defaultTeamData = {
@@ -203,7 +204,7 @@ const defaultServicesData = {
     {
       id: 'service-2',
       icon: 'Package',
-      title: 'Product Development',
+      title: 'Product Innovation',
       description: 'Research-backed products, from AI platforms to IoT dashboards.',
       features: [
         'AI-Powered Products & Platforms',
@@ -269,6 +270,83 @@ const defaultServicesData = {
       features: ['Web Applications', 'Mobile Apps', 'API & Backend', 'Business Systems'],
     },
   ],
+};
+
+const defaultEngagementSteps = [
+  {
+    step: '01',
+    title: 'Research Insights',
+    text: 'We begin with validated findings, user insights, and opportunities from our research framework.',
+  },
+  {
+    step: '02',
+    title: 'Idea Generation',
+    text: 'We transform research into concepts through ideation, exploration, and opportunity analysis.',
+  },
+  {
+    step: '03',
+    title: 'Concept Validation',
+    text: 'We test feasibility, prototype ideas, gather feedback, and assess risk before building.',
+  },
+  {
+    step: '04',
+    title: 'Engineering',
+    text: 'Validated concepts become reliable products or client solutions through disciplined engineering.',
+  },
+  {
+    step: '05',
+    title: 'Deployment & Impact',
+    text: 'We launch, monitor, gather feedback, and continuously improve for lasting value.',
+  },
+];
+
+export const defaultSiteContent = {
+  mission: {
+    sectionEyebrow: 'Who We Are',
+    sectionTitle: 'A Research-Driven Technology Company',
+    purpose: COMPANY.purpose,
+    vision: COMPANY.vision,
+    mission: COMPANY.mission,
+    positioningStatement: COMPANY.positioningStatement,
+    philosophy: SITE.philosophy,
+    philosophyPractice: SITE.philosophyPractice,
+  },
+  coreValues: CORE_VALUES.map((value, index) => ({
+    id: `value-${index + 1}`,
+    ...value,
+  })),
+  strategicPillars: STRATEGIC_PILLARS,
+  servicesPage: {
+    pillarsSubtitle:
+      "Four interconnected capabilities that define how Beta-Tech Labs creates value for partners, communities, and Africa's digital future.",
+    techSectionSubtitle:
+      'We combine modern stacks with practical engineering, including IoT tooling, edge systems, and field-ready deployments across Uganda and East Africa.',
+    engagementSteps: defaultEngagementSteps,
+  },
+};
+
+const mergeSiteContent = (stored) => {
+  if (!stored || typeof stored !== 'object') return defaultSiteContent;
+
+  return {
+    mission: { ...defaultSiteContent.mission, ...(stored.mission || {}) },
+    coreValues:
+      Array.isArray(stored.coreValues) && stored.coreValues.length > 0
+        ? stored.coreValues
+        : defaultSiteContent.coreValues,
+    strategicPillars:
+      Array.isArray(stored.strategicPillars) && stored.strategicPillars.length > 0
+        ? stored.strategicPillars
+        : defaultSiteContent.strategicPillars,
+    servicesPage: {
+      ...defaultSiteContent.servicesPage,
+      ...(stored.servicesPage || {}),
+      engagementSteps:
+        stored.servicesPage?.engagementSteps?.length > 0
+          ? stored.servicesPage.engagementSteps
+          : defaultSiteContent.servicesPage.engagementSteps,
+    },
+  };
 };
 
 // Project logos in /public/images
@@ -406,7 +484,14 @@ export const initializeFirebaseData = async () => {
     const services = await firebaseGet('betaTechLabs/services');
     if (!services) await firebaseSet('betaTechLabs/services', defaultServicesData);
 
-    await firebaseSet('betaTechLabs/projects', defaultProjectsData);
+    const projects = await firebaseGet('betaTechLabs/projects');
+    if (!projects) await firebaseSet('betaTechLabs/projects', defaultProjectsData);
+
+    const siteContent = await firebaseGet('betaTechLabs/siteContent');
+    if (!siteContent) await firebaseSet('betaTechLabs/siteContent', defaultSiteContent);
+
+    const testimonials = await firebaseGet('betaTechLabs/testimonials');
+    if (!testimonials) await firebaseSet('betaTechLabs/testimonials', []);
   } catch (error) {
     console.error('Error initializing Firebase:', error);
   }
@@ -547,4 +632,106 @@ export const resetProjectsData = async () => {
   }
 };
 
-export { defaultTeamData, defaultEventsData, defaultServicesData, defaultProjectsData };
+// Client feedback / testimonials
+export const getTestimonialsData = async () => {
+  try {
+    const data = await firebaseGet('betaTechLabs/testimonials');
+    return Array.isArray(data) ? data : [];
+  } catch (e) {
+    console.error('Error getting testimonials data:', e);
+    return [];
+  }
+};
+
+export const saveTestimonialsData = async (data) => {
+  try {
+    await firebaseSet('betaTechLabs/testimonials', data);
+    window.dispatchEvent(new Event('testimonialsDataUpdated'));
+    return true;
+  } catch (e) {
+    console.error('Error saving testimonials data:', e);
+    return false;
+  }
+};
+
+export const addTestimonial = async (testimonial) => {
+  try {
+    const existing = await getTestimonialsData();
+    const entry = {
+      id: Date.now(),
+      name: testimonial.name.trim(),
+      role: testimonial.role.trim(),
+      organization: testimonial.organization.trim(),
+      location: testimonial.location?.trim() || '',
+      quote: testimonial.quote.trim(),
+      createdAt: new Date().toISOString(),
+    };
+    const updated = [entry, ...existing];
+    return saveTestimonialsData(updated);
+  } catch (e) {
+    console.error('Error adding testimonial:', e);
+    return false;
+  }
+};
+
+export const deleteTestimonial = async (id) => {
+  try {
+    const existing = await getTestimonialsData();
+    const updated = existing.filter((item) => item.id !== id);
+    return saveTestimonialsData(updated);
+  } catch (e) {
+    console.error('Error deleting testimonial:', e);
+    return false;
+  }
+};
+
+export const updateTestimonial = async (id, updates) => {
+  try {
+    const existing = await getTestimonialsData();
+    const updated = existing.map((item) =>
+      item.id === id
+        ? {
+            ...item,
+            name: (updates.name ?? item.name).trim(),
+            role: (updates.role ?? item.role).trim(),
+            organization: (updates.organization ?? item.organization).trim(),
+            location: (updates.location ?? item.location ?? '').trim(),
+            quote: (updates.quote ?? item.quote).trim(),
+          }
+        : item
+    );
+    return saveTestimonialsData(updated);
+  } catch (e) {
+    console.error('Error updating testimonial:', e);
+    return false;
+  }
+};
+
+// Mission, values, pillars, and services page copy
+export const getSiteContent = async () => {
+  try {
+    const data = await firebaseGet('betaTechLabs/siteContent');
+    return mergeSiteContent(data);
+  } catch (e) {
+    console.error('Error getting site content:', e);
+    return defaultSiteContent;
+  }
+};
+
+export const saveSiteContent = async (data) => {
+  try {
+    await firebaseSet('betaTechLabs/siteContent', data);
+    window.dispatchEvent(new Event('siteContentUpdated'));
+    return true;
+  } catch (e) {
+    console.error('Error saving site content:', e);
+    return false;
+  }
+};
+
+export {
+  defaultTeamData,
+  defaultEventsData,
+  defaultServicesData,
+  defaultProjectsData,
+};

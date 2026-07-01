@@ -1,16 +1,17 @@
 import { Helmet } from 'react-helmet-async';
-import { SITE, CONTACT, SOCIAL } from '../config/site';
+import { SITE, CONTACT, SOCIAL, COMPANY } from '../config/site';
 
 const StructuredData = () => {
   const organizationSchema = {
     '@context': 'https://schema.org',
     '@type': 'ResearchOrganization',
-    name: SITE.name,
-    alternateName: SITE.shortName,
+    name: SITE.legalName,
+    alternateName: SITE.name,
     url: SITE.url,
     logo: `${SITE.url}/icons/icon-192x192.png`,
-    description: `Uganda's premier AI and Blockchain research hub based in ${SITE.location}.`,
+    description: COMPANY.positioningStatement,
     foundingDate: SITE.foundedYear,
+    slogan: SITE.tagline,
     address: {
       '@type': 'PostalAddress',
       streetAddress: CONTACT.address.headline,
@@ -27,12 +28,13 @@ const StructuredData = () => {
     },
     areaServed: { '@type': 'Country', name: 'Uganda' },
     knowsAbout: [
+      'Research and Innovation',
+      'Product Innovation',
+      'Solution Engineering',
       'Artificial Intelligence',
-      'Machine Learning',
       'Blockchain Technology',
-      'Smart Contracts',
-      'Web3 Development',
       'Software Development',
+      'Talent Development',
     ],
     sameAs: [SOCIAL.x, SOCIAL.linkedin, SOCIAL.github],
   };
@@ -42,14 +44,14 @@ const StructuredData = () => {
     '@type': 'WebSite',
     name: SITE.name,
     url: SITE.url,
-    description: SITE.tagline,
-    publisher: { '@type': 'Organization', name: SITE.name },
+    description: SITE.brandPromise,
+    publisher: { '@type': 'Organization', name: SITE.legalName },
   };
 
   const localBusinessSchema = {
     '@context': 'https://schema.org',
     '@type': 'ProfessionalService',
-    name: SITE.name,
+    name: SITE.legalName,
     image: `${SITE.url}/icons/icon-192x192.png`,
     url: SITE.url,
     telephone: CONTACT.phoneTel,
