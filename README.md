@@ -161,6 +161,6 @@ research-hub/
 
 <div align="center">
 
-**Beta-Tech Labs Company Limited** · Kabale, Uganda · Est. 2024
+**Beta-Tech Labs Company Limited** · Kabale, Uganda · Est. 2026
 
 </div>
