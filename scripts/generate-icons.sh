@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# Script to generate PWA icons from favicon.svg
+# Script to generate site icons from favicon.svg
 # Requirements: ImageMagick (convert command) or similar image manipulation tool
 
 # Colors from the site
 BACKGROUND="#1a1a2e"
 GOLD="#D4AF37"
 
-echo "Generating PWA Icons from favicon.svg..."
+echo "Generating site icons from favicon.svg..."
 echo "This script requires ImageMagick to be installed"
 echo ""
 

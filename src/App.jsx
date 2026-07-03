@@ -8,7 +8,6 @@ import Projects from './pages/Projects';
 import Admin from './pages/Admin';
 import AdminLogin from './pages/AdminLogin';
 import ProtectedRoute from './components/ProtectedRoute';
-import InstallPrompt from './components/InstallPrompt';
 import WhatsAppFloat from './components/WhatsAppFloat';
 import Research from './pages/Research';
 import NotFound from './pages/NotFound';
@@ -18,21 +17,28 @@ import Cookies from './pages/Cookies';
 import ContactRedirect from './components/ContactRedirect';
 import StructuredData from './components/StructuredData';
 import Analytics from './components/Analytics';
-import { registerServiceWorker } from './utils/pwaUtils';
 import { initializeFirebaseData } from './data/dataStore';
 import './index.css';
 
 function App() {
   useEffect(() => {
-    registerServiceWorker();
     initializeFirebaseData();
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .getRegistrations()
+        .then((registrations) => registrations.forEach((registration) => registration.unregister()))
+        .catch((error) => console.error('Error unregistering service worker:', error));
+    }
+
+    localStorage.removeItem('pwaDismissedUntil');
+    localStorage.removeItem('pwaInstalled');
   }, []);
 
   return (
     <div className="App main-container">
       <Analytics />
       <StructuredData />
-      <InstallPrompt />
       <WhatsAppFloat />
 
       <Routes>
