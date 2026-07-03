@@ -66,7 +66,6 @@ More projects: [beta-techlabs.com/projects](https://www.beta-techlabs.com/projec
 | **CMS / Data** | Firebase Realtime Database |
 | **Contact** | EmailJS |
 | **Analytics** | Google Analytics |
-| **PWA** | Service worker, web manifest |
 | **Deploy** | Vercel |
 
 ---
@@ -109,7 +108,7 @@ Copy `.env.example` to `.env` and configure:
 | `VITE_ADMIN_USERNAME` / `VITE_ADMIN_PASSWORD` | Admin panel login |
 | `VITE_GA_MEASUREMENT_ID` | Google Analytics (optional) |
 
-See also: [EMAIL_SETUP.md](./EMAIL_SETUP.md) · [PWA_SETUP.md](./PWA_SETUP.md)
+See also: [EMAIL_SETUP.md](./EMAIL_SETUP.md)
 
 ---
 
@@ -132,7 +131,7 @@ Event gallery images can be added as URLs (`/images/events/photo.jpg`) or upload
 
 ```
 research-hub/
-├── public/              # Static assets, PWA, OG images
+├── public/              # Static assets, icons, OG images
 │   └── images/          # Logos, team photos, event gallery
 ├── src/
 │   ├── components/      # Header, Footer, Hero, Contact, etc.

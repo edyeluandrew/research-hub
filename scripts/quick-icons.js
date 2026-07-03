@@ -19,7 +19,7 @@ async function createIcons() {
     process.exit(1);
   }
   
-  console.log('📦 Creating PWA icons from logo...\n');
+  console.log('📦 Creating site icons from logo...\n');
   
   // Try to use sharp if available
   try {

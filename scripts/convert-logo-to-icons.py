@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Convert logo to PWA icons using PIL/Pillow
+Convert logo to site icons using PIL/Pillow
 Usage: python3 scripts/convert-logo-to-icons.py
 """
 
@@ -8,7 +8,7 @@ import os
 from PIL import Image, ImageOps
 
 def create_icons():
-    """Convert logo.jpg to PWA icons in required sizes"""
+    """Convert logo.jpg to site icons in required sizes"""
     
     public_dir = os.path.join(os.path.dirname(__file__), '../public')
     icons_dir = os.path.join(public_dir, 'icons')
@@ -19,7 +19,7 @@ def create_icons():
         print(f"❌ Logo not found at {logo_path}")
         return False
     
-    print("📦 Converting logo to PWA icons...\n")
+    print("📦 Converting logo to site icons...\n")
     
     # Open the logo
     try:

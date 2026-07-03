@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 /**
- * PWA Icon Generator
- * Generates PNG icons from favicon.svg for PWA support
+ * Site Icon Generator
+ * Generates PNG icons from favicon.svg
  * 
  * Requirements: npm install sharp
  * Usage: node scripts/generate-icons.js
@@ -29,7 +29,7 @@ async function generateIcons() {
     const sizes = [192, 512, 144];
     const bgColor = { r: 26, g: 26, b: 46, alpha: 1 }; // #1a1a2e
     
-    console.log('📦 Generating PWA icons from favicon.svg...\n');
+    console.log('📦 Generating site icons from favicon.svg...\n');
     
     for (const size of sizes) {
       try {
