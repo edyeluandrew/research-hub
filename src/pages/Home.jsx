@@ -9,6 +9,7 @@ import OurFocus from '../components/OurFocus';
 import CoreValues from '../components/CoreValues';
 import Team from '../components/Team';
 import Testimonials from '../components/Testimonials';
+import Newsletter from '../components/Newsletter';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import { SITE } from '../config/site';
@@ -54,6 +55,7 @@ const Home = () => {
           <CoreValues />
           <Team />
           <Testimonials />
+          <Newsletter />
           <Contact />
         </main>
         <Footer className="footer-fix" />

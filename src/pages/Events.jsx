@@ -8,6 +8,7 @@ import { SITE, SOCIAL, STATS } from '../config/site';
 import { navigateToHomeSection } from '../utils/homeNavigation';
 import Reveal from '../components/Reveal';
 import EventGalleryModal from '../components/EventGalleryModal';
+import NewsletterForm from '../components/NewsletterForm';
 import {
   Calendar,
   Clock,
@@ -23,6 +24,7 @@ import {
   GraduationCap,
   Zap,
   ExternalLink,
+  Mail,
 } from 'lucide-react';
 
 const WHY_ATTEND = [
@@ -804,33 +806,50 @@ const Events = () => {
           </section>
 
           {/* Stay updated */}
-          <section className="py-8 md:py-10 bg-dark-200">
-            <div className="max-w-3xl mx-auto px-3 sm:px-4 lg:px-5 text-center">
-              <h2 className="text-2xl md:text-3xl font-bold text-white font-heading mb-2 leading-tight">
-                Never Miss a Session
-              </h2>
-              <p className="text-sm text-gray-400 leading-snug mb-5">
-                New workshops, bootcamps, and meetups are announced on our social channels first.
-                Follow along and be the first to grab a seat.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <a
-                  href={SOCIAL.x}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-primary inline-flex items-center justify-center text-sm"
-                >
-                  Follow on X
-                </a>
-                <a
-                  href={SOCIAL.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-secondary inline-flex items-center justify-center text-sm"
-                >
-                  Connect on LinkedIn
-                </a>
-              </div>
+          <section id="newsletter" className="py-8 md:py-10 bg-dark-200">
+            <div className="max-w-2xl mx-auto px-3 sm:px-4 lg:px-5 text-center">
+              <Reveal>
+                <div className="inline-flex items-center gap-2 rounded-full border border-gold-500/25 bg-gold-500/10 px-3 py-1 mb-4">
+                  <Mail className="text-gold-500" size={14} />
+                  <span className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-500 section-eyebrow">
+                    Newsletter
+                  </span>
+                </div>
+                <h2 className="text-2xl md:text-3xl font-bold text-white font-heading mb-2 leading-tight">
+                  Never Miss a Session
+                </h2>
+                <p className="text-sm text-gray-400 leading-snug mb-5">
+                  Subscribe and we will email you when new workshops, bootcamps, and meetups open for
+                  registration, straight to your inbox.
+                </p>
+
+                <NewsletterForm
+                  layout="inline"
+                  buttonLabel="Notify me"
+                  align="center"
+                  className="max-w-md mx-auto text-left"
+                />
+
+                <p className="text-xs text-gray-500 mt-6 mb-3">Prefer social? Follow us there too.</p>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  <a
+                    href={SOCIAL.x}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-secondary inline-flex items-center justify-center text-sm"
+                  >
+                    Follow on X
+                  </a>
+                  <a
+                    href={SOCIAL.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-secondary inline-flex items-center justify-center text-sm"
+                  >
+                    Connect on LinkedIn
+                  </a>
+                </div>
+              </Reveal>
             </div>
           </section>
         </main>
