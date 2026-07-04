@@ -3,19 +3,24 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const RESEARCH_SLIDES = [
   {
-    src: '/images/research.jpg',
+    src: 'https://images.unsplash.com/photo-1512758017271-d7b84c2113f1?w=1200&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDR8fHJlc2VhcmNofGVufDB8fDB8fHww',
     title: 'Collaborative Research',
     caption: 'Exploring problems together before choosing the right technology',
   },
   {
-    src: '/images/reseach.jpg',
+    src: 'https://images.unsplash.com/photo-1532153354457-5fbe1a3bb0b4?w=1200&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8cmVzZWFyY2glMjBwYXBlcnxlbnwwfHwwfHx8MA%3D%3D',
     title: 'Research & Investigation',
     caption: 'Studying challenges, gathering evidence, and documenting insights',
   },
   {
-    src: '/images/rrr.jpg',
+    src: 'https://media.istockphoto.com/id/638059282/photo/research.webp?a=1&b=1&s=612x612&w=0&k=20&c=sexTHuuEYKTZMx6Hi6-yEyh3U7CM-aZE1KeRAHKILTM=',
     title: 'Knowledge Generation',
     caption: 'From field notes and literature to ideas ready for innovation',
+  },
+  {
+    src: 'https://media.istockphoto.com/id/480819919/photo/research.webp?a=1&b=1&s=612x612&w=0&k=20&c=VS1HyeaBP6MeM5vAnz1Yfqq40kkFWvsqSQbH3oJGdLs=',
+    title: 'Evidence Over Assumption',
+    caption: 'Every solution begins with rigorous investigation, not guesswork',
   },
 ];
 
