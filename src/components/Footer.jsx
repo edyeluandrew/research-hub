@@ -1,16 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   Mail,
   MapPin,
   Phone,
   Clock,
-  Send,
   ChevronUp,
   Twitter,
   Linkedin,
   Github,
-  CheckCircle,
 } from 'lucide-react';
 import logo from '../assets/logo.png';
 import { SITE, CONTACT, SOCIAL } from '../config/site';
@@ -36,8 +34,6 @@ const FOCUS_AREAS = [
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  const [newsletterEmail, setNewsletterEmail] = useState('');
-  const [newsletterStatus, setNewsletterStatus] = useState(null);
 
   const contactInfo = [
     {
@@ -56,18 +52,6 @@ const Footer = () => {
     { icon: Linkedin, href: SOCIAL.linkedin, label: 'LinkedIn' },
     { icon: Github, href: SOCIAL.github, label: 'GitHub' },
   ];
-
-  const handleNewsletter = (e) => {
-    e.preventDefault();
-    if (!newsletterEmail.trim()) return;
-    window.open(
-      `mailto:${CONTACT.email}?subject=${encodeURIComponent('Newsletter Subscription')}&body=${encodeURIComponent(`Please add me to the newsletter: ${newsletterEmail}`)}`,
-      '_blank'
-    );
-    setNewsletterStatus('success');
-    setNewsletterEmail('');
-    setTimeout(() => setNewsletterStatus(null), 4000);
-  };
 
   const renderLink = (link) => {
     const className = 'text-sm text-gray-400 hover:text-gold-500 transition-colors leading-snug';
@@ -189,32 +173,16 @@ const Footer = () => {
               })}
             </ul>
 
-            <form onSubmit={handleNewsletter}>
+            <div>
               <p className="text-xs font-medium text-gray-500 mb-2">Stay updated</p>
-              <div className="flex">
-                <input
-                  type="email"
-                  value={newsletterEmail}
-                  onChange={(e) => setNewsletterEmail(e.target.value)}
-                  placeholder="Your email"
-                  required
-                  className="flex-1 min-w-0 px-3 py-2 text-sm bg-dark-100 border border-gray-700 rounded-l-lg focus:outline-none focus:border-gold-500 text-white placeholder-gray-500"
-                />
-                <button
-                  type="submit"
-                  className="bg-gold-500 hover:bg-gold-600 text-dark-200 px-3 py-2 rounded-r-lg transition-colors"
-                  aria-label="Subscribe"
-                >
-                  <Send size={15} />
-                </button>
-              </div>
-              {newsletterStatus === 'success' && (
-                <p className="text-green-400 text-xs mt-1.5 flex items-center gap-1 leading-snug">
-                  <CheckCircle size={12} />
-                  Check your email client to confirm.
-                </p>
-              )}
-            </form>
+              <HashLink
+                to="/#newsletter"
+                className="inline-flex items-center gap-2 text-sm font-medium text-gold-500 hover:text-gold-400 transition-colors"
+              >
+                <Mail size={14} />
+                Subscribe to our newsletter
+              </HashLink>
+            </div>
           </div>
         </div>
       </div>

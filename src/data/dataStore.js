@@ -492,6 +492,9 @@ export const initializeFirebaseData = async () => {
 
     const testimonials = await firebaseGet('betaTechLabs/testimonials');
     if (!testimonials) await firebaseSet('betaTechLabs/testimonials', []);
+
+    const subscribers = await firebaseGet('betaTechLabs/newsletterSubscribers');
+    if (!subscribers) await firebaseSet('betaTechLabs/newsletterSubscribers', []);
   } catch (error) {
     console.error('Error initializing Firebase:', error);
   }
@@ -703,6 +706,63 @@ export const updateTestimonial = async (id, updates) => {
     return saveTestimonialsData(updated);
   } catch (e) {
     console.error('Error updating testimonial:', e);
+    return false;
+  }
+};
+
+// Newsletter subscribers
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+export const getNewsletterSubscribers = async () => {
+  try {
+    const data = await firebaseGet('betaTechLabs/newsletterSubscribers');
+    return Array.isArray(data) ? data : [];
+  } catch (e) {
+    console.error('Error getting newsletter subscribers:', e);
+    return [];
+  }
+};
+
+export const saveNewsletterSubscribers = async (data) => {
+  try {
+    await firebaseSet('betaTechLabs/newsletterSubscribers', data);
+    window.dispatchEvent(new Event('newsletterSubscribersUpdated'));
+    return true;
+  } catch (e) {
+    console.error('Error saving newsletter subscribers:', e);
+    return false;
+  }
+};
+
+export const addNewsletterSubscriber = async (email) => {
+  const clean = (email || '').trim().toLowerCase();
+  if (!EMAIL_REGEX.test(clean)) {
+    return { ok: false, reason: 'invalid' };
+  }
+  try {
+    const existing = await getNewsletterSubscribers();
+    if (existing.some((sub) => sub.email?.toLowerCase() === clean)) {
+      return { ok: true, reason: 'exists' };
+    }
+    const entry = {
+      id: Date.now(),
+      email: clean,
+      subscribedAt: new Date().toISOString(),
+    };
+    const saved = await saveNewsletterSubscribers([entry, ...existing]);
+    return saved ? { ok: true, reason: 'added' } : { ok: false, reason: 'error' };
+  } catch (e) {
+    console.error('Error adding newsletter subscriber:', e);
+    return { ok: false, reason: 'error' };
+  }
+};
+
+export const deleteNewsletterSubscriber = async (id) => {
+  try {
+    const existing = await getNewsletterSubscribers();
+    return saveNewsletterSubscribers(existing.filter((sub) => sub.id !== id));
+  } catch (e) {
+    console.error('Error deleting newsletter subscriber:', e);
     return false;
   }
 };

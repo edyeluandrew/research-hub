@@ -24,6 +24,12 @@ import {
   Target,
   Gem,
   Layers3,
+  Mail,
+  Send,
+  Download,
+  Loader,
+  CheckCircle,
+  AlertCircle,
 } from 'lucide-react';
 import { 
   getTeamData, 
@@ -40,6 +46,8 @@ import {
   getSiteContent,
   saveSiteContent,
   defaultSiteContent,
+  getNewsletterSubscribers,
+  deleteNewsletterSubscriber,
 } from '../data/dataStore';
 
 const Admin = () => {
@@ -55,6 +63,17 @@ const Admin = () => {
   const [editData, setEditData] = useState({});
   const [loading, setLoading] = useState(true);
   const [imagePreview, setImagePreview] = useState(null);
+  const [subscribers, setSubscribers] = useState([]);
+  const [broadcast, setBroadcast] = useState({
+    subject: '',
+    title: '',
+    message: '',
+    ctaLabel: '',
+    ctaUrl: '',
+    passphrase: '',
+  });
+  const [broadcastStatus, setBroadcastStatus] = useState(null);
+  const [broadcastMessage, setBroadcastMessage] = useState('');
 
   // Load data from Firebase on component mount
   useEffect(() => {
@@ -93,6 +112,14 @@ const Admin = () => {
 
         const content = await getSiteContent();
         setSiteContent(content);
+
+        const subscriberData = await getNewsletterSubscribers();
+        setSubscribers(Array.isArray(subscriberData) ? subscriberData : []);
+
+        const savedPassphrase = sessionStorage.getItem('newsletterSendKey');
+        if (savedPassphrase) {
+          setBroadcast((prev) => ({ ...prev, passphrase: savedPassphrase }));
+        }
       } catch (error) {
         console.error('Error loading data:', error);
       } finally {
@@ -294,6 +321,88 @@ const Admin = () => {
     if (ok) {
       setTestimonials((prev) =>
         prev.map((item) => (item.id === id ? { ...item, ...updates } : item))
+      );
+    }
+  };
+
+  // Newsletter
+  const removeSubscriber = async (id) => {
+    const ok = await deleteNewsletterSubscriber(id);
+    if (ok) {
+      setSubscribers((prev) => prev.filter((sub) => sub.id !== id));
+    }
+  };
+
+  const exportSubscribersCsv = () => {
+    if (subscribers.length === 0) return;
+    const rows = [
+      ['Email', 'Subscribed At'],
+      ...subscribers.map((sub) => [sub.email, sub.subscribedAt || '']),
+    ];
+    const csv = rows
+      .map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+      .join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `newsletter-subscribers-${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleBroadcastChange = (field, value) => {
+    setBroadcast((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const sendBroadcast = async () => {
+    if (!broadcast.subject.trim() || !broadcast.message.trim()) {
+      setBroadcastStatus('error');
+      setBroadcastMessage('Subject and message are required.');
+      return;
+    }
+    if (!broadcast.passphrase.trim()) {
+      setBroadcastStatus('error');
+      setBroadcastMessage('Enter your send passphrase.');
+      return;
+    }
+
+    setBroadcastStatus('loading');
+    setBroadcastMessage('');
+
+    try {
+      const response = await fetch('/api/broadcast', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(broadcast),
+      });
+      const data = await response.json().catch(() => ({}));
+
+      if (response.ok && data.ok) {
+        sessionStorage.setItem('newsletterSendKey', broadcast.passphrase);
+        setBroadcastStatus('success');
+        setBroadcastMessage(data.message || 'Newsletter sent to all subscribers.');
+        setBroadcast((prev) => ({
+          ...prev,
+          subject: '',
+          title: '',
+          message: '',
+          ctaLabel: '',
+          ctaUrl: '',
+        }));
+      } else {
+        setBroadcastStatus('error');
+        setBroadcastMessage(
+          data.error ||
+            'Could not send. Make sure the email service is configured on Vercel.'
+        );
+      }
+    } catch (error) {
+      setBroadcastStatus('error');
+      setBroadcastMessage(
+        'Could not reach the send service. This only works on the deployed site, not local preview.'
       );
     }
   };
@@ -674,6 +783,7 @@ const Admin = () => {
               { id: 'services', label: 'Services', icon: BookOpen },
               { id: 'projects', label: 'Projects', icon: Projector },
               { id: 'feedback', label: 'Feedback', icon: MessageSquare },
+              { id: 'newsletter', label: 'Newsletter', icon: Mail },
             ].map((tab) => {
               const TabIcon = tab.icon;
               return (
@@ -1848,6 +1958,169 @@ const Admin = () => {
                 ))}
               </div>
             )}
+          </div>
+        )}
+
+        {activeTab === 'newsletter' && (
+          <div className="grid lg:grid-cols-2 gap-8">
+            {/* Subscribers */}
+            <div>
+              <div className="flex justify-between items-center mb-4">
+                <div>
+                  <h2 className="text-2xl font-bold text-gold-500">Subscribers</h2>
+                  <p className="text-sm text-gray-400 mt-1">
+                    {subscribers.length} {subscribers.length === 1 ? 'person has' : 'people have'}{' '}
+                    subscribed from the site footer.
+                  </p>
+                </div>
+                <button
+                  onClick={exportSubscribersCsv}
+                  disabled={subscribers.length === 0}
+                  className="btn-secondary flex items-center text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <Download className="mr-2" size={16} />
+                  Export CSV
+                </button>
+              </div>
+
+              {subscribers.length === 0 ? (
+                <div className="card p-8 text-center text-gray-400">
+                  No subscribers yet. Emails appear here when visitors subscribe in the footer.
+                </div>
+              ) : (
+                <div className="card divide-y divide-gray-800 max-h-[600px] overflow-y-auto">
+                  {subscribers.map((sub) => (
+                    <div key={sub.id} className="flex items-center justify-between px-4 py-3">
+                      <div className="min-w-0">
+                        <p className="text-sm text-white truncate">{sub.email}</p>
+                        {sub.subscribedAt && (
+                          <p className="text-xs text-gray-500">
+                            {new Date(sub.subscribedAt).toLocaleDateString()}
+                          </p>
+                        )}
+                      </div>
+                      <button
+                        onClick={() => removeSubscriber(sub.id)}
+                        className="text-red-400 hover:text-red-300 p-2 flex-shrink-0"
+                        aria-label="Remove subscriber"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Compose broadcast */}
+            <div>
+              <div className="mb-4">
+                <h2 className="text-2xl font-bold text-gold-500">Send a Newsletter</h2>
+                <p className="text-sm text-gray-400 mt-1">
+                  Email every subscriber, for example when you add a new event or feature.
+                </p>
+              </div>
+
+              <div className="card p-6 space-y-4">
+                <div>
+                  <label className="form-label text-sm">Subject line *</label>
+                  <input
+                    type="text"
+                    value={broadcast.subject}
+                    onChange={(e) => handleBroadcastChange('subject', e.target.value)}
+                    className="form-input text-sm"
+                    placeholder="New event: React & Modern Frontend Workshop"
+                  />
+                </div>
+                <div>
+                  <label className="form-label text-sm">Heading (optional)</label>
+                  <input
+                    type="text"
+                    value={broadcast.title}
+                    onChange={(e) => handleBroadcastChange('title', e.target.value)}
+                    className="form-input text-sm"
+                    placeholder="Defaults to the subject line"
+                  />
+                </div>
+                <div>
+                  <label className="form-label text-sm">Message *</label>
+                  <textarea
+                    value={broadcast.message}
+                    onChange={(e) => handleBroadcastChange('message', e.target.value)}
+                    className="form-input text-sm"
+                    rows="6"
+                    placeholder="Write your update here. Each new line becomes a paragraph."
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="form-label text-sm">Button text (optional)</label>
+                    <input
+                      type="text"
+                      value={broadcast.ctaLabel}
+                      onChange={(e) => handleBroadcastChange('ctaLabel', e.target.value)}
+                      className="form-input text-sm"
+                      placeholder="Register now"
+                    />
+                  </div>
+                  <div>
+                    <label className="form-label text-sm">Button link (optional)</label>
+                    <input
+                      type="url"
+                      value={broadcast.ctaUrl}
+                      onChange={(e) => handleBroadcastChange('ctaUrl', e.target.value)}
+                      className="form-input text-sm"
+                      placeholder="https://..."
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="form-label text-sm">Send passphrase *</label>
+                  <input
+                    type="password"
+                    value={broadcast.passphrase}
+                    onChange={(e) => handleBroadcastChange('passphrase', e.target.value)}
+                    className="form-input text-sm"
+                    placeholder="Your NEWSLETTER_ADMIN_KEY"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    This must match the NEWSLETTER_ADMIN_KEY you set on Vercel. It is never stored in
+                    the website code.
+                  </p>
+                </div>
+
+                <button
+                  onClick={sendBroadcast}
+                  disabled={broadcastStatus === 'loading'}
+                  className="btn-primary w-full flex items-center justify-center disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  {broadcastStatus === 'loading' ? (
+                    <>
+                      <Loader className="mr-2 animate-spin" size={16} />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="mr-2" size={16} />
+                      Send to {subscribers.length} subscriber{subscribers.length === 1 ? '' : 's'}
+                    </>
+                  )}
+                </button>
+
+                {broadcastStatus === 'success' && (
+                  <div className="rounded-lg border border-green-500/30 bg-green-500/10 p-3 flex items-start gap-2">
+                    <CheckCircle className="text-green-400 flex-shrink-0 mt-0.5" size={18} />
+                    <p className="text-green-300/90 text-sm leading-snug">{broadcastMessage}</p>
+                  </div>
+                )}
+                {broadcastStatus === 'error' && (
+                  <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-3 flex items-start gap-2">
+                    <AlertCircle className="text-red-400 flex-shrink-0 mt-0.5" size={18} />
+                    <p className="text-red-300/90 text-sm leading-snug">{broadcastMessage}</p>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         )}
       </div>
