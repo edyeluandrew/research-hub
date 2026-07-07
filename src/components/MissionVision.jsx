@@ -55,8 +55,11 @@ const MissionVision = () => {
               Our Philosophy
             </p>
             <p className="text-base md:text-lg font-bold text-white mb-1">{mission.philosophy}</p>
-            <p className="text-sm text-gray-400 leading-snug max-w-3xl mx-auto">
+            <p className="text-sm text-gray-400 leading-snug max-w-3xl mx-auto mb-3">
               {mission.philosophyPractice}
+            </p>
+            <p className="text-xs text-gray-500 italic max-w-2xl mx-auto">
+              Guiding principle: &ldquo;{SITE.guidingQuestion}&rdquo;
             </p>
           </div>
         </Reveal>

@@ -18,8 +18,8 @@ const CoreValues = () => {
             Principles That Guide Every Decision
           </h2>
           <p className="text-sm md:text-base text-gray-400 leading-snug">
-            These values shape how we conduct research, develop products, collaborate with partners,
-            and support one another as a team.
+            Core values define the principles that guide our decisions, shape our culture, and
+            influence how we work with one another, our clients, and our communities.
           </p>
         </Reveal>
 

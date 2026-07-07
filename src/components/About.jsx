@@ -21,13 +21,19 @@ const About = () => (
 
           <div className="space-y-4 text-base md:text-lg text-gray-300 leading-relaxed">
             <p>
-              Many technology companies ask, &ldquo;What can we build?&rdquo; We begin by asking,
-              &ldquo;What problem are we solving?&rdquo; Before designing a product or writing code,
-              we invest time in understanding the challenge through research.
+              Many technology initiatives ask, &ldquo;What can we build?&rdquo; We begin with a
+              different question: &ldquo;What problem are we solving?&rdquo; Before designing a product
+              or writing code, we invest time in understanding the challenge through community
+              engagement and research.
             </p>
             <p>
               Whether developing our own products or partnering with organizations, our commitment
-              remains the same: understand first, then innovate with purpose.
+              remains the same: understand first, then innovate with purpose. The result is not
+              simply technology — it is purposeful, practical, and sustainable solutions built to
+              solve real problems.
+            </p>
+            <p className="text-sm md:text-base text-gray-400">
+              {COMPANY.foundingStory}
             </p>
           </div>
 
@@ -39,6 +45,11 @@ const About = () => (
         </Reveal>
 
         <div className="flex flex-col gap-4 h-full">
+          <Reveal>
+            <p className="text-xs font-semibold uppercase tracking-wider text-gold-500 mb-3">
+              Beta-Tech Research Framework (BTRF)
+            </p>
+          </Reveal>
           {RESEARCH_FRAMEWORK.map((step, index) => {
             const Icon = STEP_ICONS[index] || Search;
             return (

@@ -28,13 +28,14 @@ const StructuredData = () => {
     },
     areaServed: { '@type': 'Country', name: 'Uganda' },
     knowsAbout: [
+      'Community Research',
       'Research and Innovation',
       'Product Innovation',
       'Solution Engineering',
       'Artificial Intelligence',
-      'Blockchain Technology',
       'Software Development',
       'Talent Development',
+      'IoT and Embedded Systems',
     ],
     sameAs: [SOCIAL.x, SOCIAL.linkedin, SOCIAL.github],
   };

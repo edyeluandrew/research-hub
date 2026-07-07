@@ -108,8 +108,8 @@ const Services = () => {
               </h1>
               <p className="text-sm md:text-base text-gray-400 leading-snug max-w-2xl">
                 {SITE.positioning}. We conduct research, develop products, engineer solutions, and
-                develop talent through a disciplined approach that starts with understanding, not
-                assumption.
+                develop talent through The Beta-Tech Way — a disciplined approach that starts with
+                understanding, not assumption.
               </p>
             </div>
           </section>
@@ -171,7 +171,7 @@ const Services = () => {
             <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
               <div className="mb-6 max-w-2xl">
                 <h2 className="text-2xl md:text-3xl font-bold text-white font-heading mb-2 leading-tight">
-                  The Beta-Tech Innovation Pipeline
+                  The Beta-Tech Innovation Pipeline (BTIP)
                 </h2>
                 <p className="text-sm text-gray-400 leading-snug">
                   How validated research becomes products, solutions, and measurable impact.

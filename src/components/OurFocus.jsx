@@ -27,7 +27,7 @@ const OurFocus = () => {
           <p className="text-base md:text-lg text-gray-400 leading-relaxed">
             Four interconnected pillars where research generates knowledge, product innovation
             creates long-term value, solution engineering delivers for partners, and talent
-            development sustains the future.
+            development sustains Africa&apos;s growing digital economy.
           </p>
         </Reveal>
 
