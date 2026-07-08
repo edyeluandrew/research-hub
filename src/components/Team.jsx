@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Twitter, Linkedin, Github, Crown } from 'lucide-react';
+import { Twitter, Linkedin, Github } from 'lucide-react';
 import { getTeamData } from '../data/dataStore';
 import Reveal from './Reveal';
 
@@ -27,25 +27,11 @@ const SocialHandle = ({ platform, url }) => {
   );
 };
 
-const TeamCard = ({ member, isLead = false }) => (
-  <article
-    className={`group interactive-card rounded-xl flex flex-col h-full overflow-hidden ${
-      isLead ? '!border-gold-500/40 hover:!border-gold-500/60' : ''
-    }`}
-  >
-    {isLead && (
-      <div className="absolute top-2.5 right-2.5 w-7 h-7 bg-gold-500 rounded-full flex items-center justify-center shadow-md z-10">
-        <Crown size={13} className="text-dark-200" />
-      </div>
-    )}
-
+const TeamCard = ({ member }) => (
+  <article className="group relative interactive-card rounded-xl flex flex-col h-full overflow-hidden">
     <div className="p-4 md:p-5 flex flex-col flex-1">
       <div className="mb-3">
-        <div
-          className={`mx-auto rounded-full overflow-hidden border-2 transition-all duration-500 group-hover:scale-105 group-hover:border-gold-500 ${
-            isLead ? 'w-20 h-20 border-gold-500' : 'w-[4.5rem] h-[4.5rem] border-gold-500/30'
-          }`}
-        >
+        <div className="mx-auto w-[4.5rem] h-[4.5rem] rounded-full overflow-hidden border-2 border-gold-500/30 transition-all duration-500 group-hover:scale-105 group-hover:border-gold-500">
           <img
             src={member.image}
             alt={`${member.name || 'Team member'}, ${member.role || 'Beta Tech Labs'}`}
@@ -113,8 +99,8 @@ const Team = () => {
 
   const { ceo, topRow, bottomRow } = teamData || { ceo: {}, topRow: [], bottomRow: [] };
 
-  const firstRow = [topRow[0], ceo, topRow[1]].filter(Boolean);
-  const secondRow = bottomRow || [];
+  // Handbook order: CEO → CTO → COO → CFO → CMO
+  const executives = [ceo, ...(topRow || []), ...(bottomRow || [])].filter((m) => m?.id);
 
   return (
     <section id="team" className="py-8 md:py-10 bg-dark-100 relative overflow-hidden border-t border-gray-800/50">
@@ -126,7 +112,7 @@ const Team = () => {
             Our Team
           </p>
           <h2 className="text-3xl md:text-4xl font-bold text-white font-heading mb-2 leading-tight">
-            The People Behind the Work
+            Executive Leadership
           </h2>
           <p className="text-sm md:text-base text-gray-400 leading-snug">
             Researchers, engineers, and strategists united by a shared belief: technology should
@@ -134,28 +120,12 @@ const Team = () => {
           </p>
         </Reveal>
 
-        <div className="space-y-3 md:space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
-            {firstRow.map((member, index) => (
-              <Reveal key={member.id || `row1-${index}`} delay={index * 80}>
-                <TeamCard member={member} isLead={member.id === ceo?.id} />
-              </Reveal>
-            ))}
-          </div>
-
-          {secondRow.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 md:gap-4">
-              {secondRow.map((member, index) => (
-                <Reveal
-                  key={member.id || `row2-${index}`}
-                  delay={index * 80}
-                  className={`lg:col-span-2 ${index === 0 ? 'lg:col-start-2' : ''}`}
-                >
-                  <TeamCard member={member} />
-                </Reveal>
-              ))}
-            </div>
-          )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 md:gap-4">
+          {executives.map((member, index) => (
+            <Reveal key={member.id || `exec-${index}`} delay={index * 80}>
+              <TeamCard member={member} />
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>

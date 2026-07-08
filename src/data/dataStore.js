@@ -1,52 +1,71 @@
 import { firebaseSet, firebaseGet } from '../firebase/config';
-import { COMPANY, CORE_VALUES, STRATEGIC_PILLARS, SITE } from '../config/site';
+import { COMPANY, CORE_VALUES, INNOVATION_PIPELINE, STRATEGIC_PILLARS, SITE } from '../config/site';
 
 // Default minimal data
 const defaultTeamData = {
-  ceo: { 
-    id: 'ceo-1', 
-    name: 'Edyelu Andrew', 
-    role: 'Co-Founder & Technical Lead', 
-    image: '/images/team/edyelu-andrew.jpg', 
-    description: 'Full-stack engineer building scalable web platforms and blockchain products.',
-    handles: { x: 'https://x.com/edyeluandrew1', linkedin: 'https://linkedin.com/in/edyelu', github: 'https://github.com/edyeluandrew' }
+  ceo: {
+    id: 'ceo-1',
+    name: 'Muhereza Alouzious',
+    role: 'Chief Executive Officer',
+    image: '/images/team/muhereza-alouzious.jpg',
+    description: 'Strategic leadership and corporate governance.',
+    handles: {
+      x: 'https://x.com/muhereza',
+      linkedin: 'https://linkedin.com/in/muhereza',
+      github: 'https://github.com/muhereza',
+    },
   },
   topRow: [
-    { 
-      id: 'member-1', 
-      name: 'Ahmed Umar Khemis', 
-      role: 'Co-Founder & Edge AI Engineer', 
+    {
+      id: 'member-1',
+      name: 'Ahmed Umar Khemis',
+      role: 'Chief Technology Officer',
       image: '/images/team/ahmed-umar-khemis.jpg',
-      description: 'Specializes in edge AI, embedded systems, and production-grade backend architecture.',
-      handles: { x: 'https://x.com/ahmed', linkedin: 'https://linkedin.com/in/ahmed', github: 'https://github.com/ahmed' }
+      description: 'Technology strategy, research, and product engineering.',
+      handles: {
+        x: 'https://x.com/ahmed',
+        linkedin: 'https://linkedin.com/in/ahmed',
+        github: 'https://github.com/ahmed',
+      },
     },
-    { 
-      id: 'member-2', 
-      name: 'Aliho Gilbert', 
-      role: 'Co-Founder & ML Engineer', 
-      image: '/images/team/aliho-gilbert.jpg',
-      description: 'Backend engineer focused on applied machine learning and intelligent systems.',
-      handles: { x: 'https://x.com/aliho', linkedin: 'https://linkedin.com/in/aliho', github: 'https://github.com/aliho' }
-    }
+    {
+      id: 'member-2',
+      name: 'Edyelu Andrew',
+      role: 'Chief Operations Officer',
+      image: '/images/team/edyelu-andrew.jpg',
+      description: 'Operations, project delivery, and quality assurance.',
+      handles: {
+        x: 'https://x.com/edyeluandrew1',
+        linkedin: 'https://linkedin.com/in/edyelu',
+        github: 'https://github.com/edyeluandrew',
+      },
+    },
   ],
   bottomRow: [
-    { 
-      id: 'member-3', 
-      name: 'Muhereza Alouzious', 
-      role: 'Co-Founder & Full-Stack Engineer', 
-      image: '/images/team/muhereza-alouzious.jpg',
-      description: 'Delivers end-to-end Web3 platforms and modern full-stack web applications.',
-      handles: { x: 'https://x.com/muhereza', linkedin: 'https://linkedin.com/in/muhereza', github: 'https://github.com/muhereza' }
+    {
+      id: 'member-3',
+      name: 'Aliho Gilbert',
+      role: 'Chief Financial Officer',
+      image: '/images/team/aliho-gilbert.jpg',
+      description: 'Financial planning, budgeting, and risk management.',
+      handles: {
+        x: 'https://x.com/aliho',
+        linkedin: 'https://linkedin.com/in/aliho',
+        github: 'https://github.com/aliho',
+      },
     },
-    { 
-      id: 'member-4', 
-      name: 'Kyomugisha Evelyne', 
-      role: 'Business Analyst & IT Strategist', 
+    {
+      id: 'member-4',
+      name: 'Kyomugisha Evelyne',
+      role: 'Chief Marketing Officer',
       image: '/images/team/kyomugisha-evelyn.jpg',
-      description: 'Aligns business goals with technical delivery, systems analysis, and product strategy.',
-      handles: { x: 'https://x.com/kyomugisha', linkedin: 'https://linkedin.com/in/kyomugisha' }
-    }
-  ]
+      description: 'Brand strategy, marketing, and communications.',
+      handles: {
+        x: 'https://x.com/kyomugisha',
+        linkedin: 'https://linkedin.com/in/kyomugisha',
+      },
+    },
+  ],
 };
 
 const defaultEventsData = [
@@ -193,10 +212,9 @@ const defaultServicesData = {
       title: 'Research & Innovation',
       description: 'Problem-led research in AI, blockchain, IoT, and emerging technologies.',
       features: [
-        'Problem Discovery & Needs Assessment',
-        'User, Market & Field Research',
+        'Applied Research',
+        'Emerging Technology Research',
         'Applied AI & Machine Learning Research',
-        'Blockchain & Distributed Systems R&D',
         'IoT & Edge Computing Exploration',
         'Technical Reports & Documentation',
       ],
@@ -223,7 +241,6 @@ const defaultServicesData = {
         'Custom Software & Full-Stack Development',
         'AI Automation & Intelligent Workflows',
         'Blockchain & Web3 Applications',
-        'API Design & System Integrations',
         'Cloud Deployment & Production Scaling',
       ],
     },
@@ -234,7 +251,6 @@ const defaultServicesData = {
       description: 'Internships, training, and mentorship through real project delivery.',
       features: [
         'Structured Internships & Research Training',
-        'Industry Collaboration Projects',
         'Technical Workshops & Events',
         'Mentorship & Career Development',
       ],
@@ -272,38 +288,12 @@ const defaultServicesData = {
   ],
 };
 
-const defaultEngagementSteps = [
-  {
-    step: '01',
-    title: 'Research Insights',
-    text: 'We begin with validated findings, user insights, and opportunities from our research framework.',
-  },
-  {
-    step: '02',
-    title: 'Idea Generation',
-    text: 'We transform research into concepts through ideation, exploration, and opportunity analysis.',
-  },
-  {
-    step: '03',
-    title: 'Concept Validation',
-    text: 'We test feasibility, prototype ideas, gather feedback, and assess risk before building.',
-  },
-  {
-    step: '04',
-    title: 'Engineering',
-    text: 'Validated concepts become reliable products or client solutions through disciplined engineering.',
-  },
-  {
-    step: '05',
-    title: 'Deployment & Impact',
-    text: 'We launch, monitor, gather feedback, and continuously improve for lasting value.',
-  },
-];
+const defaultEngagementSteps = INNOVATION_PIPELINE;
 
 export const defaultSiteContent = {
   mission: {
     sectionEyebrow: 'Who We Are',
-    sectionTitle: 'A Research-Driven Technology Company',
+    sectionTitle: 'A Community Research-Driven Technology Company',
     purpose: COMPANY.purpose,
     vision: COMPANY.vision,
     mission: COMPANY.mission,
@@ -318,11 +308,154 @@ export const defaultSiteContent = {
   strategicPillars: STRATEGIC_PILLARS,
   servicesPage: {
     pillarsSubtitle:
-      "Four interconnected capabilities that define how Beta-Tech Labs creates value for partners, communities, and Africa's digital future.",
+      "Research generates knowledge, product innovation creates long-term value, solution engineering delivers for partners, and talent development sustains the future — together, they define The Beta-Tech Way.",
     techSectionSubtitle:
       'We combine modern stacks with practical engineering, including IoT tooling, edge systems, and field-ready deployments across Uganda and East Africa.',
     engagementSteps: defaultEngagementSteps,
   },
+};
+
+const REMOVED_FOCUS_ITEMS = new Set([
+  'Emerging Digital Products',
+  'Problem Discovery & Needs Assessment',
+  'Innovation & Concept Development',
+  'User & Market Research',
+  'User, Market & Field Research',
+  'System Integration & APIs',
+  'API Design & System Integrations',
+  'Digital Transformation Solutions',
+  'Industry Collaboration Projects',
+  'Knowledge Generation & Publications',
+  'Product Development Experience',
+  'Professional & Leadership Development',
+]);
+
+const filterRemovedItems = (items) =>
+  (items || []).filter((item) => !REMOVED_FOCUS_ITEMS.has(item));
+
+const nameTokens = (name) =>
+  (name || '')
+    .toLowerCase()
+    .split(/\s+/)
+    .filter((part) => part.length > 2);
+
+const imageBelongsToPerson = (image, name) => {
+  if (!image) return false;
+  const lower = image.toLowerCase();
+  return nameTokens(name).some((part) => lower.includes(part));
+};
+
+const handlesBelongToPerson = (handles, name) => {
+  if (!handles) return false;
+  const urls = Object.values(handles).join(' ').toLowerCase();
+  return nameTokens(name).some((part) => urls.includes(part));
+};
+
+const mergeMemberWithDefault = (stored, defaultMember) => {
+  if (!defaultMember) return stored;
+  if (!stored) return defaultMember;
+
+  const samePerson = stored.name === defaultMember.name;
+  const useStoredImage =
+    samePerson && imageBelongsToPerson(stored.image, defaultMember.name);
+  const useStoredHandles =
+    samePerson && handlesBelongToPerson(stored.handles, defaultMember.name);
+
+  return {
+    ...defaultMember,
+    id: defaultMember.id,
+    role: defaultMember.role,
+    description: defaultMember.description,
+    name: defaultMember.name,
+    image: useStoredImage ? stored.image : defaultMember.image,
+    handles: useStoredHandles
+      ? { ...defaultMember.handles, ...stored.handles }
+      : defaultMember.handles,
+  };
+};
+
+const getTeamPool = (team) =>
+  [team?.ceo, ...(team?.topRow || []), ...(team?.bottomRow || [])].filter(Boolean);
+
+const teamNeedsMigration = (stored) => {
+  if (!stored || typeof stored !== 'object') return false;
+
+  const slots = [
+    { stored: stored.ceo, expected: defaultTeamData.ceo },
+    ...defaultTeamData.topRow.map((expected, index) => ({
+      stored: stored.topRow?.[index],
+      expected,
+    })),
+    ...defaultTeamData.bottomRow.map((expected, index) => ({
+      stored: stored.bottomRow?.[index],
+      expected,
+    })),
+  ];
+
+  return slots.some(({ stored: member, expected }) => {
+    if (!member) return false;
+    return (
+      member.name !== expected.name ||
+      member.role !== expected.role ||
+      member.description !== expected.description ||
+      member.image !== expected.image
+    );
+  });
+};
+
+const mergeTeamWithDefaults = (stored) => {
+  if (!stored || typeof stored !== 'object') return defaultTeamData;
+
+  const pool = getTeamPool(stored);
+
+  const mergeByPerson = (def) => {
+    const matchByName = pool.find((m) => m.name === def.name);
+    const matchById = pool.find((m) => m.id === def.id);
+    return mergeMemberWithDefault(matchByName || matchById, def);
+  };
+
+  return {
+    ceo: mergeByPerson(defaultTeamData.ceo),
+    topRow: defaultTeamData.topRow.map(mergeByPerson),
+    bottomRow: defaultTeamData.bottomRow.map(mergeByPerson),
+  };
+};
+
+const mergeServicesWithDefaults = (stored) => {
+  if (!stored || typeof stored !== 'object') return defaultServicesData;
+
+  const mergeServiceList = (defaults, storedList) =>
+    defaults.map((def) => {
+      const match = storedList?.find((s) => s.id === def.id);
+      if (!match) return def;
+      const features = filterRemovedItems(match.features);
+      return {
+        ...def,
+        ...match,
+        features: features.length > 0 ? features : def.features,
+      };
+    });
+
+  return {
+    core: mergeServiceList(defaultServicesData.core, stored.core),
+    additional: mergeServiceList(defaultServicesData.additional, stored.additional),
+  };
+};
+
+const mergeStrategicPillars = (stored) => {
+  if (!Array.isArray(stored) || stored.length === 0) return defaultSiteContent.strategicPillars;
+
+  return defaultSiteContent.strategicPillars.map((defaultPillar) => {
+    const match = stored.find((p) => p.id === defaultPillar.id);
+    if (!match) return defaultPillar;
+
+    const items = filterRemovedItems(match.items);
+    return {
+      ...defaultPillar,
+      ...match,
+      items: items.length > 0 ? items : defaultPillar.items,
+    };
+  });
 };
 
 const mergeSiteContent = (stored) => {
@@ -334,10 +467,7 @@ const mergeSiteContent = (stored) => {
       Array.isArray(stored.coreValues) && stored.coreValues.length > 0
         ? stored.coreValues
         : defaultSiteContent.coreValues,
-    strategicPillars:
-      Array.isArray(stored.strategicPillars) && stored.strategicPillars.length > 0
-        ? stored.strategicPillars
-        : defaultSiteContent.strategicPillars,
+    strategicPillars: mergeStrategicPillars(stored.strategicPillars),
     servicesPage: {
       ...defaultSiteContent.servicesPage,
       ...(stored.servicesPage || {}),
@@ -504,7 +634,14 @@ export const initializeFirebaseData = async () => {
 export const getTeamData = async () => {
   try {
     const data = await firebaseGet('betaTechLabs/team');
-    return data || defaultTeamData;
+    const merged = mergeTeamWithDefaults(data);
+
+    if (data && teamNeedsMigration(data)) {
+      await firebaseSet('betaTechLabs/team', merged);
+      window.dispatchEvent(new Event('teamDataUpdated'));
+    }
+
+    return merged;
   } catch (e) {
     console.error('Error getting team data:', e);
     return defaultTeamData;
@@ -566,7 +703,7 @@ export const resetEventsData = async () => {
 export const getServicesData = async () => {
   try {
     const data = await firebaseGet('betaTechLabs/services');
-    return data || defaultServicesData;
+    return mergeServicesWithDefaults(data);
   } catch (e) {
     console.error('Error getting services data:', e);
     return defaultServicesData;

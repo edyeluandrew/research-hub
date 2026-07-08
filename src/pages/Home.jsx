@@ -38,9 +38,9 @@ const Home = () => {
   return (
     <>
       <SEO
-        title="Home - Research-Driven Technology Company"
+        title="Home - Community Research-Driven Technology Company"
         description={`${SITE.legalName} transforms research into innovative products and technology solutions. ${SITE.brandPromise} Based in ${SITE.location}.`}
-        keywords="research-driven technology Uganda, Beta-Tech Labs, AI products Africa, blockchain solutions Kabale, product innovation, solution engineering, talent development"
+        keywords="community research-driven technology Uganda, Beta-Tech Labs, AI products Africa, product innovation, solution engineering, talent development, The Beta-Tech Way"
         ogUrl={`${SITE.url}/`}
         ogImage={`${SITE.url}/images/og-home.svg`}
       />

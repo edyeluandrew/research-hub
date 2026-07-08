@@ -1,29 +1,29 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowRight, Search, Package, Settings, GraduationCap } from 'lucide-react';
-import { SITE, STATS } from '../config/site';
+import { SITE, STATS, COMPANY } from '../config/site';
 import { navigateToHomeSection } from '../utils/homeNavigation';
 
 const CAPABILITIES = [
   {
     icon: Search,
     title: 'Research & Innovation',
-    description: 'Understanding problems before choosing technology',
+    description: 'Generating knowledge and exploring possibilities before building technology',
   },
   {
     icon: Package,
     title: 'Product Innovation',
-    description: 'Transforming research into products we own and evolve',
+    description: 'Transforming research into products we own, evolve, and scale',
   },
   {
     icon: Settings,
     title: 'Solution Engineering',
-    description: 'Tailored technology solutions for partner organizations',
+    description: 'Tailored technology solutions for organizations and communities',
   },
   {
     icon: GraduationCap,
     title: 'Talent Development',
-    description: 'Empowering the next generation of innovators',
+    description: 'Empowering the next generation of researchers and innovators',
   },
 ];
 
@@ -51,9 +51,8 @@ const Hero = () => {
             </p>
 
             <p className="hero-fade-in hero-delay-3 text-base md:text-lg text-gray-400 mb-6 leading-relaxed max-w-xl mx-auto lg:mx-0">
-              Every meaningful innovation begins with understanding the problem. We combine research,
-              engineering, creativity, and continuous learning to transform ideas into technology
-              that creates lasting impact.
+              {COMPANY.intro} We engage with communities, conduct research, and engineer technology
+              that creates meaningful, lasting impact.
             </p>
 
             <p className="hero-fade-in hero-delay-4 text-sm text-gray-500 italic mb-6 max-w-xl mx-auto lg:mx-0">
