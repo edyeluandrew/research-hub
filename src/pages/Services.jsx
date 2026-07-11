@@ -158,7 +158,7 @@ const Services = () => {
         ogImage={`${SITE.url}/images/og-services.svg`}
       />
 
-      <div className="min-h-screen bg-[#FDF9ED] flex flex-col">
+      <div className="min-h-screen bg-[#FFFFFF] flex flex-col">
         <Header />
 
         <main className="flex-1">

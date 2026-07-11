@@ -33,7 +33,7 @@ module.exports = {
             600: '#16A34A',
             lime: '#A6FF1A',
           },
-          cream: '#FDF9ED',
+          cream: '#FFFFFF',
           black: '#020201',
           charcoal: '#2A2925',
         },
