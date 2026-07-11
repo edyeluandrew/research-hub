@@ -39,7 +39,7 @@ const Research = () => {
               Back to Home
             </button>
             
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            <h1 className="text-3xl md:text-2xl font-bold text-white mb-6">
               Research Hub
             </h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
@@ -179,7 +179,7 @@ const Research = () => {
               
               {/* Message */}
               <div className="space-y-6 max-w-2xl mx-auto">
-                <h2 className="text-4xl font-bold text-gold-500 bg-gradient-to-r from-gold-400 to-gold-300 bg-clip-text text-transparent">
+                <h2 className="text-2xl font-bold text-gold-500 bg-gradient-to-r from-gold-400 to-gold-300 bg-clip-text text-transparent">
                   Research in Progress
                 </h2>
                 <p className="text-gray-300 text-lg leading-relaxed">

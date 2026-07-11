@@ -392,7 +392,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   .hero-headline {
     font-family: 'Spectral', Georgia, 'Times New Roman', serif;
     font-weight: 500;
-    font-size: clamp(38px, 5.5vw, 62px);
+    font-size: clamp(30px, 4.4vw, 50px);
     line-height: 1.08;
     color: #020201;
     letter-spacing: -0.02em;
@@ -402,13 +402,13 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   .hero-headline-line {
     display: block;
     white-space: nowrap;
-    font-size: clamp(30px, 4.8vw, 62px);
+    font-size: clamp(24px, 3.84vw, 50px);
   }
 
   .hero-tagline {
     font-family: 'Work Sans', 'Inter', sans-serif;
     font-weight: 700;
-    font-size: clamp(20px, 2.4vw, 28px);
+    font-size: clamp(16px, 1.92vw, 22px);
     line-height: 1.25;
     color: #020201;
     margin-bottom: 0.875rem;
@@ -416,7 +416,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .hero-body {
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: clamp(16px, 1.5vw, 19px);
+    font-size: clamp(14px, 1.27vw, 16px);
     line-height: 1.6;
     color: #020201;
     margin-bottom: 0.75rem;
@@ -426,7 +426,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   .hero-quote {
     font-family: 'Spectral', Georgia, serif;
     font-style: italic;
-    font-size: clamp(14px, 1.3vw, 17px);
+    font-size: clamp(13px, 1.17vw, 15px);
     line-height: 1.5;
     color: #020201;
     margin-bottom: 1.125rem;
@@ -478,7 +478,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .hero-pillars-label {
     font-family: 'Exo 2', 'Segoe UI', sans-serif;
-    font-size: clamp(15px, 1.3vw, 17px);
+    font-size: clamp(14px, 1.17vw, 15px);
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -490,7 +490,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
     font-family: 'Spectral', Georgia, serif;
     font-style: italic;
     font-weight: 500;
-    font-size: clamp(18px, 1.6vw, 22px);
+    font-size: clamp(15px, 1.36vw, 19px);
     color: #2563EB;
     margin-top: 0.4rem;
     line-height: 1.3;
@@ -538,7 +538,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .hero-cap-title {
     font-family: 'Exo 2', 'Segoe UI', sans-serif;
-    font-size: clamp(18px, 1.6vw, 22px);
+    font-size: clamp(15px, 1.36vw, 19px);
     font-weight: 600;
     color: #020201;
     line-height: 1.3;
@@ -548,7 +548,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .hero-cap-desc {
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: clamp(15px, 1.25vw, 17px);
+    font-size: clamp(14px, 1.12vw, 15px);
     line-height: 1.55;
     color: #020201;
   }
@@ -583,7 +583,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   .hero-stat-value {
     font-family: 'Spectral', Georgia, serif;
     font-weight: 500;
-    font-size: clamp(2rem, 4.5vw, 2.875rem);
+    font-size: clamp(1.6rem, 3.6vw, 2.3rem);
     line-height: 1;
     color: #020201;
     font-variant-numeric: tabular-nums;
@@ -595,7 +595,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .hero-stat-label {
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
     line-height: 1.35;
     color: #020201;
@@ -664,7 +664,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   .mv-heading {
     font-family: 'Spectral', Georgia, 'Times New Roman', serif;
     font-weight: 500;
-    font-size: clamp(28px, 3.6vw, 44px);
+    font-size: clamp(22px, 2.88vw, 35px);
     line-height: 1.15;
     color: var(--kd-black);
     letter-spacing: -0.02em;
@@ -675,13 +675,13 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   @media (max-width: 639px) {
     .mv-heading {
       white-space: normal;
-      font-size: clamp(24px, 6.5vw, 32px);
+      font-size: clamp(19px, 5.2vw, 26px);
     }
   }
 
   .mv-positioning {
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: clamp(18px, 1.6vw, 22px);
+    font-size: clamp(15px, 1.36vw, 19px);
     line-height: 1.65;
     color: var(--kd-charcoal);
     margin-bottom: 0;
@@ -734,7 +734,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .mv-card-label {
     font-family: 'Exo 2', 'Segoe UI', sans-serif;
-    font-size: clamp(14px, 1.15vw, 16px);
+    font-size: clamp(13px, 1.03vw, 14px);
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -744,7 +744,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .mv-card-text {
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: clamp(15px, 1.25vw, 17px);
+    font-size: clamp(14px, 1.12vw, 15px);
     line-height: 1.65;
     color: var(--kd-charcoal);
   }
@@ -765,7 +765,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .mv-philosophy-eyebrow {
     font-family: 'Exo 2', 'Segoe UI', sans-serif;
-    font-size: clamp(13px, 1.1vw, 15px);
+    font-size: clamp(12px, 0.99vw, 14px);
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -777,7 +777,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
     font-family: 'Spectral', Georgia, 'Times New Roman', serif;
     font-style: italic;
     font-weight: 500;
-    font-size: clamp(20px, 2vw, 24px);
+    font-size: clamp(17px, 1.7vw, 20px);
     line-height: 1.65;
     color: var(--kd-charcoal);
     max-width: 46rem;
@@ -786,7 +786,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .mv-philosophy-practice {
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.6;
     color: var(--kd-charcoal);
     max-width: 44rem;
@@ -796,7 +796,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   .mv-philosophy-guide {
     font-family: 'Spectral', Georgia, serif;
     font-style: italic;
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1.55;
     color: var(--kd-charcoal);
     max-width: 36rem;
@@ -888,7 +888,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
     margin-bottom: 1.125rem;
     color: var(--kd-black);
     font-family: 'Exo 2', 'Segoe UI', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -897,7 +897,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   .nl-heading {
     font-family: 'Spectral', Georgia, 'Times New Roman', serif;
     font-weight: 500;
-    font-size: clamp(34px, 4vw, 48px);
+    font-size: clamp(27px, 3.2vw, 38px);
     line-height: 1.15;
     color: var(--kd-black);
     letter-spacing: -0.02em;
@@ -906,7 +906,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .nl-lead {
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: clamp(18px, 1.6vw, 22px);
+    font-size: clamp(15px, 1.36vw, 19px);
     line-height: 1.65;
     color: var(--kd-black);
     max-width: 32rem;
@@ -941,7 +941,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .nl-benefit-title {
     font-family: 'Exo 2', 'Segoe UI', sans-serif;
-    font-size: clamp(17px, 1.4vw, 19px);
+    font-size: clamp(14px, 1.19vw, 16px);
     font-weight: 600;
     color: var(--kd-black);
     line-height: 1.3;
@@ -950,7 +950,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .nl-benefit-text {
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: clamp(15px, 1.25vw, 17px);
+    font-size: clamp(14px, 1.12vw, 15px);
     line-height: 1.5;
     color: var(--kd-charcoal);
   }
@@ -971,7 +971,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   .nl-form-title {
     font-family: 'Spectral', Georgia, 'Times New Roman', serif;
     font-weight: 500;
-    font-size: clamp(24px, 2.4vw, 30px);
+    font-size: clamp(19px, 1.92vw, 24px);
     line-height: 1.25;
     color: var(--kd-black);
     margin-bottom: 0.5rem;
@@ -979,7 +979,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .nl-form-lead {
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: clamp(16px, 1.35vw, 18px);
+    font-size: clamp(14px, 1.15vw, 15px);
     line-height: 1.55;
     color: var(--kd-black);
     margin-bottom: 1.125rem;
@@ -1085,7 +1085,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   .ct-heading {
     font-family: 'Spectral', Georgia, 'Times New Roman', serif;
     font-weight: 500;
-    font-size: clamp(38px, 5vw, 58px);
+    font-size: clamp(30px, 4vw, 46px);
     line-height: 1.08;
     color: var(--kd-black);
     letter-spacing: -0.025em;
@@ -1094,7 +1094,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ct-intro {
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: clamp(17px, 1.5vw, 20px);
+    font-size: clamp(14px, 1.27vw, 17px);
     line-height: 1.65;
     color: var(--kd-charcoal);
     max-width: 36rem;
@@ -1181,7 +1181,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   .ct-card-title {
     font-family: 'Spectral', Georgia, 'Times New Roman', serif;
     font-weight: 500;
-    font-size: clamp(24px, 2.2vw, 30px);
+    font-size: clamp(19px, 1.76vw, 24px);
     line-height: 1.2;
     color: var(--kd-black);
     margin-bottom: 0.4rem;
@@ -1189,7 +1189,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ct-card-lead {
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.55;
     color: var(--kd-charcoal);
   }
@@ -1223,7 +1223,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ct-label {
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     color: var(--kd-black);
   }
@@ -1248,7 +1248,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
     background-color: #FFFFFF;
     color: var(--kd-black);
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.4;
     padding: 0.9rem 1rem;
     transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
@@ -1305,7 +1305,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
     background-color: var(--kd-blue);
     color: #FFFFFF;
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 700;
     padding: 1rem 1.25rem;
     cursor: pointer;
@@ -1348,13 +1348,13 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   }
 
   .ct-status-title {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
     line-height: 1.3;
   }
 
   .ct-status-text {
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.5;
     margin-top: 0.2rem;
   }
@@ -1426,7 +1426,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ct-channel-value {
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 700;
     color: var(--kd-black);
     line-height: 1.35;
@@ -1435,7 +1435,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ct-channel-hint {
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.5;
     color: var(--kd-grey);
     margin-top: 0.15rem;
@@ -1515,7 +1515,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ct-map-name {
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 700;
     color: var(--kd-black);
     line-height: 1.35;
@@ -1523,7 +1523,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ct-map-headline {
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     color: var(--kd-blue);
     line-height: 1.4;
@@ -1556,7 +1556,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
     color: var(--kd-blue);
     text-decoration: none;
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     transition: color 0.2s ease;
   }
@@ -1642,7 +1642,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   .ts-heading {
     font-family: 'Spectral', Georgia, 'Times New Roman', serif;
     font-weight: 500;
-    font-size: clamp(36px, 4.5vw, 54px);
+    font-size: clamp(29px, 3.6vw, 43px);
     line-height: 1.12;
     color: var(--kd-black);
     letter-spacing: -0.02em;
@@ -1651,7 +1651,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .cv-heading--nowrap {
     white-space: nowrap;
-    font-size: clamp(22px, 3.8vw, 48px);
+    font-size: clamp(18px, 3.04vw, 38px);
   }
 
   .ab-rule {
@@ -1671,20 +1671,20 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ab-copy p {
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: clamp(16px, 1.4vw, 18px);
+    font-size: clamp(14px, 1.19vw, 15px);
     line-height: 1.65;
     color: var(--kd-charcoal);
   }
 
   .ab-story-note {
     color: var(--kd-grey) !important;
-    font-size: 15px !important;
+    font-size: 14px !important;
   }
 
   .ab-quote {
     font-family: 'Spectral', Georgia, serif;
     font-style: italic;
-    font-size: clamp(16px, 1.4vw, 18px);
+    font-size: clamp(14px, 1.19vw, 15px);
     line-height: 1.65;
     color: var(--kd-charcoal);
     margin-top: 1.5rem;
@@ -1765,7 +1765,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ab-step-title {
     font-family: 'Exo 2', 'Segoe UI', sans-serif;
-    font-size: clamp(17px, 1.5vw, 20px);
+    font-size: clamp(14px, 1.27vw, 17px);
     font-weight: 700;
     color: var(--kd-black);
     margin-bottom: 0.35rem;
@@ -1773,7 +1773,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ab-step-desc {
     font-family: 'Work Sans', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.55;
     color: var(--kd-charcoal);
   }
@@ -1818,7 +1818,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   .tm-intro,
   .ts-intro {
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: clamp(18px, 1.6vw, 20px);
+    font-size: clamp(15px, 1.36vw, 17px);
     line-height: 1.65;
     color: var(--kd-charcoal);
     max-width: 40rem;
@@ -1861,14 +1861,14 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .of-num {
     font-family: 'Exo 2', sans-serif;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
     color: var(--kd-grey);
   }
 
   .of-label {
     font-family: 'Exo 2', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -1877,7 +1877,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .of-title {
     font-family: 'Exo 2', 'Segoe UI', sans-serif;
-    font-size: clamp(24px, 2.2vw, 30px);
+    font-size: clamp(19px, 1.76vw, 24px);
     font-weight: 700;
     color: var(--kd-black);
     margin-bottom: 0.75rem;
@@ -1886,7 +1886,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .of-desc {
     font-family: 'Work Sans', sans-serif;
-    font-size: clamp(16px, 1.4vw, 18px);
+    font-size: clamp(14px, 1.19vw, 15px);
     line-height: 1.65;
     color: var(--kd-charcoal);
     margin-bottom: 1.25rem;
@@ -1920,7 +1920,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
     align-items: flex-start;
     gap: 0.55rem;
     font-family: 'Work Sans', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.5;
     color: var(--kd-charcoal);
   }
@@ -1996,7 +1996,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .cv-title {
     font-family: 'Exo 2', 'Segoe UI', sans-serif;
-    font-size: clamp(22px, 2vw, 28px);
+    font-size: clamp(18px, 1.6vw, 22px);
     font-weight: 700;
     color: var(--kd-black);
     line-height: 1.15;
@@ -2006,7 +2006,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   .cv-motto {
     font-family: 'Spectral', Georgia, serif;
     font-style: italic;
-    font-size: clamp(16px, 1.4vw, 18px);
+    font-size: clamp(14px, 1.19vw, 15px);
     line-height: 1.5;
     color: var(--kd-charcoal);
     margin-bottom: 1rem;
@@ -2014,7 +2014,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .cv-desc {
     font-family: 'Work Sans', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.65;
     color: var(--kd-charcoal);
     padding-top: 1rem;
@@ -2107,7 +2107,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
     justify-content: center;
     font-family: 'Exo 2', sans-serif;
     font-weight: 700;
-    font-size: 1.25rem;
+    font-size: 1.0625rem;
     color: var(--kd-black);
     background: linear-gradient(135deg, #F0E0B1, #EBE5D7);
   }
@@ -2122,7 +2122,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .tm-name {
     font-family: 'Exo 2', 'Segoe UI', sans-serif;
-    font-size: 17px;
+    font-size: 15px;
     font-weight: 700;
     color: var(--kd-black);
     margin-bottom: 0.25rem;
@@ -2130,7 +2130,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .tm-role {
     font-family: 'Work Sans', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     color: var(--kd-blue);
     margin-bottom: 0.6rem;
@@ -2138,7 +2138,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .tm-bio {
     font-family: 'Work Sans', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.55;
     color: var(--kd-charcoal);
     flex: 1;
@@ -2256,7 +2256,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   .ts-quote {
     font-family: 'Spectral', Georgia, serif;
     font-style: italic;
-    font-size: clamp(16px, 1.35vw, 18px);
+    font-size: clamp(14px, 1.15vw, 15px);
     line-height: 1.65;
     color: var(--kd-charcoal);
     flex: 1;
@@ -2292,7 +2292,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ts-name {
     font-family: 'Work Sans', sans-serif;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
     color: var(--kd-black);
     line-height: 1.3;
@@ -2341,7 +2341,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
     border-radius: 0.75rem;
     padding: 0.85rem 1.35rem;
     font-family: 'Work Sans', sans-serif;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
     cursor: pointer;
     box-shadow: 0 8px 20px rgba(37, 99, 235, 0.22);
@@ -2434,7 +2434,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   .ft-cta-heading {
     font-family: 'Spectral', Georgia, 'Times New Roman', serif;
     font-weight: 500;
-    font-size: clamp(24px, 3vw, 34px);
+    font-size: clamp(19px, 2.4vw, 27px);
     line-height: 1.2;
     color: var(--kd-black);
     letter-spacing: -0.02em;
@@ -2451,7 +2451,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
     color: #FFFFFF;
     text-decoration: none;
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
     border-radius: 0.75rem;
     padding: 0.9rem 1.35rem;
@@ -2534,7 +2534,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ft-brand-name {
     font-family: 'Spectral', Georgia, 'Times New Roman', serif;
-    font-size: clamp(1.35rem, 2vw, 1.75rem);
+    font-size: clamp(1.08rem, 1.6vw, 1.4rem);
     font-weight: 600;
     color: var(--kd-black);
     line-height: 1.15;
@@ -2543,7 +2543,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ft-brand-tag {
     font-family: 'Exo 2', 'Segoe UI', sans-serif;
-    font-size: 0.9rem;
+    font-size: 0.81rem;
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -2553,7 +2553,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ft-brand-copy {
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: clamp(1rem, 1.1vw, 1.0625rem);
+    font-size: clamp(0.9rem, 0.99vw, 0.9563rem);
     line-height: 1.7;
     font-weight: 500;
     color: var(--kd-charcoal);
@@ -2616,7 +2616,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ft-link {
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: 1rem;
+    font-size: 0.9rem;
     line-height: 1.5;
     font-weight: 500;
     color: var(--kd-charcoal);
@@ -2677,7 +2677,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ft-contact-text {
     font-family: 'Work Sans', sans-serif;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 600;
     color: var(--kd-black);
     line-height: 1.5;
@@ -2704,7 +2704,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
     color: #FFFFFF;
     text-decoration: none;
     font-family: 'Work Sans', sans-serif;
-    font-size: 0.9375rem;
+    font-size: 0.8438rem;
     font-weight: 700;
     border-radius: 0.75rem;
     padding: 0.85rem 1.1rem;
@@ -2762,7 +2762,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ft-copy {
     font-family: 'Work Sans', sans-serif;
-    font-size: 0.875rem;
+    font-size: 0.7875rem;
     font-weight: 500;
     color: var(--kd-charcoal);
     line-height: 1.5;
@@ -2777,13 +2777,13 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ft-legal-sep {
     color: rgba(133, 134, 126, 0.65);
-    font-size: 0.875rem;
+    font-size: 0.7875rem;
     user-select: none;
   }
 
   .ft-legal-link {
     font-family: 'Work Sans', sans-serif;
-    font-size: 0.875rem;
+    font-size: 0.7875rem;
     font-weight: 600;
     color: var(--kd-charcoal);
     text-decoration: none;
@@ -2913,20 +2913,20 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
     width: 100%;
     max-width: 100rem;
     margin: 0 auto;
-    padding: 7rem 0.75rem 3rem;
+    padding: 5.5rem 0.75rem 2.5rem;
   }
 
   @media (min-width: 640px) {
-    .sv-hero-inner { padding: 7.5rem 1rem 3.25rem; }
+    .sv-hero-inner { padding: 6rem 1rem 2.75rem; }
   }
 
   @media (min-width: 1024px) {
-    .sv-hero-inner { padding: 8rem 1.25rem 3.5rem; }
+    .sv-hero-inner { padding: 6.5rem 1.25rem 3rem; }
   }
 
   .sv-eyebrow {
     font-family: 'Exo 2', 'Segoe UI', sans-serif;
-    font-size: clamp(13px, 1.15vw, 15px);
+    font-size: clamp(12px, 1.03vw, 14px);
     font-weight: 700;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -2937,7 +2937,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   .sv-hero-heading {
     font-family: 'Spectral', Georgia, 'Times New Roman', serif;
     font-weight: 500;
-    font-size: clamp(36px, 5vw, 58px);
+    font-size: clamp(29px, 4vw, 46px);
     line-height: 1.1;
     letter-spacing: -0.025em;
     color: #020201;
@@ -2947,12 +2947,12 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   .sv-hero-heading-line {
     display: block;
     white-space: nowrap;
-    font-size: clamp(28px, 4.5vw, 58px);
+    font-size: clamp(22px, 3.6vw, 46px);
   }
 
   .sv-hero-lead {
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: clamp(17px, 1.55vw, 20px);
+    font-size: clamp(14px, 1.32vw, 17px);
     line-height: 1.65;
     color: #2A2925;
     max-width: 40rem;
@@ -2997,7 +2997,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   .sv-heading {
     font-family: 'Spectral', Georgia, 'Times New Roman', serif;
     font-weight: 500;
-    font-size: clamp(32px, 4vw, 48px);
+    font-size: clamp(26px, 3.2vw, 38px);
     line-height: 1.12;
     letter-spacing: -0.02em;
     color: var(--kd-black);
@@ -3006,7 +3006,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .sv-intro {
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: clamp(17px, 1.45vw, 19px);
+    font-size: clamp(14px, 1.23vw, 16px);
     line-height: 1.65;
     color: var(--kd-charcoal);
   }
@@ -3056,14 +3056,14 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .sv-card-num {
     font-family: 'Exo 2', sans-serif;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
     color: var(--kd-grey);
   }
 
   .sv-card-title {
     font-family: 'Exo 2', 'Segoe UI', sans-serif;
-    font-size: clamp(22px, 2vw, 28px);
+    font-size: clamp(18px, 1.6vw, 22px);
     font-weight: 700;
     letter-spacing: -0.015em;
     color: var(--kd-black);
@@ -3073,7 +3073,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .sv-card-desc {
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: clamp(16px, 1.35vw, 18px);
+    font-size: clamp(14px, 1.15vw, 15px);
     line-height: 1.65;
     color: var(--kd-charcoal);
     margin-bottom: 1.15rem;
@@ -3094,7 +3094,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
     align-items: flex-start;
     gap: 0.55rem;
     font-family: 'Work Sans', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.5;
     color: var(--kd-charcoal);
   }
@@ -3150,7 +3150,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .sv-tech-title {
     font-family: 'Exo 2', 'Segoe UI', sans-serif;
-    font-size: clamp(16px, 1.3vw, 18px);
+    font-size: clamp(14px, 1.1vw, 15px);
     font-weight: 700;
     color: var(--kd-black);
     line-height: 1.3;
@@ -3159,7 +3159,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .sv-tech-desc {
     font-family: 'Work Sans', sans-serif;
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1.55;
     color: var(--kd-charcoal);
   }
@@ -3204,7 +3204,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
     background: #F0E0B1;
     border: 1px solid rgba(194, 193, 191, 0.8);
     font-family: 'Exo 2', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     color: var(--kd-black);
     margin-bottom: 0.85rem;
@@ -3212,7 +3212,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .sv-pipeline-title {
     font-family: 'Exo 2', 'Segoe UI', sans-serif;
-    font-size: clamp(16px, 1.3vw, 18px);
+    font-size: clamp(14px, 1.1vw, 15px);
     font-weight: 700;
     color: var(--kd-black);
     line-height: 1.3;
@@ -3221,7 +3221,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .sv-pipeline-text {
     font-family: 'Work Sans', sans-serif;
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1.55;
     color: var(--kd-charcoal);
   }
@@ -3247,7 +3247,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   .sv-cta-heading {
     font-family: 'Spectral', Georgia, 'Times New Roman', serif;
     font-weight: 500;
-    font-size: clamp(32px, 4vw, 46px);
+    font-size: clamp(26px, 3.2vw, 37px);
     line-height: 1.15;
     letter-spacing: -0.02em;
     color: #020201;
@@ -3256,7 +3256,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .sv-cta-lead {
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: clamp(17px, 1.45vw, 19px);
+    font-size: clamp(14px, 1.23vw, 16px);
     line-height: 1.65;
     color: #2A2925;
     margin-bottom: 1.5rem;
@@ -3284,7 +3284,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
     gap: 0.5rem;
     border-radius: 0.75rem;
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 700;
     padding: 0.95rem 1.4rem;
     cursor: pointer;
@@ -3344,15 +3344,15 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
     overflow: hidden;
     background: var(--kd-cream);
     border-bottom: 1px solid rgba(194, 193, 191, 0.65);
-    padding: 7rem 0 3rem;
+    padding: 5.5rem 0 2.5rem;
   }
 
   @media (min-width: 640px) {
-    .pj-hero { padding: 7.5rem 0 3.25rem; }
+    .pj-hero { padding: 6rem 0 2.75rem; }
   }
 
   @media (min-width: 1024px) {
-    .pj-hero { padding: 8rem 0 3.5rem; }
+    .pj-hero { padding: 6.5rem 0 3rem; }
   }
 
   .pj-dot-grid {
@@ -3384,7 +3384,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .pj-eyebrow {
     font-family: 'Exo 2', 'Segoe UI', sans-serif;
-    font-size: clamp(13px, 1.15vw, 15px);
+    font-size: clamp(12px, 1.03vw, 14px);
     font-weight: 700;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -3395,7 +3395,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   .pj-heading {
     font-family: 'Spectral', Georgia, 'Times New Roman', serif;
     font-weight: 500;
-    font-size: clamp(38px, 5.2vw, 60px);
+    font-size: clamp(30px, 4.16vw, 48px);
     line-height: 1.08;
     letter-spacing: -0.028em;
     color: var(--kd-black);
@@ -3409,7 +3409,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .pj-lead {
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: clamp(17px, 1.55vw, 20px);
+    font-size: clamp(14px, 1.32vw, 17px);
     font-weight: 400;
     line-height: 1.68;
     color: var(--kd-charcoal);
@@ -3488,7 +3488,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   .pj-stat-value {
     font-family: 'Spectral', Georgia, serif;
     font-weight: 500;
-    font-size: clamp(1.35rem, 2.5vw, 1.65rem);
+    font-size: clamp(1.1475rem, 2.12vw, 1.4025rem);
     line-height: 1;
     color: var(--kd-black);
     font-variant-numeric: tabular-nums;
@@ -3651,7 +3651,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .pj-card-title {
     font-family: 'Exo 2', 'Segoe UI', sans-serif;
-    font-size: clamp(21px, 1.9vw, 26px);
+    font-size: clamp(18px, 1.61vw, 22px);
     font-weight: 700;
     letter-spacing: -0.018em;
     color: var(--kd-black);
@@ -3666,7 +3666,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .pj-card-desc {
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: clamp(15px, 1.3vw, 17px);
+    font-size: clamp(14px, 1.17vw, 15px);
     line-height: 1.62;
     color: var(--kd-charcoal);
     flex: 1;
@@ -3768,7 +3768,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .pj-empty p {
     font-family: 'Work Sans', sans-serif;
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 500;
     color: var(--kd-charcoal);
     margin-bottom: 1.35rem;
@@ -3776,7 +3776,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .pj-loading {
     font-family: 'Work Sans', sans-serif;
-    font-size: 17px;
+    font-size: 15px;
     font-weight: 500;
     color: var(--kd-grey);
     text-align: center;
@@ -3808,7 +3808,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   .pj-cta-heading {
     font-family: 'Spectral', Georgia, 'Times New Roman', serif;
     font-weight: 500;
-    font-size: clamp(34px, 4.2vw, 48px);
+    font-size: clamp(27px, 3.36vw, 38px);
     line-height: 1.12;
     letter-spacing: -0.022em;
     color: var(--kd-black);
@@ -3817,7 +3817,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .pj-cta-lead {
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: clamp(17px, 1.5vw, 19px);
+    font-size: clamp(14px, 1.27vw, 16px);
     line-height: 1.68;
     color: var(--kd-charcoal);
     margin-bottom: 1.6rem;
@@ -3880,11 +3880,11 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
       radial-gradient(ellipse 60% 45% at 10% 90%, rgba(240, 224, 177, 0.55) 0%, transparent 50%),
       var(--kd-cream);
     border-bottom: 1px solid rgba(194, 193, 191, 0.65);
-    padding: 7rem 0 3.25rem;
+    padding: 5.5rem 0 2.75rem;
   }
 
-  @media (min-width: 640px) { .ev-hero { padding: 7.5rem 0 3.25rem; } }
-  @media (min-width: 1024px) { .ev-hero { padding: 8rem 0 3.5rem; } }
+  @media (min-width: 640px) { .ev-hero { padding: 6rem 0 2.75rem; } }
+  @media (min-width: 1024px) { .ev-hero { padding: 6.5rem 0 3rem; } }
 
   .ev-hero-glow {
     position: absolute;
@@ -3934,7 +3934,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ev-eyebrow {
     font-family: 'Exo 2', 'Segoe UI', sans-serif;
-    font-size: clamp(13px, 1.15vw, 15px);
+    font-size: clamp(12px, 1.03vw, 14px);
     font-weight: 700;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -3945,7 +3945,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   .ev-heading {
     font-family: 'Spectral', Georgia, 'Times New Roman', serif;
     font-weight: 500;
-    font-size: clamp(36px, 5vw, 58px);
+    font-size: clamp(29px, 4vw, 46px);
     line-height: 1.1;
     letter-spacing: -0.026em;
     color: var(--kd-black);
@@ -3957,7 +3957,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ev-lead {
     font-family: 'Work Sans', 'Inter', sans-serif;
-    font-size: clamp(17px, 1.55vw, 20px);
+    font-size: clamp(14px, 1.32vw, 17px);
     line-height: 1.68;
     color: var(--kd-charcoal);
     max-width: 42rem;
@@ -4021,7 +4021,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   .ev-stat-value {
     font-family: 'Spectral', Georgia, serif;
     font-weight: 500;
-    font-size: clamp(1.35rem, 2.5vw, 1.65rem);
+    font-size: clamp(1.1475rem, 2.12vw, 1.4025rem);
     line-height: 1;
     color: var(--kd-black);
     font-variant-numeric: tabular-nums;
@@ -4049,7 +4049,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
     background: var(--kd-white);
     color: var(--kd-charcoal);
     font-family: 'Work Sans', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
   }
@@ -4076,7 +4076,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   .ev-section-heading {
     font-family: 'Spectral', Georgia, serif;
     font-weight: 500;
-    font-size: clamp(30px, 3.8vw, 44px);
+    font-size: clamp(24px, 3.04vw, 35px);
     line-height: 1.12;
     letter-spacing: -0.02em;
     color: var(--kd-black);
@@ -4085,7 +4085,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ev-section-intro {
     font-family: 'Work Sans', sans-serif;
-    font-size: clamp(16px, 1.4vw, 18px);
+    font-size: clamp(14px, 1.19vw, 15px);
     line-height: 1.65;
     color: var(--kd-charcoal);
   }
@@ -4131,7 +4131,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ev-why-title {
     font-family: 'Exo 2', sans-serif;
-    font-size: clamp(16px, 1.4vw, 18px);
+    font-size: clamp(14px, 1.19vw, 15px);
     font-weight: 700;
     color: var(--kd-black);
     margin-bottom: 0.45rem;
@@ -4140,7 +4140,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ev-why-text {
     font-family: 'Work Sans', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.6;
     color: var(--kd-charcoal);
   }
@@ -4199,7 +4199,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ev-format-label {
     font-family: 'Exo 2', sans-serif;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
     color: var(--kd-blue);
     margin-bottom: 0.25rem;
@@ -4316,7 +4316,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ev-banner-note {
     font-family: 'Work Sans', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.45;
     color: var(--kd-charcoal);
     max-width: 12rem;
@@ -4346,7 +4346,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ev-date-day {
     font-family: 'Spectral', Georgia, serif;
-    font-size: 1.65rem;
+    font-size: 1.4025rem;
     font-weight: 500;
     line-height: 1;
     color: var(--kd-black);
@@ -4427,7 +4427,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ev-card-title {
     font-family: 'Exo 2', sans-serif;
-    font-size: clamp(19px, 1.75vw, 24px);
+    font-size: clamp(16px, 1.49vw, 20px);
     font-weight: 700;
     letter-spacing: -0.015em;
     color: var(--kd-black);
@@ -4450,7 +4450,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
     align-items: flex-start;
     gap: 0.5rem;
     font-family: 'Work Sans', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.45;
     color: var(--kd-charcoal);
   }
@@ -4472,7 +4472,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ev-card-desc {
     font-family: 'Work Sans', sans-serif;
-    font-size: clamp(14px, 1.25vw, 16px);
+    font-size: clamp(13px, 1.12vw, 14px);
     line-height: 1.62;
     color: var(--kd-charcoal);
     flex: 1;
@@ -4596,11 +4596,11 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
       inset 0 1px 0 rgba(255, 255, 255, 0.9);
   }
 
-  .ev-featured-date-badge .ev-date-day { font-size: 2.25rem; }
+  .ev-featured-date-badge .ev-date-day { font-size: 1.8rem; }
 
   .ev-featured-time {
     font-family: 'Work Sans', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     color: var(--kd-grey);
     margin-top: 0.75rem;
@@ -4622,7 +4622,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   .ev-featured-title {
     font-family: 'Spectral', Georgia, serif;
     font-weight: 500;
-    font-size: clamp(26px, 3vw, 36px);
+    font-size: clamp(21px, 2.4vw, 29px);
     line-height: 1.15;
     letter-spacing: -0.02em;
     color: var(--kd-black);
@@ -4631,7 +4631,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ev-featured-desc {
     font-family: 'Work Sans', sans-serif;
-    font-size: clamp(16px, 1.4vw, 18px);
+    font-size: clamp(14px, 1.19vw, 15px);
     line-height: 1.65;
     color: var(--kd-charcoal);
     margin-bottom: 1rem;
@@ -4699,7 +4699,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
     gap: 0.35rem;
     margin-top: auto;
     font-family: 'Work Sans', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     color: var(--kd-blue);
     transition: gap 0.2s ease, color 0.2s ease;
@@ -4725,7 +4725,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
     border: none;
     background: transparent;
     font-family: 'Work Sans', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     color: var(--kd-grey);
     cursor: pointer;
@@ -4855,7 +4855,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   .ev-partner-heading {
     font-family: 'Spectral', Georgia, serif;
     font-weight: 500;
-    font-size: clamp(24px, 2.8vw, 32px);
+    font-size: clamp(19px, 2.24vw, 26px);
     line-height: 1.15;
     color: var(--kd-black);
     margin-bottom: 0.65rem;
@@ -4863,7 +4863,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ev-partner-text {
     font-family: 'Work Sans', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.65;
     color: var(--kd-charcoal);
   }
@@ -4959,20 +4959,20 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ev-empty p {
     font-family: 'Work Sans', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     color: var(--kd-charcoal);
     margin-bottom: 0.35rem;
   }
 
   .ev-empty-sub {
-    font-size: 14px !important;
+    font-size: 13px !important;
     color: var(--kd-grey) !important;
     margin-bottom: 1.25rem !important;
   }
 
   .ev-loading {
     font-family: 'Work Sans', sans-serif;
-    font-size: 17px;
+    font-size: 15px;
     font-weight: 500;
     color: var(--kd-grey);
     text-align: center;
@@ -5067,7 +5067,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
   .ev-modal-title {
     font-family: 'Spectral', Georgia, serif;
     font-weight: 500;
-    font-size: clamp(20px, 2.5vw, 26px);
+    font-size: clamp(17px, 2.12vw, 22px);
     line-height: 1.2;
     color: #020201;
     letter-spacing: -0.02em;
@@ -5075,7 +5075,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl,
 
   .ev-modal-meta {
     font-family: 'Work Sans', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     color: #2A2925;
     margin-top: 0.35rem;
   }
