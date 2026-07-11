@@ -45,7 +45,7 @@ const AdminLogin = () => {
                   <Lock className="text-gold-500" size={32} />
                 </div>
               </div>
-              <h1 className="text-3xl font-bold text-gold-500 mb-2">Admin Access</h1>
+              <h1 className="text-2xl font-bold text-gold-500 mb-2">Admin Access</h1>
               <p className="text-gray-400">Enter your credentials to continue</p>
             </div>
 

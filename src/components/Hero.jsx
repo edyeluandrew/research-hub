@@ -187,7 +187,7 @@ const Hero = () => {
       <HeroBackgroundSlider />
       <div className="hero-dot-grid" aria-hidden="true" />
 
-      <div className="hero-inner flex-1 flex flex-col justify-center w-full max-w-[100rem] mx-auto px-3 sm:px-4 lg:px-5 xl:px-6 pt-20 md:pt-[5.75rem] lg:pt-24 pb-5 md:pb-6 relative z-10">
+      <div className="hero-inner flex-1 flex flex-col justify-center w-full max-w-[100rem] mx-auto px-3 sm:px-4 lg:px-5 xl:px-6 pt-16 md:pt-[4.5rem] pb-5 md:pb-6 relative z-10">
         <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 xl:gap-10 items-stretch w-full">
           <div className="flex flex-col text-left min-w-0">
             <h1 className="hero-headline hero-fade-in hero-delay-2">
