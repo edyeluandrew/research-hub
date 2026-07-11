@@ -30,39 +30,51 @@ import {
 const WHY_ATTEND = [
   {
     icon: Code2,
+    tone: 'blue',
     title: 'Build, Don\'t Just Watch',
     text: 'Every session is hands-on. You leave with code written, problems solved, and something you can show, not just slides saved.',
   },
   {
     icon: GraduationCap,
+    tone: 'green',
     title: 'Mentors Who Ship',
     text: 'Led by engineers and researchers actively building AI, blockchain, and software products, not career lecturers reading from a syllabus.',
   },
   {
     icon: Sparkles,
+    tone: 'amber',
     title: 'Real-World Context',
     text: 'Workshops shaped around African markets, local infrastructure, and problems our community actually faces, grounded in field research.',
   },
   {
     icon: Mic2,
+    tone: 'purple',
     title: 'A Growing Network',
     text: 'Meet founders, students, and builders across Kabale and East Africa. Past attendees have landed internships, collaborators, and startup co-founders.',
   },
 ];
 
 const EVENT_FORMATS = [
-  { label: 'Workshops', detail: 'Focused half-day or full-day skill sessions' },
-  { label: 'Bootcamps', detail: 'Intensive deep-dives with capstone builds' },
-  { label: 'Meetups', detail: 'Talks, demos, and open networking evenings' },
-  { label: 'Hackathons', detail: 'Team sprints on real challenges, coming soon' },
+  { label: 'Workshops', detail: 'Focused half-day or full-day skill sessions', icon: Code2, tone: 'blue' },
+  { label: 'Bootcamps', detail: 'Intensive deep-dives with capstone builds', icon: GraduationCap, tone: 'purple' },
+  { label: 'Meetups', detail: 'Talks, demos, and open networking evenings', icon: Mic2, tone: 'green' },
+  { label: 'Hackathons', detail: 'Team sprints on real challenges, coming soon', icon: Zap, tone: 'amber' },
 ];
 
-const CATEGORY_GRADIENTS = {
-  Bootcamp: 'from-purple-900/60 via-dark-200 to-gold-900/30',
-  Workshop: 'from-blue-900/50 via-dark-200 to-gold-900/20',
-  Meetup: 'from-emerald-900/40 via-dark-200 to-gold-900/20',
-  Hackathon: 'from-orange-900/50 via-dark-200 to-gold-900/30',
+const CATEGORY_BANNER = {
+  Bootcamp: 'ev-card-banner--bootcamp',
+  Workshop: 'ev-card-banner--workshop',
+  Meetup: 'ev-card-banner--meetup',
+  Hackathon: 'ev-card-banner--hackathon',
 };
+
+const HERO_STATS = [
+  { key: 'total', icon: Calendar, tone: 'blue', label: 'Events hosted' },
+  { key: 'upcoming', icon: Sparkles, tone: 'amber', label: 'Upcoming', accent: true },
+  { key: 'past', icon: CheckCircle, tone: 'green', label: 'Completed' },
+  { key: 'attendees', icon: Users, tone: 'slate', label: 'Total attendees', suffix: '+' },
+  { key: 'trained', icon: GraduationCap, tone: 'purple', label: 'Builders trained' },
+];
 
 const formatDate = (dateString) => {
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -110,8 +122,19 @@ const categorizeEvents = (eventsData) => {
   return { upcoming, past };
 };
 
+const DateBadge = ({ date, large = false }) => {
+  const parts = formatDateParts(date);
+  return (
+    <div className={`ev-date-badge${large ? ' ev-featured-date-badge' : ''}`}>
+      <span className="ev-date-month">{parts.month}</span>
+      <span className="ev-date-day">{parts.day}</span>
+      <span className="ev-date-year">{parts.year}</span>
+    </div>
+  );
+};
+
 const EventBanner = ({ event, isPast, onOpenGallery }) => {
-  const gradient = CATEGORY_GRADIENTS[event.category] || CATEGORY_GRADIENTS.Workshop;
+  const bannerClass = CATEGORY_BANNER[event.category] || CATEGORY_BANNER.Workshop;
   const hasImages = event.images && event.images.length > 0;
 
   if (hasImages) {
@@ -119,19 +142,18 @@ const EventBanner = ({ event, isPast, onOpenGallery }) => {
       <button
         type="button"
         onClick={() => onOpenGallery(event)}
-        className="relative h-44 w-full overflow-hidden group/banner text-left"
+        className="ev-card-banner ev-card-banner--image w-full text-left"
       >
         <img
           src={event.images[0]}
           alt={event.title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover/banner:scale-105"
           onError={(e) => {
             e.target.style.display = 'none';
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-dark-200 via-dark-200/40 to-transparent" />
+        <div className="ev-banner-overlay" />
         {event.images.length > 1 && (
-          <span className="absolute bottom-3 right-3 inline-flex items-center gap-1 text-xs text-white bg-black/60 px-2 py-1 rounded-full">
+          <span className="ev-banner-photo-count">
             <ImageIcon size={12} />
             +{event.images.length - 1}
           </span>
@@ -140,26 +162,16 @@ const EventBanner = ({ event, isPast, onOpenGallery }) => {
     );
   }
 
-  const parts = formatDateParts(event.date);
-
   return (
-    <div className={`relative h-44 bg-gradient-to-br ${gradient} flex items-center justify-between px-6 border-b border-gray-800`}>
-      <div>
-        {event.category && (
-          <p className="text-xs font-semibold uppercase tracking-wider text-gold-500/80 mb-2">
-            {event.category}
+    <div className={`ev-card-banner ${bannerClass}`}>
+      <div className="ev-banner-fallback">
+        <div>
+          {event.category && <p className="ev-banner-category">{event.category}</p>}
+          <p className="ev-banner-note">
+            {isPast ? 'Completed session' : 'Open for registration'}
           </p>
-        )}
-        <p className="text-sm text-gray-400 max-w-[200px] leading-snug line-clamp-2">
-          {isPast ? 'Completed session' : 'Open for registration'}
-        </p>
-      </div>
-      <div className="text-center shrink-0">
-        <div className="w-16 h-16 rounded-xl border border-gold-500/30 bg-dark-200/80 flex flex-col items-center justify-center">
-          <span className="text-[10px] font-bold text-gold-500 tracking-wider">{parts.month}</span>
-          <span className="text-2xl font-bold text-white leading-none">{parts.day}</span>
-          <span className="text-[10px] text-gray-500">{parts.year}</span>
         </div>
+        <DateBadge date={event.date} />
       </div>
     </div>
   );
@@ -176,105 +188,92 @@ const EventCard = ({ event, isPast, onOpenGallery, onRequestSeat }) => {
   };
 
   return (
-    <article className="group interactive-card-light rounded-xl overflow-hidden flex flex-col h-full">
+    <article className="ev-card group">
       <EventBanner event={event} isPast={isPast} onOpenGallery={onOpenGallery} />
 
-      <div className="p-5 md:p-6 flex flex-col flex-1">
-        <div className="flex items-center justify-between gap-2 mb-3">
+      <div className="ev-card-body">
+        <div className="ev-card-top">
           {isPast ? (
-            <span className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full bg-blue-500/15 text-blue-400 border border-blue-500/25">
+            <span className="ev-badge ev-badge--completed">
               <CheckCircle size={12} />
               Completed
             </span>
           ) : (
-            <span
-              className={`inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full border ${
-                daysUntil <= 7
-                  ? 'bg-orange-500/15 text-orange-400 border-orange-500/25'
-                  : 'bg-green-500/15 text-green-400 border-green-500/25'
-              }`}
-            >
+            <span className={`ev-badge ${daysUntil <= 7 ? 'ev-badge--soon' : 'ev-badge--open'}`}>
               <Zap size={12} />
               {countdownLabel()}
             </span>
           )}
-          <span className="inline-flex items-center gap-1 text-xs text-gray-500">
-            <Users size={12} />
+          <span className="ev-attendees">
+            <Users size={13} />
             {isPast ? `${event.attendees} attended` : `${event.attendees} seats`}
           </span>
         </div>
 
         {!event.images?.length && event.category && (
-          <p className="text-xs font-semibold uppercase tracking-wider text-gold-500 mb-1 leading-snug">
-            {event.category}
-          </p>
+          <p className="ev-card-category">{event.category}</p>
         )}
 
-        <h3 className="text-lg md:text-xl font-bold text-white mb-2 leading-snug transition-colors duration-300 group-hover:text-gold-50">
-          {event.title}
-        </h3>
+        <h3 className="ev-card-title">{event.title}</h3>
 
-        <div className="space-y-1.5 mb-3">
-          <div className="flex items-center gap-2 text-sm text-gray-400">
-            <Calendar className="text-gold-500 shrink-0" size={14} />
+        <div className="ev-meta">
+          <div className="ev-meta-row">
+            <span className="ev-meta-icon ev-meta-icon--cal" aria-hidden="true">
+              <Calendar size={12} strokeWidth={2.25} />
+            </span>
             {formatDate(event.date)}
           </div>
-          <div className="flex items-center gap-2 text-sm text-gray-400">
-            <Clock className="text-gold-500 shrink-0" size={14} />
+          <div className="ev-meta-row">
+            <span className="ev-meta-icon ev-meta-icon--clock" aria-hidden="true">
+              <Clock size={12} strokeWidth={2.25} />
+            </span>
             {event.time}
           </div>
-          <div className="flex items-start gap-2 text-sm text-gray-400">
-            <MapPin className="text-gold-500 shrink-0 mt-0.5" size={14} />
-            <span className="leading-snug">{event.location}</span>
+          <div className="ev-meta-row">
+            <span className="ev-meta-icon ev-meta-icon--pin" aria-hidden="true">
+              <MapPin size={12} strokeWidth={2.25} />
+            </span>
+            <span>{event.location}</span>
           </div>
         </div>
 
-        <p className="text-sm text-gray-400 leading-snug mb-4 flex-1">{event.description}</p>
+        <p className="ev-card-desc">{event.description}</p>
 
         {event.highlights?.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 mb-4">
+          <div className="ev-highlights">
             {event.highlights.map((highlight) => (
-              <span
-                key={highlight}
-                className="px-2 py-0.5 text-xs text-gold-400/90 bg-gold-500/10 border border-gold-500/15 rounded-md"
-              >
+              <span key={highlight} className="ev-highlight">
                 {highlight}
               </span>
             ))}
           </div>
         )}
 
-        <div className="mt-auto pt-4 border-t border-gray-800 space-y-2">
+        <div className="ev-card-actions">
           {!isPast && event.registrationLink && (
             <a
               href={event.registrationLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-primary w-full inline-flex items-center justify-center text-sm"
+              className="sv-btn-primary w-full"
             >
               Register Now
-              <ExternalLink className="ml-2" size={14} />
+              <ExternalLink size={14} />
             </a>
           )}
           {event.images?.length > 0 && (
             <button
               type="button"
               onClick={() => onOpenGallery(event)}
-              className={`w-full inline-flex items-center justify-center text-sm ${
-                !isPast && event.registrationLink ? 'btn-secondary' : 'btn-primary'
-              }`}
+              className={!isPast && event.registrationLink ? 'sv-btn-secondary w-full' : 'sv-btn-primary w-full'}
             >
-              <ImageIcon className="mr-2" size={14} />
+              <ImageIcon size={14} />
               View Gallery ({event.images.length} photo{event.images.length !== 1 ? 's' : ''})
             </button>
           )}
           {!isPast && !event.registrationLink && (
-            <button
-              type="button"
-              onClick={onRequestSeat}
-              className="btn-secondary w-full inline-flex items-center justify-center text-sm"
-            >
-              <Send className="mr-2" size={14} />
+            <button type="button" onClick={onRequestSeat} className="sv-btn-secondary w-full">
+              <Send size={14} />
               Request a Seat
             </button>
           )}
@@ -286,93 +285,71 @@ const EventCard = ({ event, isPast, onOpenGallery, onRequestSeat }) => {
 
 const FeaturedEvent = ({ event, onOpenGallery, onRequestSeat }) => {
   const daysUntil = getDaysUntilEvent(event.date);
-  const parts = formatDateParts(event.date);
 
   return (
-    <article className="group interactive-card-light rounded-xl overflow-hidden !border-gold-500/30 hover:!border-gold-500/50">
+    <article className="ev-featured group">
+      <span className="ev-featured-badge">
+        <Sparkles size={12} />
+        Featured
+      </span>
       <div className="grid lg:grid-cols-5 gap-0">
-        <div className="lg:col-span-2 relative min-h-[220px] bg-gradient-to-br from-gold-900/30 via-dark-200 to-purple-900/40 flex items-center justify-center p-8 border-b lg:border-b-0 lg:border-r border-gray-800">
-          <div className="text-center">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-gold-500 mb-3">
-              Next Up
-            </p>
-            <div className="inline-flex flex-col items-center justify-center w-24 h-24 rounded-2xl border-2 border-gold-500/40 bg-dark-200/90 mb-3 transition-all duration-500 group-hover:scale-105 group-hover:border-gold-500/60">
-              <span className="text-xs font-bold text-gold-500">{parts.month}</span>
-              <span className="text-4xl font-bold text-white leading-none">{parts.day}</span>
-              <span className="text-xs text-gray-500">{parts.year}</span>
+        <div className="ev-featured-date-panel lg:col-span-2">
+          <div>
+            <p className="ev-featured-next">Next Up</p>
+            <div className="flex justify-center">
+              <DateBadge date={event.date} large />
             </div>
-            <p className="text-sm text-gray-400">{event.time}</p>
+            <p className="ev-featured-time">{event.time}</p>
           </div>
         </div>
 
-        <div className="lg:col-span-3 p-6 md:p-8 flex flex-col">
-          <div className="flex flex-wrap items-center gap-2 mb-3">
-            {event.category && (
-              <span className="text-xs font-semibold uppercase tracking-wider text-gold-500">
-                {event.category}
-              </span>
-            )}
-            <span className="text-xs text-gray-600">·</span>
-            <span className="inline-flex items-center gap-1 text-xs text-green-400">
+        <div className="ev-featured-body lg:col-span-3 flex flex-col">
+          <div className="ev-featured-meta">
+            {event.category && <span className="ev-card-category">{event.category}</span>}
+            <span className="ev-badge ev-badge--open">
               <Zap size={12} />
               {daysUntil === 0 ? 'Happening today' : daysUntil === 1 ? 'Tomorrow' : `${daysUntil} days to go`}
             </span>
           </div>
 
-          <h2 className="text-2xl md:text-3xl font-bold text-white font-heading mb-3 leading-tight">
-            {event.title}
-          </h2>
+          <h2 className="ev-featured-title">{event.title}</h2>
+          <p className="ev-featured-desc">{event.description}</p>
 
-          <p className="text-sm md:text-base text-gray-400 leading-snug mb-4 flex-1">
-            {event.description}
-          </p>
-
-          <div className="flex items-start gap-2 text-sm text-gray-400 mb-4">
-            <MapPin className="text-gold-500 shrink-0 mt-0.5" size={16} />
+          <div className="ev-meta-row mb-4">
+            <span className="ev-meta-icon ev-meta-icon--pin" aria-hidden="true">
+              <MapPin size={13} strokeWidth={2.25} />
+            </span>
             <span>{event.location}</span>
           </div>
 
           {event.highlights?.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-5">
+            <div className="ev-highlights mb-5">
               {event.highlights.map((h) => (
-                <span
-                  key={h}
-                  className="px-2.5 py-1 text-xs text-gold-400 bg-gold-500/10 border border-gold-500/20 rounded-lg"
-                >
-                  {h}
-                </span>
+                <span key={h} className="ev-highlight">{h}</span>
               ))}
             </div>
           )}
 
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="ev-featured-actions mt-auto">
             {event.registrationLink ? (
               <a
                 href={event.registrationLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-primary inline-flex items-center justify-center text-sm"
+                className="sv-btn-primary"
               >
                 Reserve Your Spot
-                <ArrowRight className="ml-2" size={16} />
+                <ArrowRight size={16} />
               </a>
             ) : (
-              <button
-                type="button"
-                onClick={onRequestSeat}
-                className="btn-primary inline-flex items-center justify-center text-sm"
-              >
-                <Send className="mr-2" size={16} />
+              <button type="button" onClick={onRequestSeat} className="sv-btn-primary">
+                <Send size={16} />
                 Request a Seat
               </button>
             )}
             {event.images?.length > 0 && (
-              <button
-                type="button"
-                onClick={() => onOpenGallery(event)}
-                className="btn-secondary inline-flex items-center justify-center text-sm"
-              >
-                <ImageIcon className="mr-2" size={16} />
+              <button type="button" onClick={() => onOpenGallery(event)} className="sv-btn-secondary">
+                <ImageIcon size={16} />
                 Preview
               </button>
             )}
@@ -419,6 +396,14 @@ const Events = () => {
   );
   const featuredEvent = upcoming[0] || null;
 
+  const statValues = {
+    total: eventsData.length,
+    upcoming: upcoming.length,
+    past: past.length,
+    attendees: totalAttendees,
+    trained: STATS.studentsTrained,
+  };
+
   const galleryEvents = useMemo(
     () =>
       [...upcoming, ...past]
@@ -461,89 +446,73 @@ const Events = () => {
         ogImage={`${SITE.url}/images/og-events.svg`}
       />
 
-      <div className="min-h-screen bg-dark-200 flex flex-col">
+      <div className="ev-page min-h-screen flex flex-col">
         <Header />
 
         <main className="flex-1">
-          {/* Hero */}
-          <section className="pt-20 pb-8 md:pb-10 bg-gold-gradient border-b border-gray-800/50">
-            <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white font-heading leading-tight mb-3 whitespace-nowrap">
-                Where Kabale&apos;s <span className="text-gold-500">Builders Show Up</span>
+          <section className="ev-hero">
+            <div className="ev-hero-glow ev-hero-glow--blue" aria-hidden="true" />
+            <div className="ev-hero-glow ev-hero-glow--warm" aria-hidden="true" />
+            <div className="ev-dot-grid" aria-hidden="true" />
+            <div className="ev-inner">
+              <p className="ev-eyebrow">Community Events</p>
+              <h1 className="ev-heading">
+                Where Kabale&apos;s <span className="ev-heading-accent">Builders Show Up</span>
               </h1>
-              <p className="text-sm md:text-base text-gray-400 leading-snug max-w-2xl">
+              <p className="ev-lead">
                 Workshops, bootcamps, and meetups led by engineers who ship real products.
                 Whether you are learning AI, diving into blockchain, or levelling up your
                 frontend skills, this is where research meets hands-on practice.
               </p>
 
               {!loading && (
-                <div className="flex flex-wrap gap-6 mt-6 pt-5 border-t border-gray-800/80">
-                  <div>
-                    <p className="text-xl font-bold text-white">{eventsData.length}</p>
-                    <p className="text-xs text-gray-500">Events hosted</p>
-                  </div>
-                  <div>
-                    <p className="text-xl font-bold text-gold-500">{upcoming.length}</p>
-                    <p className="text-xs text-gray-500">Upcoming</p>
-                  </div>
-                  <div>
-                    <p className="text-xl font-bold text-white">{past.length}</p>
-                    <p className="text-xs text-gray-500">Completed</p>
-                  </div>
-                  <div>
-                    <p className="text-xl font-bold text-white">{totalAttendees}+</p>
-                    <p className="text-xs text-gray-500">Total attendees</p>
-                  </div>
-                  <div>
-                    <p className="text-xl font-bold text-white">{STATS.studentsTrained}</p>
-                    <p className="text-xs text-gray-500">Builders trained</p>
-                  </div>
+                <div className="ev-stats">
+                  {HERO_STATS.map(({ key, icon: Icon, tone, label, accent, suffix }) => (
+                    <div key={key} className="ev-stat-item">
+                      <span className={`ev-stat-icon ev-stat-icon--${tone}`} aria-hidden="true">
+                        <Icon size={15} strokeWidth={2.15} />
+                      </span>
+                      <div className="ev-stat-content">
+                        <p className={`ev-stat-value${accent ? ' ev-stat-value--accent' : ''}`}>
+                          {statValues[key]}{suffix || ''}
+                        </p>
+                        <p className="ev-stat-label">{label}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               )}
 
               {!loading && galleryEvents.length > 0 && (
-                <a
-                  href="#event-galleries"
-                  className="btn-secondary inline-flex items-center mt-5 text-sm"
-                >
-                  <ImageIcon className="mr-2" size={16} />
+                <a href="#event-galleries" className="ev-btn-ghost">
+                  <ImageIcon size={16} />
                   Browse event photo galleries
                 </a>
               )}
             </div>
           </section>
 
-          {/* Why attend */}
-          <section className="py-8 md:py-10 bg-dark-100 border-b border-gray-800/50">
-            <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
-              <div className="mb-6 md:mb-8 max-w-2xl">
-                <h2 className="text-2xl md:text-3xl font-bold text-white font-heading mb-2 leading-tight">
-                  Why People Come Back
-                </h2>
-                <p className="text-sm text-gray-400 leading-snug">
+          <section className="ev-section ev-section--sand">
+            <div className="ev-inner">
+              <div className="ev-section-header">
+                <h2 className="ev-section-heading">Why People Come Back</h2>
+                <p className="ev-section-intro">
                   We do not run lecture halls. We run rooms where you write code, ask hard
                   questions, and walk out closer to shipping something real.
                 </p>
               </div>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+              <div className="ev-why-grid">
                 {WHY_ATTEND.map((item, index) => {
                   const Icon = item.icon;
                   return (
                     <Reveal key={item.title} delay={index * 70}>
-                    <div
-                      className="group interactive-card rounded-xl p-4 md:p-5 h-full"
-                    >
-                      <div className="icon-box w-9 h-9 rounded-lg bg-gold-500/10 border border-gold-500/20 flex items-center justify-center mb-3">
-                        <Icon className="text-gold-500 transition-transform duration-300" size={16} />
+                      <div className="ev-why-card">
+                        <span className={`ev-why-icon ev-why-icon--${item.tone}`} aria-hidden="true">
+                          <Icon size={18} strokeWidth={2.15} />
+                        </span>
+                        <h3 className="ev-why-title">{item.title}</h3>
+                        <p className="ev-why-text">{item.text}</p>
                       </div>
-                      <h3 className="text-sm font-bold text-white mb-1.5 leading-snug transition-colors duration-300 group-hover:text-gold-50">
-                        {item.title}
-                      </h3>
-                      <p className="text-xs text-gray-500 leading-snug transition-colors duration-300 group-hover:text-gray-400">
-                        {item.text}
-                      </p>
-                    </div>
                     </Reveal>
                   );
                 })}
@@ -551,85 +520,87 @@ const Events = () => {
             </div>
           </section>
 
-          {/* Event formats */}
-          <section className="py-6 bg-dark-200 border-b border-gray-800/50">
-            <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                {EVENT_FORMATS.map((fmt, index) => (
-                  <Reveal key={fmt.label} delay={index * 50}>
-                  <div
-                    className="group interactive-card-light rounded-lg px-4 py-3 transition-all duration-300"
-                  >
-                    <p className="text-sm font-semibold text-gold-500 transition-colors duration-300 group-hover:text-gold-400">
-                      {fmt.label}
-                    </p>
-                    <p className="text-xs text-gray-500 mt-0.5 leading-snug transition-colors duration-300 group-hover:text-gray-400">
-                      {fmt.detail}
-                    </p>
-                  </div>
-                  </Reveal>
-                ))}
+          <section className="ev-section ev-section--cream">
+            <div className="ev-inner">
+              <Reveal className="ev-section-header ev-section-header--center">
+                <p className="ev-eyebrow">How We Gather</p>
+                <h2 className="ev-section-heading">Every Format, One Mission</h2>
+                <p className="ev-section-intro">
+                  From quick workshops to multi-day bootcamps. Each format is designed for hands-on
+                  learning and real builder energy.
+                </p>
+              </Reveal>
+              <div className="ev-formats-grid">
+                {EVENT_FORMATS.map((fmt, index) => {
+                  const Icon = fmt.icon;
+                  return (
+                    <Reveal key={fmt.label} delay={index * 50}>
+                      <div className="ev-format-card">
+                        <span className={`ev-format-icon ev-format-icon--${fmt.tone}`} aria-hidden="true">
+                          <Icon size={20} strokeWidth={2.1} />
+                        </span>
+                        <div className="ev-format-body">
+                          <p className="ev-format-num">{String(index + 1).padStart(2, '0')}</p>
+                          <p className="ev-format-label">{fmt.label}</p>
+                          <p className="ev-format-detail">{fmt.detail}</p>
+                        </div>
+                      </div>
+                    </Reveal>
+                  );
+                })}
               </div>
             </div>
           </section>
 
-          {/* Featured upcoming */}
           {!loading && featuredEvent && (
-            <section className="py-8 md:py-10 bg-dark-100 border-b border-gray-800/50">
-              <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
-                <FeaturedEvent event={featuredEvent} onOpenGallery={openGallery} onRequestSeat={goToContact} />
+            <section className="ev-section ev-section--sand">
+              <div className="ev-inner">
+                <Reveal className="ev-section-header mb-8">
+                  <p className="ev-eyebrow">Next On The Calendar</p>
+                  <h2 className="ev-section-heading">Featured Upcoming Event</h2>
+                </Reveal>
+                <FeaturedEvent
+                  event={featuredEvent}
+                  onOpenGallery={openGallery}
+                  onRequestSeat={goToContact}
+                />
               </div>
             </section>
           )}
 
-          {/* Company event photo galleries */}
           {!loading && galleryEvents.length > 0 && (
-            <section id="event-galleries" className="py-8 md:py-10 bg-dark-200 border-b border-gray-800/50">
-              <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
-                <Reveal className="mb-6 md:mb-8 max-w-2xl">
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-500 mb-2 section-eyebrow">
-                    Event Galleries
-                  </p>
-                  <h2 className="text-2xl md:text-3xl font-bold text-white font-heading mb-2 leading-tight">
-                    Photos From Our Events
-                  </h2>
-                  <p className="text-sm text-gray-400 leading-snug">
+            <section id="event-galleries" className="ev-section ev-section--cream">
+              <div className="ev-inner">
+                <Reveal className="ev-section-header ev-section-header--center">
+                  <p className="ev-eyebrow">Event Galleries</p>
+                  <h2 className="ev-section-heading">Photos From Our Events</h2>
+                  <p className="ev-section-intro">
                     Attended a workshop or meetup? Browse and download photos from each event below.
                     Click any event to open its full gallery.
                   </p>
                 </Reveal>
 
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+                <div className="ev-gallery-grid">
                   {galleryEvents.map((event, index) => (
                     <Reveal key={event.id} delay={index * 60}>
                       <button
                         type="button"
                         onClick={() => openGallery(event)}
-                        className="group interactive-card-light rounded-xl overflow-hidden text-left w-full h-full flex flex-col"
+                        className="ev-gallery-card"
                       >
-                        <div className="relative h-44 overflow-hidden">
-                          <img
-                            src={event.images[0]}
-                            alt={event.title}
-                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-dark-200/90 via-transparent to-transparent" />
-                          <span className="absolute bottom-3 right-3 inline-flex items-center gap-1 text-xs text-white bg-black/60 px-2.5 py-1 rounded-full">
+                        <div className="ev-gallery-thumb">
+                          <img src={event.images[0]} alt={event.title} />
+                          <div className="ev-banner-overlay" />
+                          <span className="ev-banner-photo-count">
                             <ImageIcon size={12} />
                             {event.images.length} photo{event.images.length !== 1 ? 's' : ''}
                           </span>
                         </div>
-                        <div className="p-4 md:p-5 flex flex-col flex-1">
-                          <p className="text-xs text-gold-500 uppercase tracking-wider mb-1">
-                            {event.category || 'Event'}
-                          </p>
-                          <h3 className="text-base font-bold text-white mb-1 leading-snug group-hover:text-gold-50 transition-colors">
-                            {event.title}
-                          </h3>
-                          <p className="text-xs text-gray-500 mb-3">{formatDate(event.date)}</p>
-                          <span className="mt-auto text-sm font-medium text-gold-400 group-hover:text-gold-300 transition-colors">
-                            Open gallery →
-                          </span>
+                        <div className="ev-gallery-body">
+                          <p className="ev-card-category">{event.category || 'Event'}</p>
+                          <h3 className="ev-card-title">{event.title}</h3>
+                          <p className="ev-format-detail mb-3">{formatDate(event.date)}</p>
+                          <span className="ev-gallery-link">Open gallery →</span>
                         </div>
                       </button>
                     </Reveal>
@@ -639,40 +610,31 @@ const Events = () => {
             </section>
           )}
 
-          {/* Tab + grid */}
-          <section className="py-8 md:py-10 bg-dark-200">
-            <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
-              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6 md:mb-8">
+          <section className="ev-section ev-section--sand">
+            <div className="ev-inner">
+              <div className="ev-tab-header">
                 <div>
-                  <h2 className="text-2xl md:text-3xl font-bold text-white font-heading mb-1 leading-tight">
+                  <h2 className="ev-section-heading">
                     {activeTab === 'upcoming' ? 'Upcoming Sessions' : 'Past Events'}
                   </h2>
-                  <p className="text-sm text-gray-400 leading-snug max-w-xl">
+                  <p className="ev-section-intro max-w-xl">
                     {activeTab === 'upcoming'
                       ? 'Register early, seats are limited and workshops fill fast.'
                       : 'A record of what we have run. More galleries coming as we publish event photos.'}
                   </p>
                 </div>
-                <div className="inline-flex rounded-lg border border-gray-800 bg-dark-100 p-1 self-start">
+                <div className="ev-tabs">
                   <button
                     type="button"
                     onClick={() => setActiveTab('upcoming')}
-                    className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                      activeTab === 'upcoming'
-                        ? 'bg-gold-500 text-dark-200'
-                        : 'text-gray-400 hover:text-white'
-                    }`}
+                    className={`ev-tab${activeTab === 'upcoming' ? ' ev-tab--active' : ''}`}
                   >
                     Upcoming ({upcoming.length})
                   </button>
                   <button
                     type="button"
                     onClick={() => setActiveTab('past')}
-                    className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                      activeTab === 'past'
-                        ? 'bg-gold-500 text-dark-200'
-                        : 'text-gray-400 hover:text-white'
-                    }`}
+                    className={`ev-tab${activeTab === 'past' ? ' ev-tab--active' : ''}`}
                   >
                     Past ({past.length})
                   </button>
@@ -680,12 +642,10 @@ const Events = () => {
               </div>
 
               {loading ? (
-                <div className="text-center py-12">
-                  <p className="text-sm text-gray-500">Loading events...</p>
-                </div>
+                <p className="ev-loading">Loading events...</p>
               ) : activeTab === 'upcoming' ? (
                 upcoming.length > 0 ? (
-                  <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5">
+                  <div className="ev-events-grid">
                     {(featuredEvent ? upcoming.slice(1) : upcoming).map((event, index) => (
                       <Reveal key={event.id} delay={index * 70}>
                         <EventCard
@@ -698,18 +658,25 @@ const Events = () => {
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-16 rounded-xl border border-gray-800 bg-dark-100">
-                    <Calendar className="mx-auto text-gold-500/30 mb-4" size={48} />
-                    <p className="text-sm text-gray-400 mb-1">No upcoming events scheduled right now.</p>
-                    <p className="text-xs text-gray-500 mb-5">Follow us, new workshops drop regularly.</p>
-                    <a href={SOCIAL.x} target="_blank" rel="noopener noreferrer" className="btn-primary text-sm inline-flex items-center">
+                  <div className="ev-empty">
+                    <span className="ev-empty-icon" aria-hidden="true">
+                      <Calendar size={28} strokeWidth={2} />
+                    </span>
+                    <p>No upcoming events scheduled right now.</p>
+                    <p className="ev-empty-sub">Follow us. New workshops drop regularly.</p>
+                    <a
+                      href={SOCIAL.x}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="sv-btn-primary"
+                    >
                       Follow on X
                     </a>
                   </div>
                 )
               ) : past.length > 0 ? (
                 <>
-                  <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5">
+                  <div className="ev-events-grid">
                     {past.map((event, index) => (
                       <Reveal key={event.id} delay={index * 70}>
                         <EventCard
@@ -723,34 +690,27 @@ const Events = () => {
                   </div>
 
                   {galleryItems.length > 0 && (
-                    <div className="mt-10 md:mt-12 pt-8 border-t border-gray-800">
-                      <div className="mb-6">
-                        <h3 className="text-xl md:text-2xl font-bold text-white font-heading mb-1 leading-tight">
-                          Event Gallery
-                        </h3>
-                        <p className="text-sm text-gray-400 leading-snug">
+                    <div className="mt-10 md:mt-12 pt-8 border-t border-[#C2C1BF]/80">
+                      <div className="ev-section-header">
+                        <h3 className="ev-section-heading text-[clamp(24px,2.5vw,32px)]">Event Gallery</h3>
+                        <p className="ev-section-intro">
                           Photos from our past workshops and meetups. Click any image to view full size.
                         </p>
                       </div>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+                      <div className="ev-photo-grid">
                         {galleryItems.map(({ url, event, imageIndex }) => (
                           <button
                             key={`${event.id}-${imageIndex}`}
                             type="button"
                             onClick={() => openGallery(event, imageIndex)}
-                            className="group relative aspect-[4/3] rounded-xl overflow-hidden interactive-card-light text-left"
+                            className="ev-photo-thumb"
                           >
                             <img
                               src={url}
                               alt={`${event.title}, photo ${imageIndex + 1}`}
-                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-dark-200/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                            <div className="absolute bottom-0 left-0 right-0 p-2.5 translate-y-full group-hover:translate-y-0 transition-transform">
-                              <p className="text-xs font-medium text-white leading-snug line-clamp-2">
-                                {event.title}
-                              </p>
-                            </div>
+                            <div className="ev-photo-overlay" />
+                            <p className="ev-photo-caption">{event.title}</p>
                           </button>
                         ))}
                       </div>
@@ -758,96 +718,87 @@ const Events = () => {
                   )}
                 </>
               ) : (
-                <div className="text-center py-16 rounded-xl border border-gray-800 bg-dark-100">
-                  <ImageIcon className="mx-auto text-gray-600 mb-4" size={48} />
-                  <p className="text-sm text-gray-400">Past events will appear here after they run.</p>
+                <div className="ev-empty">
+                  <span className="ev-empty-icon" aria-hidden="true">
+                    <ImageIcon size={28} strokeWidth={2} />
+                  </span>
+                  <p>Past events will appear here after they run.</p>
                 </div>
               )}
             </div>
           </section>
 
-          {/* Host CTA */}
-          <section className="py-8 md:py-10 bg-dark-100 border-b border-gray-800/50">
-            <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
-              <div className="rounded-xl border border-gray-800 bg-dark-200 p-6 md:p-8 grid md:grid-cols-2 gap-6 items-center">
+          <section className="ev-section ev-section--cream">
+            <div className="ev-inner">
+              <div className="ev-partner">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-wider text-gold-500 mb-2">
-                    For Partners & Institutions
-                  </p>
-                  <h2 className="text-xl md:text-2xl font-bold text-white font-heading mb-2 leading-tight">
-                    Want to Co-Host a Workshop?
-                  </h2>
-                  <p className="text-sm text-gray-400 leading-snug">
+                  <p className="ev-partner-eyebrow">For Partners & Institutions</p>
+                  <h2 className="ev-partner-heading">Want to Co-Host a Workshop?</h2>
+                  <p className="ev-partner-text">
                     Universities, startups, and organizations partner with us to run tailored
-                    sessions, AI literacy for students, blockchain pilots for teams, or
+                    sessions, from AI literacy for students, blockchain pilots for teams, or
                     custom engineering intensives. We handle curriculum, mentors, and delivery.
                   </p>
                 </div>
-                <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row gap-3 md:justify-end">
-                  <button
-                    type="button"
-                    onClick={goToContact}
-                    className="btn-primary inline-flex items-center justify-center text-sm"
-                  >
-                    <Send className="mr-2" size={16} />
+                <div className="ev-partner-actions">
+                  <button type="button" onClick={goToContact} className="sv-btn-primary">
+                    <Send size={16} />
                     Partner With Us
                   </button>
                   <button
                     type="button"
                     onClick={() => navigate('/services')}
-                    className="btn-secondary inline-flex items-center justify-center text-sm"
+                    className="sv-btn-secondary"
                   >
                     Our Services
-                    <ArrowRight className="ml-2" size={16} />
+                    <ArrowRight size={16} />
                   </button>
                 </div>
               </div>
             </div>
           </section>
 
-          {/* Stay updated */}
-          <section id="newsletter" className="py-8 md:py-10 bg-dark-200">
-            <div className="max-w-2xl mx-auto px-3 sm:px-4 lg:px-5 text-center">
+          <section id="newsletter" className="ev-newsletter">
+            <div className="ev-newsletter-inner">
               <Reveal>
-                <div className="inline-flex items-center gap-2 rounded-full border border-gold-500/25 bg-gold-500/10 px-3 py-1 mb-4">
-                  <Mail className="text-gold-500" size={14} />
-                  <span className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-500 section-eyebrow">
+                <div className="ev-newsletter-box">
+                  <div className="ev-newsletter-badge">
+                    <Mail size={14} />
                     Newsletter
-                  </span>
-                </div>
-                <h2 className="text-2xl md:text-3xl font-bold text-white font-heading mb-2 leading-tight">
-                  Never Miss a Session
-                </h2>
-                <p className="text-sm text-gray-400 leading-snug mb-5">
-                  Subscribe and we will email you when new workshops, bootcamps, and meetups open for
-                  registration, straight to your inbox.
-                </p>
+                  </div>
+                  <h2 className="ev-section-heading">Never Miss a Session</h2>
+                  <p className="ev-section-intro mb-5">
+                    Subscribe and we will email you when new workshops, bootcamps, and meetups open for
+                    registration, straight to your inbox.
+                  </p>
 
-                <NewsletterForm
-                  layout="inline"
-                  buttonLabel="Notify me"
-                  align="center"
-                  className="max-w-md mx-auto text-left"
-                />
+                  <NewsletterForm
+                    layout="inline"
+                    buttonLabel="Notify me"
+                    align="center"
+                    theme="light"
+                    className="max-w-md mx-auto text-left"
+                  />
 
-                <p className="text-xs text-gray-500 mt-6 mb-3">Prefer social? Follow us there too.</p>
-                <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                  <a
-                    href={SOCIAL.x}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-secondary inline-flex items-center justify-center text-sm"
-                  >
-                    Follow on X
-                  </a>
-                  <a
-                    href={SOCIAL.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-secondary inline-flex items-center justify-center text-sm"
-                  >
-                    Connect on LinkedIn
-                  </a>
+                  <p className="ev-social-note">Prefer social? Follow us there too.</p>
+                  <div className="ev-social-actions">
+                    <a
+                      href={SOCIAL.x}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="sv-btn-secondary"
+                    >
+                      Follow on X
+                    </a>
+                    <a
+                      href={SOCIAL.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="sv-btn-secondary"
+                    >
+                      Connect on LinkedIn
+                    </a>
+                  </div>
                 </div>
               </Reveal>
             </div>

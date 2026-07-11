@@ -18,7 +18,7 @@ import {
   Loader,
   ArrowUpRight,
 } from 'lucide-react';
-import { CONTACT, SOCIAL, SITE } from '../config/site';
+import { CONTACT, SOCIAL } from '../config/site';
 import Reveal from './Reveal';
 
 const CONTACT_CHANNELS = [
@@ -35,12 +35,13 @@ const CONTACT_CHANNELS = [
     value: CONTACT.phone,
     hint: `${CONTACT.hours} · Weekend by appointment`,
     href: `https://wa.me/${CONTACT.whatsapp}?text=${encodeURIComponent('Hello Beta-Tech Labs, I would like to discuss a project.')}`,
+    featured: true,
   },
   {
     icon: MapPin,
     label: 'Visit us',
     value: CONTACT.address.headline,
-    hint: `${CONTACT.address.landmark} · ${CONTACT.address.area}`,
+    hint: `${CONTACT.address.plusCode} · ${CONTACT.address.landmark}`,
     href: CONTACT.mapLinkUrl,
   },
   {
@@ -52,11 +53,11 @@ const CONTACT_CHANNELS = [
 ];
 
 const SOCIAL_LINKS = [
-  { icon: Twitter, href: SOCIAL.x, name: 'X' },
-  { icon: Linkedin, href: SOCIAL.linkedin, name: 'LinkedIn' },
-  { icon: Github, href: SOCIAL.github, name: 'GitHub' },
-  { icon: MessageSquare, href: SOCIAL.discord, name: 'Discord' },
-  { icon: Youtube, href: SOCIAL.youtube, name: 'YouTube' },
+  { icon: Twitter, href: SOCIAL.x, name: 'X', bg: '#020201' },
+  { icon: Linkedin, href: SOCIAL.linkedin, name: 'LinkedIn', bg: '#0A66C2' },
+  { icon: Github, href: SOCIAL.github, name: 'GitHub', bg: '#24292F' },
+  { icon: MessageSquare, href: SOCIAL.discord, name: 'Discord', bg: '#5865F2' },
+  { icon: Youtube, href: SOCIAL.youtube, name: 'YouTube', bg: '#FF0000' },
 ];
 
 const SUBJECT_OPTIONS = [
@@ -120,190 +121,181 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-8 md:py-10 bg-dark-100 relative overflow-hidden border-t border-gray-800/50">
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5 relative z-10">
-        <Reveal className="text-center max-w-2xl mx-auto mb-6 md:mb-8 group">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-500 mb-1.5 section-eyebrow">
-            Contact
-          </p>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white font-heading mb-3 leading-tight">
-            Dream it.{' '}
-            <span className="text-gold-500 accent-word">Build with us.</span>
-          </h2>
-          <p className="text-sm md:text-base text-gray-400 leading-snug">
+    <section id="contact" className="ct-section">
+      <div className="ct-glow" aria-hidden="true" />
+      <div className="ct-dot-grid" aria-hidden="true" />
+
+      <div className="ct-inner">
+        <Reveal className="ct-header">
+          <h2 className="ct-heading">Dream it. Build with us.</h2>
+          <p className="ct-intro">
             Tell us about your research goals, product idea, or engineering challenge. We work with
             founders, institutions, and teams who need serious technology delivered with clarity.
           </p>
         </Reveal>
 
-        <div className="grid lg:grid-cols-12 gap-4 md:gap-5 items-start">
-          {/* Contact form, primary column */}
-          <Reveal className="lg:col-span-7" delay={80}>
-          <div className="interactive-card rounded-xl p-4 md:p-6 h-full">
-            <div className="mb-4">
-              <h3 className="text-lg font-bold text-white mb-1">Send a message</h3>
-              <p className="text-sm text-gray-500 leading-snug">
-                Share as much context as you can, scope, timeline, and what success looks like for you.
-              </p>
-            </div>
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid sm:grid-cols-2 gap-3">
-                <div className="form-group">
-                  <label htmlFor="name" className="form-label">
-                    Full name *
-                  </label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gold-500/70" size={16} />
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      className="form-input pl-10 py-3"
-                      placeholder="Your name"
-                    />
-                  </div>
+        <div className="ct-layout">
+          <Reveal className="ct-form-col" delay={80}>
+            <div className="ct-card ct-card--form">
+              <div className="ct-card-head">
+                <div>
+                  <h3 className="ct-card-title">Send a message</h3>
+                  <p className="ct-card-lead">
+                    Share as much context as you can: scope, timeline, and what success looks like for you.
+                  </p>
                 </div>
-
-                <div className="form-group">
-                  <label htmlFor="email" className="form-label">
-                    Work email *
-                  </label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gold-500/70" size={16} />
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      className="form-input pl-10 py-3"
-                      placeholder="you@company.com"
-                    />
-                  </div>
-                </div>
+                <span className="ct-response-pill">
+                  <Clock size={14} />
+                  Reply in 24h
+                </span>
               </div>
 
-              <div className="form-group">
-                <label htmlFor="subject" className="form-label">
-                  How can we help? *
-                </label>
-                <div className="relative">
-                  <select
-                    id="subject"
-                    name="subject"
-                    value={formData.subject}
+              <form onSubmit={handleSubmit} className="ct-form">
+                <div className="ct-form-row">
+                  <div className="ct-field">
+                    <label htmlFor="name" className="ct-label">
+                      Full name *
+                    </label>
+                    <div className="ct-input-wrap">
+                      <User className="ct-input-icon" size={18} />
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                        className="ct-input"
+                        placeholder="Your name"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="ct-field">
+                    <label htmlFor="email" className="ct-label">
+                      Work email *
+                    </label>
+                    <div className="ct-input-wrap">
+                      <Mail className="ct-input-icon" size={18} />
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                        className="ct-input"
+                        placeholder="you@company.com"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="ct-field">
+                  <label htmlFor="subject" className="ct-label">
+                    How can we help? *
+                  </label>
+                  <div className="ct-input-wrap">
+                    <select
+                      id="subject"
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleChange}
+                      required
+                      className="ct-input ct-select"
+                    >
+                      <option value="">Select a topic</option>
+                      {SUBJECT_OPTIONS.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDown className="ct-select-icon" size={18} />
+                  </div>
+                </div>
+
+                <div className="ct-field">
+                  <label htmlFor="message" className="ct-label">
+                    Project details *
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
                     onChange={handleChange}
                     required
-                    className="form-input appearance-none bg-dark-100 py-3 cursor-pointer"
-                  >
-                    <option value="" className="bg-dark-100 text-gray-400">
-                      Select a topic
-                    </option>
-                    {SUBJECT_OPTIONS.map((opt) => (
-                      <option key={opt.value} value={opt.value} className="bg-dark-100 text-white">
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gold-500/70 pointer-events-none"
-                    size={16}
+                    rows="6"
+                    className="ct-input ct-textarea"
+                    placeholder="Describe your challenge, goals, timeline, and any constraints we should know about..."
                   />
                 </div>
-              </div>
 
-              <div className="form-group">
-                <label htmlFor="message" className="form-label">
-                  Project details *
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                  rows="5"
-                  className="form-input resize-none py-3 leading-snug"
-                  placeholder="Describe your challenge, goals, timeline, and any constraints we should know about..."
-                />
-              </div>
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className={`ct-submit ${isLoading ? 'ct-submit--loading' : ''}`}
+                >
+                  {isLoading ? (
+                    <>
+                      <Loader className="animate-spin" size={18} />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      Send message
+                      <Send size={18} />
+                    </>
+                  )}
+                </button>
 
-              <button
-                type="submit"
-                disabled={isLoading}
-                className={`btn-primary w-full flex items-center justify-center py-3 ${
-                  isLoading ? 'opacity-60 cursor-not-allowed' : ''
-                }`}
-              >
-                {isLoading ? (
-                  <>
-                    <Loader className="mr-2 animate-spin" size={16} />
-                    Sending...
-                  </>
-                ) : (
-                  <>
-                    <Send className="mr-2" size={16} />
-                    Send message
-                  </>
+                {status === 'success' && (
+                  <div className="ct-status ct-status--success">
+                    <CheckCircle size={20} />
+                    <div>
+                      <p className="ct-status-title">Message sent</p>
+                      <p className="ct-status-text">{statusMessage}</p>
+                    </div>
+                  </div>
                 )}
-              </button>
 
-              {status === 'success' && (
-                <div className="rounded-lg border border-green-500/30 bg-green-500/10 p-3 flex items-start gap-2">
-                  <CheckCircle className="text-green-400 flex-shrink-0 mt-0.5" size={18} />
-                  <div>
-                    <p className="text-green-400 text-sm font-semibold leading-snug">Message sent</p>
-                    <p className="text-green-300/90 text-xs leading-snug">{statusMessage}</p>
+                {status === 'error' && (
+                  <div className="ct-status ct-status--error">
+                    <AlertCircle size={20} />
+                    <div>
+                      <p className="ct-status-title">Could not send</p>
+                      <p className="ct-status-text">{statusMessage}</p>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {status === 'error' && (
-                <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-3 flex items-start gap-2">
-                  <AlertCircle className="text-red-400 flex-shrink-0 mt-0.5" size={18} />
-                  <div>
-                    <p className="text-red-400 text-sm font-semibold leading-snug">Could not send</p>
-                    <p className="text-red-300/90 text-xs leading-snug">{statusMessage}</p>
-                  </div>
-                </div>
-              )}
-
-              <p className="text-xs text-gray-500 text-center leading-snug">
-                By submitting, you agree to our privacy policy. We never share your information.
-              </p>
-            </form>
-          </div>
+                <p className="ct-privacy">
+                  By submitting, you agree to our privacy policy. We never share your information.
+                </p>
+              </form>
+            </div>
           </Reveal>
 
-          {/* Contact channels, sidebar */}
-          <Reveal className="lg:col-span-5 space-y-3 md:space-y-4" delay={160}>
-            <div className="interactive-card rounded-xl p-4 md:p-5">
-              <h3 className="text-base font-bold text-white mb-3">Direct contact</h3>
-              <ul className="space-y-3">
+          <Reveal className="ct-side" delay={160}>
+            <div className="ct-card">
+              <h3 className="ct-card-title">Direct contact</h3>
+              <p className="ct-card-lead ct-card-lead--tight">
+                Prefer a faster route? Reach us through any of these channels.
+              </p>
+              <ul className="ct-channels">
                 {CONTACT_CHANNELS.map((channel) => {
                   const Icon = channel.icon;
                   const content = (
                     <>
-                      <div className="w-9 h-9 rounded-lg bg-gold-500/10 border border-gold-500/20 flex items-center justify-center flex-shrink-0">
-                        <Icon className="text-gold-500" size={16} />
+                      <div className="ct-channel-icon">
+                        <Icon size={18} />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="text-xs font-medium uppercase tracking-wide text-gray-500 leading-snug">
-                          {channel.label}
-                        </p>
-                        <p className="text-sm font-semibold text-white leading-snug break-all">
-                          {channel.value}
-                        </p>
-                        <p className="text-xs text-gray-500 leading-snug">{channel.hint}</p>
+                        <p className="ct-channel-label">{channel.label}</p>
+                        <p className="ct-channel-value">{channel.value}</p>
+                        <p className="ct-channel-hint">{channel.hint}</p>
                       </div>
-                      {channel.href && (
-                        <ArrowUpRight className="text-gold-500/50 flex-shrink-0" size={14} />
-                      )}
+                      {channel.href && <ArrowUpRight className="ct-channel-arrow" size={16} />}
                     </>
                   );
 
@@ -314,12 +306,12 @@ const Contact = () => {
                           href={channel.href}
                           target={channel.href.startsWith('http') ? '_blank' : undefined}
                           rel={channel.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                          className="group flex items-start gap-3 p-2 -mx-2 rounded-lg hover:bg-white/5 transition-all duration-300 hover:translate-x-0.5"
+                          className={`ct-channel${channel.featured ? ' ct-channel--featured' : ''}`}
                         >
                           {content}
                         </a>
                       ) : (
-                        <div className="flex items-start gap-3 p-2 -mx-2">{content}</div>
+                        <div className="ct-channel ct-channel--static">{content}</div>
                       )}
                     </li>
                   );
@@ -327,9 +319,12 @@ const Contact = () => {
               </ul>
             </div>
 
-            <div className="interactive-card rounded-xl p-4 md:p-5">
-              <h3 className="text-base font-bold text-white mb-3">Connect online</h3>
-              <div className="flex flex-wrap gap-2">
+            <div className="ct-card">
+              <h3 className="ct-card-title">Connect online</h3>
+              <p className="ct-card-lead ct-card-lead--tight">
+                Follow the work, research, and community updates.
+              </p>
+              <div className="ct-socials">
                 {SOCIAL_LINKS.map((social) => {
                   const SocialIcon = social.icon;
                   return (
@@ -338,48 +333,62 @@ const Contact = () => {
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-10 h-10 rounded-lg border border-gray-700 bg-dark-100 flex items-center justify-center text-gray-400 hover:text-gold-500 hover:border-gold-500/30 transition-all duration-300 hover:scale-110 hover:-translate-y-0.5"
+                      className="ct-social"
+                      style={{ background: social.bg, color: '#FFFFFF', borderColor: social.bg }}
                       aria-label={social.name}
+                      title={social.name}
                     >
-                      <SocialIcon size={18} />
+                      <SocialIcon size={18} color="#FFFFFF" strokeWidth={2.25} />
+                      <span>{social.name}</span>
                     </a>
                   );
                 })}
               </div>
             </div>
 
-            <div className="interactive-card rounded-xl overflow-hidden">
-              <div className="px-4 py-3 border-b border-gray-800">
-                <div className="flex items-start gap-2">
-                  <MapPin className="text-gold-500 flex-shrink-0 mt-0.5" size={16} />
+            <div className="ct-card ct-map-card">
+              <div className="ct-map-info">
+                <div className="flex items-start gap-3">
+                  <div className="ct-channel-icon">
+                    <MapPin size={18} />
+                  </div>
                   <div>
-                    <p className="text-sm font-semibold text-white leading-snug">
-                      {CONTACT.address.headline}
-                    </p>
-                    <p className="text-xs text-gray-500 leading-snug mt-0.5">
+                    <p className="ct-map-name">{CONTACT.address.businessName}</p>
+                    <p className="ct-map-headline">{CONTACT.address.headline}</p>
+                    <p className="ct-channel-hint">
                       {CONTACT.address.road} · {CONTACT.address.landmark}
                     </p>
-                    <p className="text-xs text-gray-400 leading-snug mt-1.5">
-                      {CONTACT.address.directions}
+                    <p className="ct-channel-hint">
+                      {CONTACT.address.plusCode} · {CONTACT.address.area}
+                    </p>
+                    <p className="ct-channel-hint mt-1.5">{CONTACT.address.directions}</p>
+                    <p className="ct-channel-hint mt-2">
+                      Office:{' '}
+                      <a href={`tel:${CONTACT.officePhoneTel}`} className="ct-link">
+                        {CONTACT.officePhone}
+                      </a>
+                      {' · '}
+                      {CONTACT.hours}
                     </p>
                   </div>
                 </div>
               </div>
               <iframe
-                title="Beta-Tech Labs near Kabale Central Police Station, Uganda"
+                title="Beta-Tech Labs Co. Limited on Google Maps, Kabale, Uganda"
                 src={CONTACT.mapEmbedUrl}
-                className="w-full h-44 md:h-48 border-0"
+                className="ct-map-frame"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               />
-              <div className="px-4 py-2.5 border-t border-gray-800">
+              <div className="ct-map-footer">
                 <a
                   href={CONTACT.mapLinkUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs text-gold-500 hover:text-gold-400 transition-colors"
+                  className="ct-map-link"
                 >
-                  Open in Google Maps →
+                  Open in Google Maps
+                  <ArrowUpRight size={14} />
                 </a>
               </div>
             </div>

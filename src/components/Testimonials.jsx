@@ -22,18 +22,18 @@ const getInitials = (name) =>
     .toUpperCase();
 
 const TestimonialCard = ({ item }) => (
-  <article className="group interactive-card-light flex flex-col h-full rounded-xl p-4 md:p-5">
-    <Quote className="text-gold-500/60 mb-2 flex-shrink-0 transition-all duration-300 group-hover:text-gold-500 group-hover:scale-110" size={22} />
-    <p className="text-sm text-gray-300 leading-snug flex-1 mb-4 transition-colors duration-300 group-hover:text-gray-200">&ldquo;{item.quote}&rdquo;</p>
+  <article className="ts-card">
+    <Quote className="ts-quote-icon" size={24} />
+    <p className="ts-quote">&ldquo;{item.quote}&rdquo;</p>
 
-    <div className="flex items-center gap-3 pt-3 border-t border-gray-800">
-      <div className="w-10 h-10 rounded-full bg-gold-500/10 border border-gold-500/20 flex items-center justify-center flex-shrink-0">
-        <span className="text-xs font-bold text-gold-500">{getInitials(item.name)}</span>
+    <div className="ts-author">
+      <div className="ts-avatar">
+        <span>{getInitials(item.name)}</span>
       </div>
       <div className="min-w-0">
-        <p className="text-sm font-semibold text-white leading-snug truncate">{item.name}</p>
-        <p className="text-xs text-gold-500/90 leading-snug">{item.role}</p>
-        <p className="text-xs text-gray-500 leading-snug truncate">
+        <p className="ts-name">{item.name}</p>
+        <p className="ts-role">{item.role}</p>
+        <p className="ts-org">
           {item.organization}
           {item.location ? ` · ${item.location}` : ''}
         </p>
@@ -67,33 +67,33 @@ const FeedbackModal = ({ open, onClose, formData, onChange, onSubmit, submitting
       aria-labelledby="feedback-modal-title"
     >
       <div
-        className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-xl border border-gray-800 bg-dark-100 p-5 md:p-6 shadow-xl animate-modal-in"
+        className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-xl border border-[#C2C1BF] bg-[#FCFCFB] p-5 md:p-6 shadow-xl animate-modal-in"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gold-500 transition-colors"
+          className="absolute top-4 right-4 text-[#2A2925] hover:text-[#2563EB] transition-colors"
           aria-label="Close"
         >
           <X size={22} />
         </button>
 
-        <h3 id="feedback-modal-title" className="text-lg font-bold text-white mb-1 pr-8">
+        <h3 id="feedback-modal-title" className="text-xl font-medium text-[#020201] mb-1 pr-8" style={{ fontFamily: "'Spectral', Georgia, serif" }}>
           Share your feedback
         </h3>
-        <p className="text-sm text-gray-500 mb-4 leading-snug">
+        <p className="text-sm text-[#2A2925] mb-4 leading-snug">
           Worked with us on a project, workshop, or partnership? Tell others about your experience.
         </p>
 
         <form onSubmit={onSubmit} className="space-y-4">
           <div className="grid sm:grid-cols-2 gap-3">
             <div className="form-group">
-              <label htmlFor="feedback-name" className="form-label">
+              <label htmlFor="feedback-name" className="block text-sm font-semibold text-[#020201] mb-1">
                 Full name *
               </label>
               <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gold-500/70" size={16} />
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 text-[#2A2925]" size={16} />
                 <input
                   type="text"
                   id="feedback-name"
@@ -101,13 +101,13 @@ const FeedbackModal = ({ open, onClose, formData, onChange, onSubmit, submitting
                   value={formData.name}
                   onChange={onChange}
                   required
-                  className="form-input pl-10 py-3"
+                  className="w-full pl-10 pr-3 py-3 text-sm bg-[#FDF9ED] border border-[#C2C1BF] rounded-lg focus:outline-none focus:border-[#2563EB] text-[#020201] placeholder:text-[#85867E]"
                   placeholder="Your name"
                 />
               </div>
             </div>
             <div className="form-group">
-              <label htmlFor="feedback-role" className="form-label">
+              <label htmlFor="feedback-role" className="block text-sm font-semibold text-[#020201] mb-1">
                 Role / title *
               </label>
               <input
@@ -117,7 +117,7 @@ const FeedbackModal = ({ open, onClose, formData, onChange, onSubmit, submitting
                 value={formData.role}
                 onChange={onChange}
                 required
-                className="form-input py-3"
+                className="w-full px-3 py-3 text-sm bg-[#FDF9ED] border border-[#C2C1BF] rounded-lg focus:outline-none focus:border-[#2563EB] text-[#020201] placeholder:text-[#85867E]"
                 placeholder="e.g. Founder, Product Manager"
               />
             </div>
@@ -125,7 +125,7 @@ const FeedbackModal = ({ open, onClose, formData, onChange, onSubmit, submitting
 
           <div className="grid sm:grid-cols-2 gap-3">
             <div className="form-group">
-              <label htmlFor="feedback-org" className="form-label">
+              <label htmlFor="feedback-org" className="block text-sm font-semibold text-[#020201] mb-1">
                 Organization *
               </label>
               <input
@@ -135,12 +135,12 @@ const FeedbackModal = ({ open, onClose, formData, onChange, onSubmit, submitting
                 value={formData.organization}
                 onChange={onChange}
                 required
-                className="form-input py-3"
+                className="w-full px-3 py-3 text-sm bg-[#FDF9ED] border border-[#C2C1BF] rounded-lg focus:outline-none focus:border-[#2563EB] text-[#020201] placeholder:text-[#85867E]"
                 placeholder="Company or institution"
               />
             </div>
             <div className="form-group">
-              <label htmlFor="feedback-location" className="form-label">
+              <label htmlFor="feedback-location" className="block text-sm font-semibold text-[#020201] mb-1">
                 Location
               </label>
               <input
@@ -149,14 +149,14 @@ const FeedbackModal = ({ open, onClose, formData, onChange, onSubmit, submitting
                 name="location"
                 value={formData.location}
                 onChange={onChange}
-                className="form-input py-3"
+                className="w-full px-3 py-3 text-sm bg-[#FDF9ED] border border-[#C2C1BF] rounded-lg focus:outline-none focus:border-[#2563EB] text-[#020201] placeholder:text-[#85867E]"
                 placeholder="e.g. Kampala, Uganda"
               />
             </div>
           </div>
 
           <div className="form-group">
-            <label htmlFor="feedback-quote" className="form-label">
+            <label htmlFor="feedback-quote" className="block text-sm font-semibold text-[#020201] mb-1">
               Your feedback *
             </label>
             <textarea
@@ -167,32 +167,36 @@ const FeedbackModal = ({ open, onClose, formData, onChange, onSubmit, submitting
               required
               minLength={20}
               rows={4}
-              className="form-input py-3 resize-none"
+              className="w-full px-3 py-3 text-sm bg-[#FDF9ED] border border-[#C2C1BF] rounded-lg focus:outline-none focus:border-[#2563EB] text-[#020201] placeholder:text-[#85867E] resize-none"
               placeholder="Share your experience working with Beta-Tech Labs..."
             />
           </div>
 
           {status === 'success' && (
-            <p className="text-green-400 text-sm flex items-center gap-2">
+            <p className="text-green-700 text-sm flex items-center gap-2">
               <CheckCircle size={16} />
               Thank you. Your feedback is now live on this page.
             </p>
           )}
           {status === 'error' && (
-            <p className="text-red-400 text-sm flex items-center gap-2">
+            <p className="text-red-700 text-sm flex items-center gap-2">
               <AlertCircle size={16} />
               Could not submit. Check your connection and try again.
             </p>
           )}
 
           <div className="flex flex-col-reverse sm:flex-row gap-3 pt-1">
-            <button type="button" onClick={onClose} className="btn-secondary text-sm flex-1">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 py-3 px-4 rounded-lg border border-[#C2C1BF] text-[#020201] font-semibold text-sm hover:border-[#2563EB] hover:text-[#2563EB] transition-colors"
+            >
               Cancel
             </button>
             <button
               type="submit"
               disabled={submitting}
-              className="btn-primary inline-flex items-center justify-center text-sm flex-1 disabled:opacity-60"
+              className="flex-1 inline-flex items-center justify-center py-3 px-4 rounded-lg bg-[#2563EB] text-white font-semibold text-sm hover:bg-[#020201] transition-colors disabled:opacity-60"
             >
               {submitting ? (
                 <>
@@ -294,22 +298,18 @@ const Testimonials = () => {
   };
 
   return (
-    <section id="testimonials" className="py-8 md:py-10 bg-dark-200 relative overflow-hidden border-t border-gray-800/50">
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5 relative z-10">
-        <Reveal className="text-center max-w-2xl mx-auto mb-6 md:mb-8 group">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-500 mb-1.5 section-eyebrow">
-            Client Feedback
-          </p>
-          <h2 className="text-3xl md:text-4xl font-bold text-white font-heading mb-2 leading-tight">
-            What Partners Say About Us
-          </h2>
-          <p className="text-sm md:text-base text-gray-400 leading-snug">
+    <section id="testimonials" className="ts-section">
+      <div className="ts-inner">
+        <Reveal className="ts-header">
+          <p className="ts-eyebrow">Client Feedback</p>
+          <h2 className="ts-heading">What Partners Say About Us</h2>
+          <p className="ts-intro">
             Founders, educators, and product teams across Uganda who have worked with us on
             research, engineering, and delivery.
           </p>
         </Reveal>
 
-        <div className="grid md:grid-cols-3 gap-3 md:gap-4">
+        <div className="ts-grid">
           {TESTIMONIALS.map((item, index) => (
             <Reveal key={`featured-${index}`} delay={index * 80}>
               <TestimonialCard item={item} />
@@ -318,11 +318,9 @@ const Testimonials = () => {
         </div>
 
         {!loading && visitorFeedback.length > 0 && (
-          <div className="mt-8 md:mt-10">
-            <p className="text-xs font-semibold uppercase tracking-wider text-gold-500 mb-4 text-center section-eyebrow">
-              From our community
-            </p>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+          <div className="ts-community">
+            <p className="ts-community-label">From our community</p>
+            <div className="ts-grid">
               {visitorFeedback.map((item, index) => (
                 <Reveal key={item.id} delay={index * 60}>
                   <TestimonialCard item={item} />
@@ -332,13 +330,9 @@ const Testimonials = () => {
           </div>
         )}
 
-        <Reveal delay={150} className="text-center mt-8 md:mt-10">
-          <button
-            type="button"
-            onClick={openModal}
-            className="btn-primary inline-flex items-center justify-center text-sm"
-          >
-            <MessageSquarePlus className="mr-2" size={16} />
+        <Reveal delay={150} className="ts-cta">
+          <button type="button" onClick={openModal} className="ts-feedback-btn">
+            <MessageSquarePlus size={18} />
             Give Feedback
           </button>
         </Reveal>

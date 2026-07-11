@@ -50,7 +50,7 @@ const ResearchImageSlider = () => {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <div className="research-slider-frame group relative h-full min-h-[220px] lg:min-h-[300px] rounded-xl overflow-hidden border border-gray-800">
+      <div className="research-slider-frame group relative h-full min-h-[220px] lg:min-h-[300px] rounded-xl overflow-hidden border border-[#C2C1BF] shadow-[0_8px_28px_rgba(2,2,1,0.06)]">
         {RESEARCH_SLIDES.map((item, index) => (
           <img
             key={item.src}
@@ -85,7 +85,7 @@ const ResearchImageSlider = () => {
         </button>
 
         <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5 translate-y-0 transition-transform duration-300 group-hover:translate-y-0">
-          <p className="text-xs md:text-sm font-semibold uppercase tracking-wider text-gold-500 mb-1">
+          <p className="text-xs md:text-sm font-semibold uppercase tracking-wider text-[#A6FF1A] mb-1">
             {slide.title}
           </p>
           <p className="text-sm md:text-base text-white font-medium leading-snug">{slide.caption}</p>
@@ -96,7 +96,7 @@ const ResearchImageSlider = () => {
                 type="button"
                 onClick={() => setActive(index)}
                 className={`h-1.5 rounded-full transition-all duration-300 ${
-                  index === active ? 'w-6 bg-gold-500' : 'w-1.5 bg-white/40 hover:bg-white/60'
+                  index === active ? 'w-6 bg-[#A6FF1A]' : 'w-1.5 bg-white/40 hover:bg-white/60'
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
               />

@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { SITE } from '../config/site';
+import { SITE, CONTACT } from '../config/site';
 
 const SEO = ({
   title,
@@ -11,7 +11,7 @@ const SEO = ({
   type = 'website',
   article = null,
 }) => {
-  const defaultDescription = `${SITE.brandPromise} ${SITE.positioning} based in ${SITE.location}.`;
+  const defaultDescription = `${SITE.brandPromise} Based in ${SITE.location}.`;
   const twitterHandle = '@betatechlabs';
 
   const fullTitle = title ? `${title} | ${SITE.name}` : `${SITE.name} | ${SITE.tagline}`;
@@ -56,8 +56,13 @@ const SEO = ({
       <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
       <meta name="language" content="English" />
       <meta name="author" content={SITE.name} />
-      <meta name="geo.region" content="UG" />
-      <meta name="geo.placename" content="Kabale, Uganda" />
+      <meta name="geo.region" content="UG-W" />
+      <meta name="geo.placename" content="Kabale, Southern Division, Uganda" />
+      <meta
+        name="geo.position"
+        content={`${CONTACT.coordinates.latitude};${CONTACT.coordinates.longitude}`}
+      />
+      <meta name="ICBM" content={`${CONTACT.coordinates.latitude}, ${CONTACT.coordinates.longitude}`} />
     </Helmet>
   );
 };

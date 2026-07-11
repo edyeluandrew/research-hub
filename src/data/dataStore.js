@@ -1,5 +1,6 @@
 import { firebaseSet, firebaseGet } from '../firebase/config';
 import { COMPANY, CORE_VALUES, INNOVATION_PIPELINE, STRATEGIC_PILLARS, SITE } from '../config/site';
+import { FASIRI_SESSION_PHOTOS } from './fasiriSessionPhotos';
 
 // Default minimal data
 const defaultTeamData = {
@@ -130,6 +131,21 @@ const defaultEventsData = [
     registrationLink: '',
   },
   {
+    id: 108,
+    title: 'Fasiri First Developer Session',
+    date: '2026-06-10',
+    time: '10:00 AM - 4:00 PM',
+    location: 'Beta Tech Labs, Kabale Main Town',
+    venue: 'Beta Tech Labs HQ',
+    category: 'Workshop',
+    description:
+      'Our first hands-on Fasiri developer session. Builders explored the Fasiri platform, API workflows, and real integration patterns, with mentorship from the Beta Tech Labs team throughout the day.',
+    attendees: 32,
+    images: FASIRI_SESSION_PHOTOS,
+    highlights: ['Fasiri', 'API Integration', 'Developer Tools'],
+    registrationLink: 'https://photos.app.goo.gl/xGPHhTveaD6f4UC69',
+  },
+  {
     id: 103,
     title: 'React & Modern Frontend Workshop',
     date: '2026-07-05',
@@ -189,7 +205,7 @@ const mergeEventsWithDefaults = (stored) => {
           ...def,
           ...match,
           title: def.title,
-          images: match.images?.length ? match.images : def.images || [],
+          images: def.images ?? [],
         }
       : def;
   });
@@ -292,8 +308,8 @@ const defaultEngagementSteps = INNOVATION_PIPELINE;
 
 export const defaultSiteContent = {
   mission: {
-    sectionEyebrow: 'Who We Are',
-    sectionTitle: 'A Community Research-Driven Technology Company',
+    sectionEyebrow: 'A Research-Driven Technology Company',
+    sectionTitle: 'Turning Research into Real-World Solutions',
     purpose: COMPANY.purpose,
     vision: COMPANY.vision,
     mission: COMPANY.mission,
@@ -308,7 +324,7 @@ export const defaultSiteContent = {
   strategicPillars: STRATEGIC_PILLARS,
   servicesPage: {
     pillarsSubtitle:
-      "Research generates knowledge, product innovation creates long-term value, solution engineering delivers for partners, and talent development sustains the future — together, they define The Beta-Tech Way.",
+      "Research generates knowledge, product innovation creates long-term value, solution engineering delivers for partners, and talent development sustains the future. Together, they define The Beta-Tech Way.",
     techSectionSubtitle:
       'We combine modern stacks with practical engineering, including IoT tooling, edge systems, and field-ready deployments across Uganda and East Africa.',
     engagementSteps: defaultEngagementSteps,
@@ -462,7 +478,12 @@ const mergeSiteContent = (stored) => {
   if (!stored || typeof stored !== 'object') return defaultSiteContent;
 
   return {
-    mission: { ...defaultSiteContent.mission, ...(stored.mission || {}) },
+    mission: {
+      ...defaultSiteContent.mission,
+      ...(stored.mission || {}),
+      purpose: COMPANY.purpose,
+      vision: COMPANY.vision,
+    },
     coreValues:
       Array.isArray(stored.coreValues) && stored.coreValues.length > 0
         ? stored.coreValues

@@ -1,6 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-const Reveal = ({ children, className = '', delay = 0, as: Tag = 'div' }) => {
+const Reveal = ({
+  children,
+  className = '',
+  delay = 0,
+  as: Tag = 'div',
+  variant,
+  rootMargin = '0px 0px -32px 0px',
+}) => {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
 
@@ -24,17 +31,19 @@ const Reveal = ({ children, className = '', delay = 0, as: Tag = 'div' }) => {
           observer.disconnect();
         }
       },
-      { threshold: 0.1, rootMargin: '0px 0px -32px 0px' }
+      { threshold: 0.12, rootMargin }
     );
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [rootMargin]);
+
+  const variantClass = variant ? `reveal-${variant}` : '';
 
   return (
     <Tag
       ref={ref}
-      className={`reveal ${visible ? 'reveal-visible' : ''} ${className}`.trim()}
+      className={`reveal ${variantClass} ${visible ? 'reveal-visible' : ''} ${className}`.trim()}
       style={delay ? { transitionDelay: `${delay}ms` } : undefined}
     >
       {children}

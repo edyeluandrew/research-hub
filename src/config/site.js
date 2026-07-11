@@ -1,23 +1,22 @@
 export const SITE = {
   name: 'Beta-Tech Labs',
-  legalName: 'Beta-Tech Labs Company Limited',
+  legalName: 'Beta-Tech Labs Co. Limited',
   shortName: 'BetaTech',
   tagline: 'Dream It. Build It.',
-  positioning: 'Community Research-Driven Technology Company',
   brandPromise: 'Turning Research into Real-World Solutions',
   philosophy: 'Research First. Innovation Always. Impact Forever.',
   philosophyPractice:
     'Community inspires our research. Research drives our innovation. Innovation guides our engineering. Engineering creates impact.',
   guidingQuestion: 'Does this help us transform research into meaningful impact?',
   url: 'https://www.beta-techlabs.com',
-  location: 'Kabale Main Town, Uganda',
+  location: 'Southern Division, Kabale Main Town, Uganda',
   foundedYear: '2025',
   gaMeasurementId: import.meta.env.VITE_GA_MEASUREMENT_ID || 'G-DQ38RGHM64',
 };
 
 export const COMPANY = {
   intro:
-    'Beta-Tech Labs Company Limited is a community research-driven technology company founded on the belief that every meaningful innovation begins with understanding the problem.',
+    'Beta-Tech Labs Co. Limited is a community research-driven technology company founded on the belief that every meaningful innovation begins with understanding the problem.',
   purpose:
     'To transform research into innovative products and technology solutions that solve meaningful problems, empower people, and create lasting impact for the community.',
   vision:
@@ -32,9 +31,9 @@ export const COMPANY = {
     impact: 'Impact is our purpose.',
   },
   storyQuote:
-    "Technology should be felt, lived, but not overtalked about. People shouldn't notice the technology — they should notice how much better their lives have become because of it.",
+    "Technology should be felt, lived, but not overtalked about. People shouldn't notice the technology. They should notice how much better their lives have become because of it.",
   foundingStory:
-    'Born from the AIFEST competition at Makerere University in 2025, our founders asked: "What if we don\'t stop here?" That question became Beta-Tech Labs — a company that begins by understanding people before choosing technology.',
+    'Born from the AIFEST competition at Makerere University in 2025, our founders asked: "What if we don\'t stop here?" That question became Beta-Tech Labs, a company that begins by understanding people before choosing technology.',
 };
 
 export const CORE_VALUES = [
@@ -158,7 +157,7 @@ export const STRATEGIC_PILLARS = [
     label: 'Product Innovation',
     title: 'Research Transformed Into Products',
     description:
-      'We transform research and innovative ideas into products owned and continuously evolved by Beta-Tech Labs — built to solve real needs, anticipate tomorrow\'s opportunities, and create long-term value across Africa and beyond.',
+      'We transform research and innovative ideas into products owned and continuously evolved by Beta-Tech Labs, built to solve real needs, anticipate tomorrow\'s opportunities, and create long-term value across Africa and beyond.',
     listTitle: 'We Build',
     items: [
       'Artificial Intelligence Products',
@@ -174,7 +173,7 @@ export const STRATEGIC_PILLARS = [
     label: 'Solution Engineering',
     title: 'Partnerships That Deliver Results',
     description:
-      'We partner with organizations to understand their needs, explore opportunities, and engineer tailored technology solutions that create measurable value and long-term impact — solutions they own and use to achieve their objectives.',
+      'We partner with organizations to understand their needs, explore opportunities, and engineer tailored technology solutions that create measurable value and long-term impact. Solutions they own and use to achieve their objectives.',
     listTitle: 'Solution Areas',
     items: [
       'Business & Enterprise Systems',
@@ -210,17 +209,24 @@ export const CONTACT = {
   whatsapp: '256764331334',
   hours: 'Mon - Fri: 9:00 AM - 5:00 PM',
   address: {
+    businessName: 'Beta-Tech Labs Co. Limited',
     headline: 'Behind Kabale Central Police Station',
+    street: 'Kabale-Kisoro Road, Southern Division',
     area: 'Kabale Main Town, Uganda',
+    plusCode: 'PXRQ+PVC, Kabale',
     road: 'Kabale-Kisoro Road',
-    landmark: 'Opposite Numba Cafe · Near All Saints Church',
+    landmark: 'Near All Saints Church · Opposite Numba Cafe',
     directions:
-      'On Kabale-Kisoro Road in main town. Numba Cafe sits opposite the police station, next to All Saints Church. Beta-Tech Labs is in the building behind the station.',
+      'On Kabale-Kisoro Road in main town. Beta-Tech Labs is in the building behind Kabale Central Police Station, near All Saints Church. Numba Cafe sits opposite the station.',
+  },
+  coordinates: {
+    latitude: -1.24857,
+    longitude: 29.98993,
   },
   mapEmbedUrl:
-    'https://maps.google.com/maps?q=Kabale+Central+Police+Station,+Kabale-Kisoro+Road,+Kabale,+Uganda&z=18&output=embed',
+    'https://maps.google.com/maps?q=Beta-Tech+Labs+Co.+Limited,+PXRQ%2BPVC,+Kabale-Kisoro+Road,+Kabale,+Uganda&z=18&output=embed',
   mapLinkUrl:
-    'https://www.google.com/maps/search/?api=1&query=Kabale+Central+Police+Station,+Kabale,+Uganda',
+    'https://www.google.com/maps/search/?api=1&query=Beta-Tech+Labs+Co.+Limited,+PXRQ%2BPVC,+Kabale,+Uganda',
 };
 
 export const SOCIAL = {

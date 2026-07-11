@@ -38,14 +38,14 @@ const Home = () => {
   return (
     <>
       <SEO
-        title="Home - Community Research-Driven Technology Company"
+        title="Home"
         description={`${SITE.legalName} transforms research into innovative products and technology solutions. ${SITE.brandPromise} Based in ${SITE.location}.`}
-        keywords="community research-driven technology Uganda, Beta-Tech Labs, AI products Africa, product innovation, solution engineering, talent development, The Beta-Tech Way"
+        keywords="Beta-Tech Labs Uganda, AI products Africa, product innovation, solution engineering, talent development, The Beta-Tech Way"
         ogUrl={`${SITE.url}/`}
         ogImage={`${SITE.url}/images/og-home.svg`}
       />
 
-      <div className="min-h-screen bg-dark-200 flex flex-col">
+      <div className="min-h-screen bg-[#FDF9ED] flex flex-col">
         <Header />
         <main className="flex-1">
           <Hero />

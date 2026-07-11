@@ -23,49 +23,35 @@ const BENEFITS = [
 
 const Newsletter = () => {
   return (
-    <section
-      id="newsletter"
-      className="py-10 md:py-14 bg-dark-200 border-t border-gray-800/50 relative overflow-hidden"
-    >
-      {/* Ambient glow */}
-      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-        <div className="w-[600px] h-[600px] max-w-full rounded-full bg-gold-500/5 blur-3xl" />
-      </div>
-
-      <div className="max-w-6xl mx-auto px-3 sm:px-4 lg:px-5 relative z-10">
+    <section id="newsletter" className="nl-section">
+      <div className="nl-inner">
         <Reveal>
-          <div className="interactive-card rounded-2xl p-6 md:p-10 lg:p-12">
-            <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-              {/* Left: pitch */}
-              <div className="group">
-                <div className="inline-flex items-center gap-2 rounded-full border border-gold-500/25 bg-gold-500/10 px-3 py-1 mb-4">
-                  <Mail className="text-gold-500" size={14} />
-                  <span className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-500 section-eyebrow">
-                    Newsletter
-                  </span>
+          <div className="nl-box">
+            <div className="nl-grid">
+              <div>
+                <div className="nl-badge">
+                  <Mail size={14} />
+                  <span>Newsletter</span>
                 </div>
-                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white font-heading leading-tight mb-3">
-                  Stay in the loop with{' '}
-                  <span className="text-gold-500 accent-word">Beta-Tech Labs</span>
+                <h2 className="nl-heading">
+                  Stay in the loop with Beta-Tech Labs
                 </h2>
-                <p className="text-sm md:text-base text-gray-400 leading-snug mb-6 max-w-md">
+                <p className="nl-lead">
                   Join our list for occasional updates on events, new products, and research from the
                   team. No spam, unsubscribe anytime.
                 </p>
 
-                <ul className="space-y-3">
+                <ul className="nl-benefits">
                   {BENEFITS.map((benefit) => {
                     const Icon = benefit.icon;
                     return (
-                      <li key={benefit.title} className="flex items-start gap-3">
-                        <div className="icon-box w-9 h-9 rounded-lg bg-gold-500/10 border border-gold-500/20 flex items-center justify-center flex-shrink-0">
-                          <Icon className="text-gold-500" size={16} />
+                      <li key={benefit.title} className="nl-benefit">
+                        <div className="nl-benefit-icon">
+                          <Icon size={16} strokeWidth={2} />
                         </div>
                         <div>
-                          <p className="text-sm font-semibold text-white leading-snug">
-                            {benefit.title}
-                          </p>
-                          <p className="text-xs text-gray-500 leading-snug">{benefit.text}</p>
+                          <p className="nl-benefit-title">{benefit.title}</p>
+                          <p className="nl-benefit-text">{benefit.text}</p>
                         </div>
                       </li>
                     );
@@ -73,13 +59,10 @@ const Newsletter = () => {
                 </ul>
               </div>
 
-              {/* Right: form */}
-              <div className="interactive-card-light rounded-xl p-5 md:p-6">
-                <h3 className="text-lg font-bold text-white mb-1">Subscribe for updates</h3>
-                <p className="text-sm text-gray-500 leading-snug mb-4">
-                  Drop your email below, that is all it takes.
-                </p>
-                <NewsletterForm />
+              <div className="nl-form-panel">
+                <h3 className="nl-form-title">Subscribe for updates</h3>
+                <p className="nl-form-lead">Drop your email below, that is all it takes.</p>
+                <NewsletterForm theme="light" />
               </div>
             </div>
           </div>
