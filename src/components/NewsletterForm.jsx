@@ -16,6 +16,7 @@ const NewsletterForm = ({
   buttonLabel = 'Subscribe',
   showPrivacyNote = true,
   align = 'left',
+  theme = 'dark',
   className = '',
 }) => {
   const [email, setEmail] = useState('');
@@ -63,14 +64,17 @@ const NewsletterForm = ({
 
   const inline = layout === 'inline';
   const centered = align === 'center';
+  const light = theme === 'light';
 
   return (
     <form onSubmit={handleSubmit} className={className}>
       <div className={inline ? 'flex flex-col sm:flex-row gap-2' : 'space-y-3'}>
         <div className="relative flex-1">
           <Mail
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-gold-500/70"
-            size={16}
+            className={`absolute left-3 top-1/2 -translate-y-1/2 ${
+              light ? 'text-[#020201]' : 'text-gold-500/70'
+            }`}
+            size={18}
           />
           <input
             type="email"
@@ -79,7 +83,11 @@ const NewsletterForm = ({
             placeholder="you@example.com"
             required
             disabled={status === 'loading'}
-            className="w-full pl-10 pr-3 py-3 text-sm bg-dark-200 border border-gray-700 rounded-lg focus:outline-none focus:border-gold-500 text-white placeholder-gray-500 disabled:opacity-60 transition-colors"
+            className={
+              light
+                ? 'w-full pl-11 pr-3 py-3.5 text-base bg-[#FCFCFB] border border-[#C2C1BF] rounded-lg focus:outline-none focus:border-[#2563EB] text-[#020201] placeholder:text-[#2A2925] disabled:opacity-60 transition-colors'
+                : 'w-full pl-10 pr-3 py-3 text-sm bg-dark-200 border border-gray-700 rounded-lg focus:outline-none focus:border-gold-500 text-white placeholder-gray-500 disabled:opacity-60 transition-colors'
+            }
           />
         </div>
 
@@ -105,23 +113,47 @@ const NewsletterForm = ({
       </div>
 
       {status === 'success' && (
-        <div className="mt-3 rounded-lg border border-green-500/30 bg-green-500/10 p-3 flex items-start gap-2 text-left">
-          <CheckCircle className="text-green-400 flex-shrink-0 mt-0.5" size={16} />
-          <p className="text-green-300/90 text-sm leading-snug">{message}</p>
+        <div
+          className={`mt-3 rounded-lg border p-3 flex items-start gap-2 text-left ${
+            light
+              ? 'border-green-700/25 bg-green-700/10'
+              : 'border-green-500/30 bg-green-500/10'
+          }`}
+        >
+          <CheckCircle
+            className={`flex-shrink-0 mt-0.5 ${light ? 'text-green-700' : 'text-green-400'}`}
+            size={16}
+          />
+          <p
+            className={`text-sm leading-snug ${
+              light ? 'text-green-800' : 'text-green-300/90'
+            }`}
+          >
+            {message}
+          </p>
         </div>
       )}
       {status === 'error' && (
-        <div className="mt-3 rounded-lg border border-red-500/30 bg-red-500/10 p-3 flex items-start gap-2 text-left">
-          <AlertCircle className="text-red-400 flex-shrink-0 mt-0.5" size={16} />
-          <p className="text-red-300/90 text-sm leading-snug">{message}</p>
+        <div
+          className={`mt-3 rounded-lg border p-3 flex items-start gap-2 text-left ${
+            light ? 'border-red-700/25 bg-red-700/10' : 'border-red-500/30 bg-red-500/10'
+          }`}
+        >
+          <AlertCircle
+            className={`flex-shrink-0 mt-0.5 ${light ? 'text-red-700' : 'text-red-400'}`}
+            size={16}
+          />
+          <p className={`text-sm leading-snug ${light ? 'text-red-800' : 'text-red-300/90'}`}>
+            {message}
+          </p>
         </div>
       )}
 
       {showPrivacyNote && (
         <p
-          className={`text-xs text-gray-600 leading-snug mt-3 ${
-            centered ? 'text-center' : ''
-          }`}
+          className={`text-sm leading-snug mt-3 ${
+            light ? 'text-[#020201]' : 'text-gray-600'
+          } ${centered ? 'text-center' : ''}`}
         >
           We respect your privacy and never share your email.
         </p>

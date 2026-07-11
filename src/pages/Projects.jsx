@@ -10,74 +10,76 @@ import {
   ArrowRight,
   Send,
   Layers,
+  FolderKanban,
+  Rocket,
+  Hammer,
+  BookOpen,
+  Clock,
 } from 'lucide-react';
 import { SITE, STATS } from '../config/site';
 import { navigateToHomeSection } from '../utils/homeNavigation';
 import Reveal from '../components/Reveal';
 
-const STATUS_STYLES = {
-  Launched: 'bg-green-500/15 text-green-400 border-green-500/30',
-  'In Development': 'bg-blue-500/15 text-blue-400 border-blue-500/30',
-  'In Testing': 'bg-yellow-500/15 text-yellow-400 border-yellow-500/30',
-  'In Planning': 'bg-gray-500/15 text-gray-400 border-gray-500/30',
+const STATUS_CLASS = {
+  Launched: 'pj-status--launched',
+  'In Development': 'pj-status--dev',
+  'In Testing': 'pj-status--testing',
+  'In Planning': 'pj-status--planning',
 };
 
+const HERO_STATS = [
+  { key: 'total', icon: FolderKanban, tone: 'blue', label: 'Total projects' },
+  { key: 'launched', icon: Rocket, tone: 'green', label: 'Launched' },
+  { key: 'active', icon: Hammer, tone: 'amber', label: 'In active build' },
+  { key: 'research', icon: BookOpen, tone: 'slate', label: 'Research outputs' },
+];
+
 const ProjectCard = ({ project }) => {
-  const statusClass = STATUS_STYLES[project.status] || STATUS_STYLES['In Planning'];
+  const statusClass = STATUS_CLASS[project.status] || STATUS_CLASS['In Planning'];
 
   return (
-    <article className="group interactive-card-light rounded-xl overflow-hidden flex flex-col h-full">
-      {/* Logo banner */}
-      <div className="relative h-36 md:h-40 bg-dark-200 border-b border-gray-800 flex items-center justify-center p-6 overflow-hidden">
+    <article className="pj-card group">
+      <div className="pj-card-banner">
         {project.image || PROJECT_LOGOS[project.title?.toLowerCase().trim()] ? (
           <img
             src={project.image || PROJECT_LOGOS[project.title?.toLowerCase().trim()]}
             alt={`${project.title} logo`}
-            className="max-h-full max-w-[220px] w-auto object-contain transition-transform duration-500 group-hover:scale-105"
             loading="lazy"
           />
         ) : (
-          <div className="w-16 h-16 rounded-xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center">
-            <Layers className="text-gold-500" size={28} />
+          <div className="pj-card-placeholder">
+            <Layers size={26} strokeWidth={2} />
           </div>
         )}
         {project.status && (
-          <span
-            className={`absolute top-3 right-3 text-xs px-2.5 py-1 rounded-full border font-medium ${statusClass}`}
-          >
-            {project.status}
-          </span>
+          <span className={`pj-status ${statusClass}`}>{project.status}</span>
         )}
       </div>
 
-      <div className="p-5 md:p-6 flex flex-col flex-1">
-        {project.category && (
-          <p className="text-xs font-semibold uppercase tracking-wider text-gold-500 mb-1.5 leading-snug">
-            {project.category}
-          </p>
-        )}
-        <h3 className="text-xl font-bold text-white mb-2 leading-snug transition-colors duration-300 group-hover:text-gold-50">
-          {project.title}
-        </h3>
-        <p className="text-sm text-gray-400 leading-snug mb-4 flex-1 transition-colors duration-300 group-hover:text-gray-300">
-          {project.description || '\u00A0'}
-        </p>
+      <div className="pj-card-body">
+        {project.category && <p className="pj-card-category">{project.category}</p>}
+        <h3 className="pj-card-title">{project.title}</h3>
+        <p className="pj-card-desc">{project.description || '\u00A0'}</p>
 
-        <div className="flex flex-wrap gap-2 mt-auto pt-4 border-t border-gray-800">
+        <div className="pj-card-links">
           {!project.liveUrlPrivate && project.liveUrl && (
             <a
               href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gold-400 border border-gold-500/30 rounded-lg bg-gold-500/10 hover:bg-gold-500/20 transition-colors"
+              className="pj-link pj-link--live"
             >
-              <Globe size={14} />
+              <span className="pj-link-icon pj-link-icon--live" aria-hidden="true">
+                <Globe size={13} strokeWidth={2.25} />
+              </span>
               Live Site
             </a>
           )}
           {!project.liveUrlPrivate && !project.liveUrl && project.liveUrlStatus === 'coming-soon' && (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-500 border border-gray-700 rounded-lg bg-dark-200">
-              <Globe size={14} />
+            <span className="pj-link pj-link--soon">
+              <span className="pj-link-icon pj-link-icon--soon" aria-hidden="true">
+                <Clock size={13} strokeWidth={2.25} />
+              </span>
               Coming Soon
             </span>
           )}
@@ -86,9 +88,11 @@ const ProjectCard = ({ project }) => {
               href={project.githubRepo}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-400 border border-gray-700 rounded-lg bg-dark-200 hover:border-gray-600 transition-colors"
+              className="pj-link pj-link--github"
             >
-              <Github size={14} />
+              <span className="pj-link-icon pj-link-icon--github" aria-hidden="true">
+                <Github size={13} strokeWidth={2.25} />
+              </span>
               GitHub
             </a>
           )}
@@ -129,6 +133,13 @@ const Projects = () => {
     (p) => p.status === 'In Development' || p.status === 'In Testing'
   ).length;
 
+  const statValues = {
+    total: projects.length,
+    launched: launchedCount,
+    active: activeCount,
+    research: STATS.researchPapers,
+  };
+
   return (
     <>
       <SEO
@@ -139,65 +150,60 @@ const Projects = () => {
         ogImage={`${SITE.url}/images/og-image.svg`}
       />
 
-      <div className="min-h-screen bg-dark-200 flex flex-col">
+      <div className="pj-page min-h-screen flex flex-col">
         <Header />
 
         <main className="flex-1">
-          {/* Hero */}
-          <section className="pt-20 pb-8 md:pb-10 bg-gold-gradient border-b border-gray-800/50">
-            <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
-              <h1 className="hero-fade-in hero-delay-1 text-3xl md:text-4xl lg:text-5xl font-bold text-white font-heading leading-tight mb-3 max-w-3xl">
+          <section className="pj-hero">
+            <div className="pj-dot-grid" aria-hidden="true" />
+            <div className="pj-inner">
+              <p className="pj-eyebrow hero-fade-in hero-delay-1">Our Portfolio</p>
+              <h1 className="pj-heading hero-fade-in hero-delay-1">
                 Products We&apos;ve{' '}
-                <span className="text-gold-500 accent-word">Built & Shipped</span>
+                <span className="pj-heading-accent">Built & Shipped</span>
               </h1>
-              <p className="hero-fade-in hero-delay-2 text-sm md:text-base text-gray-400 leading-snug max-w-2xl">
+              <p className="pj-lead hero-fade-in hero-delay-2">
                 Real platforms in AI, blockchain, IoT, and web engineering, researched, designed,
                 and delivered by the Beta-Tech Labs team from Kabale, Uganda.
               </p>
 
               {!loading && projects.length > 0 && (
-                <div className="hero-fade-in hero-delay-3 flex flex-wrap gap-6 mt-6 pt-5 border-t border-gray-800/80">
-                  <div className="stat-block">
-                    <p className="stat-value text-xl font-bold text-white">{projects.length}</p>
-                    <p className="text-xs text-gray-500">Total projects</p>
-                  </div>
-                  <div className="stat-block">
-                    <p className="stat-value text-xl font-bold text-gold-500">{launchedCount}</p>
-                    <p className="text-xs text-gray-500">Launched</p>
-                  </div>
-                  <div className="stat-block">
-                    <p className="stat-value text-xl font-bold text-white">{activeCount}</p>
-                    <p className="text-xs text-gray-500">In active build</p>
-                  </div>
-                  <div className="stat-block">
-                    <p className="stat-value text-xl font-bold text-white">{STATS.researchPapers}</p>
-                    <p className="text-xs text-gray-500">Research outputs</p>
-                  </div>
+                <div className="pj-stats hero-fade-in hero-delay-3">
+                  {HERO_STATS.map(({ key, icon: Icon, tone, label }) => (
+                    <div key={key} className="pj-stat-item">
+                      <span className={`pj-stat-icon pj-stat-icon--${tone}`} aria-hidden="true">
+                        <Icon size={15} strokeWidth={2.15} />
+                      </span>
+                      <div className="pj-stat-content">
+                        <p className={`pj-stat-value${tone === 'green' ? ' pj-stat-value--accent' : ''}`}>
+                          {statValues[key]}
+                        </p>
+                        <p className="pj-stat-label">{label}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
           </section>
 
-          {/* Projects grid */}
-          <section className="py-8 md:py-10 bg-dark-100 border-b border-gray-800/50">
-            <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
+          <section className="pj-section pj-section--sand">
+            <div className="pj-inner">
               {loading ? (
-                <div className="text-center py-12">
-                  <p className="text-sm text-gray-500">Loading projects...</p>
-                </div>
+                <p className="pj-loading">Loading projects...</p>
               ) : projects.length === 0 ? (
-                <div className="text-center py-12 rounded-xl border border-gray-800 bg-dark-200">
-                  <p className="text-sm text-gray-400 mb-4">New projects are on the way.</p>
-                  <button
-                    onClick={goToContact}
-                    className="btn-primary text-sm inline-flex items-center"
-                  >
-                    <Send className="mr-2" size={16} />
+                <div className="pj-empty">
+                  <span className="pj-empty-icon" aria-hidden="true">
+                    <Layers size={28} strokeWidth={2} />
+                  </span>
+                  <p>New projects are on the way.</p>
+                  <button type="button" onClick={goToContact} className="sv-btn-primary">
+                    <Send size={16} />
                     Discuss a project with us
                   </button>
                 </div>
               ) : (
-                <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5">
+                <div className="pj-grid">
                   {projects.map((project, index) => (
                     <Reveal key={project.id} delay={index * 70}>
                       <ProjectCard project={project} />
@@ -208,30 +214,25 @@ const Projects = () => {
             </div>
           </section>
 
-          {/* CTA */}
-          <section className="py-8 md:py-10 bg-dark-200">
-            <div className="max-w-3xl mx-auto px-3 sm:px-4 lg:px-5 text-center">
-              <h2 className="text-2xl md:text-3xl font-bold text-white font-heading mb-2 leading-tight">
-                Have a Product Idea?
-              </h2>
-              <p className="text-sm text-gray-400 leading-snug mb-5">
+          <section className="pj-cta">
+            <div className="pj-cta-inner">
+              <h2 className="pj-cta-heading">Have a Product Idea?</h2>
+              <p className="pj-cta-lead">
                 We partner with founders, institutions, and teams to research, build, and launch
                 technology that holds up in production, from first prototype to deployed platform.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <button
-                  onClick={goToContact}
-                  className="btn-primary inline-flex items-center justify-center text-sm"
-                >
-                  <Send className="mr-2" size={16} />
+              <div className="pj-cta-actions">
+                <button type="button" onClick={goToContact} className="sv-btn-primary">
+                  <Send size={16} />
                   Contact Us
                 </button>
                 <button
+                  type="button"
                   onClick={() => navigate('/services')}
-                  className="btn-secondary inline-flex items-center justify-center text-sm"
+                  className="sv-btn-secondary"
                 >
                   Our Services
-                  <ArrowRight className="ml-2" size={16} />
+                  <ArrowRight size={16} />
                 </button>
               </div>
             </div>

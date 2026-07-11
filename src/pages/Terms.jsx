@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import SEO from '../components/SEO';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { ArrowLeft, FileText } from 'lucide-react';
+import { CONTACT } from '../config/site';
 
 const Terms = () => {
   const navigate = useNavigate();
@@ -118,9 +118,12 @@ const Terms = () => {
                   If you have any questions about these Terms of Service, please contact us:
                 </p>
                 <div className="mt-4 p-4 bg-dark-100 rounded-lg">
-                  <p className="text-gold-400">Email: betatechlabs10@gmail.com</p>
-                  <p className="text-gold-400">Phone: +256 791018086</p>
-                  <p className="text-gold-400">Location: Kabale, Uganda</p>
+                  <p className="text-gold-400">Email: {CONTACT.email}</p>
+                  <p className="text-gold-400">Phone: {CONTACT.officePhone}</p>
+                  <p className="text-gold-400">
+                    Location: {CONTACT.address.headline}, {CONTACT.address.road}, {CONTACT.address.area}
+                  </p>
+                  <p className="text-gold-400">Plus Code: {CONTACT.address.plusCode}</p>
                 </div>
               </section>
             </div>

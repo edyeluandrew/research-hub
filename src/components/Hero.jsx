@@ -1,31 +1,178 @@
-import React from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowRight, Search, Package, Settings, GraduationCap } from 'lucide-react';
-import { SITE, STATS, COMPANY } from '../config/site';
+import { ArrowRight } from 'lucide-react';
+import { SITE, COMPANY, STATS } from '../config/site';
 import { navigateToHomeSection } from '../utils/homeNavigation';
 
 const CAPABILITIES = [
   {
-    icon: Search,
     title: 'Research & Innovation',
     description: 'Generating knowledge and exploring possibilities before building technology',
   },
   {
-    icon: Package,
     title: 'Product Innovation',
     description: 'Transforming research into products we own, evolve, and scale',
   },
   {
-    icon: Settings,
     title: 'Solution Engineering',
     description: 'Tailored technology solutions for organizations and communities',
   },
   {
-    icon: GraduationCap,
     title: 'Talent Development',
     description: 'Empowering the next generation of researchers and innovators',
   },
 ];
+
+const HERO_BG_SLIDES = [
+  {
+    src: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1920&q=80',
+    alt: 'Circuit board and microchip technology close-up',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1920&q=80',
+    alt: 'Cybersecurity and digital technology network',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1920&q=80',
+    alt: 'Artificial intelligence and neural network visualization',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80',
+    alt: 'Earth from space with global digital connectivity',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1920&q=80',
+    alt: 'Developers collaborating with laptops in a tech workspace',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=1920&q=80',
+    alt: 'Robotics and intelligent machine innovation',
+  },
+];
+
+const HERO_STATS = [
+  { value: STATS.projects, label: 'Products' },
+  { value: STATS.studentsTrained, label: 'Talent Developed', accent: true },
+  { value: STATS.researchPapers, label: 'Research Outputs' },
+];
+
+const parseStatValue = (value) => {
+  const match = String(value).match(/^(\d+)(\+?)$/);
+  return match
+    ? { target: parseInt(match[1], 10), suffix: match[2] || '' }
+    : { target: 0, suffix: String(value) };
+};
+
+const HeroStat = ({ value, label, accent = false }) => {
+  const { target, suffix } = parseStatValue(value);
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return undefined;
+
+    const reduced =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reduced) {
+      setCount(target);
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        observer.disconnect();
+
+        const start = performance.now();
+        const duration = 1400;
+
+        const tick = (now) => {
+          const progress = Math.min((now - start) / duration, 1);
+          const eased = 1 - (1 - progress) ** 3;
+          setCount(Math.round(eased * target));
+          if (progress < 1) requestAnimationFrame(tick);
+        };
+
+        requestAnimationFrame(tick);
+      },
+      { threshold: 0.25 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [target]);
+
+  return (
+    <div ref={ref} className="hero-stat-item">
+      <div className={`hero-stat-value${accent ? ' hero-stat-value--accent' : ''}`}>
+        {count}
+        {suffix}
+      </div>
+      <div className="hero-stat-label">{label}</div>
+    </div>
+  );
+};
+
+const HeroBackgroundSlider = () => {
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  const next = useCallback(() => {
+    setActive((i) => (i + 1) % HERO_BG_SLIDES.length);
+  }, []);
+
+  useEffect(() => {
+    const reduced =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced || paused) return undefined;
+
+    const timer = setInterval(next, 6500);
+    return () => clearInterval(timer);
+  }, [next, paused]);
+
+  return (
+    <div
+      className="hero-bg-slider"
+      aria-hidden="true"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      {HERO_BG_SLIDES.map((slide, index) => (
+        <div
+          key={slide.src}
+          className={`hero-bg-slide${index === active ? ' hero-bg-slide--active' : ''}`}
+        >
+          <img
+            src={slide.src}
+            alt=""
+            className="hero-bg-image"
+            loading={index === 0 ? 'eager' : 'lazy'}
+            decoding="async"
+          />
+        </div>
+      ))}
+
+      <div className="hero-bg-wash" />
+      <div className="hero-bg-vignette" />
+
+      <div className="hero-bg-dots">
+        {HERO_BG_SLIDES.map((slide, index) => (
+          <button
+            key={slide.src}
+            type="button"
+            className={`hero-bg-dot${index === active ? ' hero-bg-dot--active' : ''}`}
+            onClick={() => setActive(index)}
+            aria-label={`Show background ${index + 1}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const Hero = () => {
   const navigate = useNavigate();
@@ -33,91 +180,61 @@ const Hero = () => {
   const goToContact = () => navigateToHomeSection(navigate, location, 'contact');
 
   return (
-    <section id="home" className="bg-gold-gradient relative overflow-hidden pt-16 pb-10 md:pb-12 border-b border-gray-800/50">
-      <div className="absolute top-1/4 right-0 w-96 h-96 bg-gold-500/5 rounded-full blur-3xl pointer-events-none hero-fade-in opacity-0" aria-hidden />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 md:pt-5 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
-          <div className="text-center lg:text-left">
-            <p className="hero-fade-in hero-delay-1 text-xs md:text-sm font-semibold uppercase tracking-[0.15em] text-gold-500 mb-3 section-eyebrow">
-              {SITE.positioning}
-            </p>
+    <section
+      id="home"
+      className="hero-section relative overflow-hidden min-h-screen flex flex-col border-b border-[#C2C1BF]/60"
+    >
+      <HeroBackgroundSlider />
+      <div className="hero-dot-grid" aria-hidden="true" />
 
-            <h1 className="hero-fade-in hero-delay-2 text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-[3.25rem] font-bold leading-[1.15] mb-3 max-w-2xl mx-auto lg:mx-0">
-              <span className="gold-shimmer">{SITE.brandPromise}</span>
+      <div className="hero-inner flex-1 flex flex-col justify-center w-full max-w-[100rem] mx-auto px-3 sm:px-4 lg:px-5 xl:px-6 pt-20 md:pt-[5.75rem] lg:pt-24 pb-5 md:pb-6 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 xl:gap-10 items-stretch w-full">
+          <div className="flex flex-col text-left min-w-0">
+            <h1 className="hero-headline hero-fade-in hero-delay-2">
+              <span className="hero-headline-line">Turning Research into</span>
+              <span className="hero-headline-line">Real-World Solutions</span>
             </h1>
 
-            <p className="hero-fade-in hero-delay-3 text-lg md:text-xl lg:text-2xl text-white font-semibold mb-4">
-              {SITE.tagline}
-            </p>
+            <p className="hero-tagline hero-fade-in hero-delay-2">{SITE.tagline}</p>
 
-            <p className="hero-fade-in hero-delay-3 text-base md:text-lg text-gray-400 mb-6 leading-relaxed max-w-xl mx-auto lg:mx-0">
+            <p className="hero-body hero-fade-in hero-delay-3">
               {COMPANY.intro} We engage with communities, conduct research, and engineer technology
               that creates meaningful, lasting impact.
             </p>
 
-            <p className="hero-fade-in hero-delay-4 text-sm text-gray-500 italic mb-6 max-w-xl mx-auto lg:mx-0">
+            <p className="hero-quote hero-fade-in hero-delay-4">
               &ldquo;{SITE.philosophy}&rdquo;
             </p>
 
-            <div className="hero-fade-in hero-delay-4 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
-              <button
-                onClick={goToContact}
-                className="btn-hero-primary inline-flex items-center justify-center"
-              >
+            <div className="hero-fade-in hero-delay-4 flex flex-wrap gap-3">
+              <button type="button" onClick={goToContact} className="hero-btn-primary">
                 Contact Us
-                <ArrowRight className="ml-2" size={16} />
+                <ArrowRight className="ml-2.5" size={18} />
               </button>
-              <button
-                onClick={() => navigate('/services')}
-                className="btn-hero-secondary inline-flex items-center justify-center"
-              >
+              <button type="button" onClick={() => navigate('/services')} className="hero-btn-secondary">
                 View Services
               </button>
             </div>
 
-            <div className="hero-fade-in hero-delay-5 grid grid-cols-3 gap-3 mt-8 pt-6 border-t border-gray-800">
-              <div className="stat-block text-center lg:text-left">
-                <div className="stat-value text-xl md:text-2xl font-bold text-white">{STATS.projects}</div>
-                <div className="text-xs md:text-sm text-gray-500">Products</div>
-              </div>
-              <div className="stat-block text-center lg:text-left">
-                <div className="stat-value text-xl md:text-2xl font-bold text-gold-500">{STATS.studentsTrained}</div>
-                <div className="text-xs md:text-sm text-gray-500">Talent Developed</div>
-              </div>
-              <div className="stat-block text-center lg:text-left">
-                <div className="stat-value text-xl md:text-2xl font-bold text-white">{STATS.researchPapers}</div>
-                <div className="text-xs md:text-sm text-gray-500">Research Outputs</div>
-              </div>
+            <div className="hero-stats-bar hero-fade-in hero-delay-5">
+              {HERO_STATS.map((stat) => (
+                <HeroStat key={stat.label} {...stat} />
+              ))}
             </div>
           </div>
 
-          <div className="hero-fade-in hero-delay-3 w-full max-w-lg mx-auto lg:mx-0 lg:ml-auto">
-            <div className="hero-panel group/panel p-5 md:p-6">
-              <div className="mb-4 pb-3 border-b border-gray-800 transition-colors duration-300 group-hover/panel:border-gold-500/20">
-                <h2 className="text-sm font-semibold tracking-wide uppercase text-gray-300 group-hover/panel:text-white transition-colors duration-300">
-                  Strategic Pillars
-                </h2>
-                <p className="text-xs text-gray-500 mt-1 group-hover/panel:text-gray-400 transition-colors duration-300">
-                  The Beta-Tech Way
-                </p>
+          <div className="hero-fade-in hero-delay-3 w-full min-w-0 flex">
+            <div className="hero-pillars-panel flex-1">
+              <div className="hero-pillars-panel-header">
+                <h2 className="hero-pillars-label">Strategic Pillars</h2>
+                <p className="hero-pillars-sub">The Beta-Tech Way</p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {CAPABILITIES.map(({ icon: Icon, title, description }) => (
-                  <div key={title} className="hero-capability group/cap">
-                    <div className="flex items-start gap-3">
-                      <div className="w-9 h-9 rounded-lg bg-gold-500/10 border border-gold-500/20 flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover/cap:border-gold-500/50 group-hover/cap:bg-gold-500/15 group-hover/cap:scale-105">
-                        <Icon className="text-gold-500 transition-transform duration-300 group-hover/cap:scale-110" size={18} />
-                      </div>
-                      <div className="min-w-0">
-                        <h3 className="text-sm font-semibold text-white mb-0.5 group-hover/cap:text-gold-400 transition-colors duration-300">
-                          {title}
-                        </h3>
-                        <p className="text-xs text-gray-500 leading-relaxed group-hover/cap:text-gray-400 transition-colors duration-300">
-                          {description}
-                        </p>
-                      </div>
-                    </div>
+              <div className="hero-pillars-grid">
+                {CAPABILITIES.map(({ title, description }) => (
+                  <div key={title} className="hero-capability-card group/cap">
+                    <h3 className="hero-cap-title">{title}</h3>
+                    <p className="hero-cap-desc">{description}</p>
                   </div>
                 ))}
               </div>

@@ -9,6 +9,7 @@ import {
   Twitter,
   Linkedin,
   Github,
+  ArrowRight,
 } from 'lucide-react';
 import logo from '../assets/logo.png';
 import { SITE, CONTACT, SOCIAL } from '../config/site';
@@ -20,6 +21,7 @@ const QUICK_LINKS = [
   { name: 'Our Focus', href: '/#our-focus' },
   { name: 'Our Values', href: '/#values' },
   { name: 'Team', href: '/#team' },
+  { name: 'Services', href: '/services' },
   { name: 'Projects', href: '/projects' },
   { name: 'Events', href: '/events' },
   { name: 'Contact', href: '/#contact' },
@@ -39,7 +41,7 @@ const Footer = () => {
     {
       icon: MapPin,
       text: CONTACT.address.headline,
-      sub: CONTACT.address.area,
+      sub: `${CONTACT.address.plusCode} · ${CONTACT.address.area}`,
       link: CONTACT.mapLinkUrl,
     },
     { icon: Mail, text: CONTACT.email, link: `mailto:${CONTACT.email}` },
@@ -48,48 +50,45 @@ const Footer = () => {
   ];
 
   const socialLinks = [
-    { icon: Twitter, href: SOCIAL.x, label: 'X' },
-    { icon: Linkedin, href: SOCIAL.linkedin, label: 'LinkedIn' },
-    { icon: Github, href: SOCIAL.github, label: 'GitHub' },
+    { icon: Twitter, href: SOCIAL.x, label: 'X', tone: 'x' },
+    { icon: Linkedin, href: SOCIAL.linkedin, label: 'LinkedIn', tone: 'linkedin' },
+    { icon: Github, href: SOCIAL.github, label: 'GitHub', tone: 'github' },
   ];
 
   const renderLink = (link) => {
-    const className = 'text-sm text-gray-400 hover:text-gold-500 transition-colors leading-snug';
     if (link.href.includes('#')) {
       return (
-        <HashLink to={link.href} className={className}>
+        <HashLink to={link.href} className="ft-link">
           {link.name}
         </HashLink>
       );
     }
     return (
-      <Link to={link.href} className={className}>
+      <Link to={link.href} className="ft-link">
         {link.name}
       </Link>
     );
   };
 
   return (
-    <footer className="bg-dark-200 border-t border-gray-800 relative">
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5 py-8 md:py-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-6 md:gap-8">
-          {/* Brand */}
-          <div className="lg:col-span-4">
-            <Link to="/" className="inline-flex items-center gap-3 mb-3">
-              <img
-                src={logo}
-                alt={`${SITE.name} logo`}
-                className="w-11 h-11 rounded-lg object-cover"
-              />
+    <footer className="ft-footer">
+      <div className="ft-topline" aria-hidden="true" />
+      <div className="ft-pattern" aria-hidden="true" />
+
+      <div className="ft-inner">
+        <div className="ft-grid">
+          <div className="ft-brand">
+            <Link to="/" className="ft-brand-link">
+              <img src={logo} alt={`${SITE.name} logo`} className="ft-logo" />
               <div>
-                <p className="text-base font-bold text-gold-500 leading-snug">{SITE.name}</p>
-                <p className="text-xs text-gray-500 leading-snug">{SITE.tagline}</p>
+                <p className="ft-brand-name">{SITE.name}</p>
+                <p className="ft-brand-tag">{SITE.tagline}</p>
               </div>
             </Link>
-            <p className="text-sm text-gray-400 leading-snug mb-4 max-w-sm">
-              {SITE.brandPromise}. A {SITE.positioning.toLowerCase()} based in {SITE.location}.
+            <p className="ft-brand-copy">
+              {SITE.brandPromise}. Based in {SITE.location}.
             </p>
-            <div className="flex gap-2">
+            <div className="ft-socials">
               {socialLinks.map((social) => {
                 const Icon = social.icon;
                 return (
@@ -98,41 +97,32 @@ const Footer = () => {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-9 h-9 rounded-lg border border-gray-700 bg-dark-100 flex items-center justify-center text-gray-400 hover:text-gold-500 hover:border-gold-500/30 transition-colors"
+                    className={`ft-social ft-social--${social.tone}`}
                     aria-label={social.label}
+                    title={social.label}
                   >
-                    <Icon size={16} />
+                    <Icon size={19} color="#FFFFFF" strokeWidth={2.25} />
                   </a>
                 );
               })}
             </div>
           </div>
 
-          {/* Quick links */}
-          <div className="lg:col-span-2">
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-gold-500 mb-3">
-              Quick Links
-            </h4>
-            <ul className="space-y-2">
+          <div className="ft-col">
+            <h4 className="ft-col-title">Quick Links</h4>
+            <ul className="ft-list">
               {QUICK_LINKS.map((link) => (
                 <li key={link.name}>{renderLink(link)}</li>
               ))}
             </ul>
           </div>
 
-          {/* Focus areas */}
-          <div className="lg:col-span-3">
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-gold-500 mb-3">
-              What We Do
-            </h4>
-            <ul className="space-y-2">
+          <div className="ft-col">
+            <h4 className="ft-col-title">What We Do</h4>
+            <ul className="ft-list">
               {FOCUS_AREAS.map((area) => (
                 <li key={area}>
-                  <HashLink
-                    to="/#our-focus"
-                    className="text-sm text-gray-400 hover:text-gold-500 transition-colors leading-snug flex items-start gap-2"
-                  >
-                    <span className="text-gold-500/60 mt-0.5">·</span>
+                  <HashLink to="/#our-focus" className="ft-link">
                     {area}
                   </HashLink>
                 </li>
@@ -140,67 +130,60 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Contact */}
-          <div className="lg:col-span-3">
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-gold-500 mb-3">
-              Contact
-            </h4>
-            <ul className="space-y-2.5 mb-4">
+          <div className="ft-col ft-col--contact">
+            <h4 className="ft-col-title">Contact</h4>
+            <ul className="ft-contact-list">
               {contactInfo.map((item, index) => {
                 const Icon = item.icon;
                 return (
-                  <li key={index} className="flex items-start gap-2.5">
-                    <Icon className="text-gold-500/80 flex-shrink-0 mt-0.5" size={14} />
+                  <li key={index} className="ft-contact-item">
+                    <div className="ft-contact-icon-wrap">
+                      <Icon size={17} strokeWidth={2.25} />
+                    </div>
                     <div className="min-w-0">
                       {item.link ? (
                         <a
                           href={item.link}
                           target={item.link.startsWith('http') ? '_blank' : undefined}
                           rel={item.link.startsWith('http') ? 'noopener noreferrer' : undefined}
-                          className="text-sm text-gray-400 hover:text-gold-500 transition-colors leading-snug block"
+                          className="ft-link ft-link--contact"
                         >
                           {item.text}
                         </a>
                       ) : (
-                        <span className="text-sm text-gray-400 leading-snug block">{item.text}</span>
+                        <span className="ft-contact-text">{item.text}</span>
                       )}
-                      {item.sub && (
-                        <span className="text-xs text-gray-500 leading-snug block">{item.sub}</span>
-                      )}
+                      {item.sub && <span className="ft-contact-sub">{item.sub}</span>}
                     </div>
                   </li>
                 );
               })}
             </ul>
 
-            <div>
-              <p className="text-xs font-medium text-gray-500 mb-2">Stay updated</p>
-              <HashLink
-                to="/#newsletter"
-                className="inline-flex items-center gap-2 text-sm font-medium text-gold-500 hover:text-gold-400 transition-colors"
-              >
-                <Mail size={14} />
-                Subscribe to our newsletter
-              </HashLink>
-            </div>
+            <HashLink to="/#newsletter" className="ft-newsletter-btn">
+              <Mail size={17} strokeWidth={2.25} />
+              Subscribe to newsletter
+              <ArrowRight size={16} className="ft-newsletter-arrow" />
+            </HashLink>
           </div>
         </div>
       </div>
 
-      {/* Bottom bar */}
-      <div className="border-t border-gray-800">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <p className="text-xs text-gray-500 leading-snug">
+      <div className="ft-bottom">
+        <div className="ft-bottom-inner">
+          <p className="ft-copy">
             &copy; {currentYear} {SITE.legalName}. All rights reserved.
           </p>
-          <div className="flex flex-wrap gap-x-5 gap-y-1">
-            <Link to="/privacy" className="text-xs text-gray-500 hover:text-gold-500 transition-colors">
+          <div className="ft-legal">
+            <Link to="/privacy" className="ft-legal-link">
               Privacy Policy
             </Link>
-            <Link to="/terms" className="text-xs text-gray-500 hover:text-gold-500 transition-colors">
+            <span className="ft-legal-sep" aria-hidden="true">·</span>
+            <Link to="/terms" className="ft-legal-link">
               Terms of Service
             </Link>
-            <Link to="/cookies" className="text-xs text-gray-500 hover:text-gold-500 transition-colors">
+            <span className="ft-legal-sep" aria-hidden="true">·</span>
+            <Link to="/cookies" className="ft-legal-link">
               Cookies
             </Link>
           </div>
@@ -208,11 +191,12 @@ const Footer = () => {
       </div>
 
       <button
+        type="button"
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        className="fixed bottom-6 right-6 w-10 h-10 bg-gold-500 hover:bg-gold-600 text-dark-200 rounded-full shadow-lg transition-colors flex items-center justify-center z-40"
+        className="ft-top"
         aria-label="Back to top"
       >
-        <ChevronUp size={18} />
+        <ChevronUp size={20} strokeWidth={2.5} />
       </button>
     </footer>
   );

@@ -1,10 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import {
-  Check,
-  ArrowRight,
-  Send,
-} from 'lucide-react';
+import { Check, ArrowRight, Send } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import SEO from '../components/SEO';
@@ -13,38 +9,107 @@ import { navigateToHomeSection } from '../utils/homeNavigation';
 import Reveal from '../components/Reveal';
 import useSiteContent from '../hooks/useSiteContent';
 import { getServicesData, defaultSiteContent } from '../data/dataStore';
-import { getPillarIcon, getServiceIcon } from '../utils/serviceIcons';
+import { getServiceIcon } from '../utils/serviceIcons';
 
-const ServiceCard = ({ pillar }) => {
-  const Icon = pillar.icon;
+const SERVICES_BG_SLIDES = [
+  {
+    src: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1920&q=80',
+    alt: 'Circuit board and microchip technology',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1920&q=80',
+    alt: 'Cybersecurity and digital technology network',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1920&q=80',
+    alt: 'Artificial intelligence visualization',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80',
+    alt: 'Global digital connectivity from space',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1920&q=80',
+    alt: 'Developers collaborating in a tech workspace',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=1920&q=80',
+    alt: 'Robotics and intelligent machine innovation',
+  },
+];
+
+const ServicesHeroSlider = () => {
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  const next = useCallback(() => {
+    setActive((i) => (i + 1) % SERVICES_BG_SLIDES.length);
+  }, []);
+
+  useEffect(() => {
+    const reduced =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced || paused) return undefined;
+    const timer = setInterval(next, 6500);
+    return () => clearInterval(timer);
+  }, [next, paused]);
+
   return (
-    <article className="group interactive-card rounded-xl overflow-hidden flex flex-col h-full">
-      <div className="h-1 bg-gradient-to-r from-gold-500/30 via-gold-500/50 to-transparent transition-opacity duration-300 group-hover:opacity-100 opacity-70" />
-      <div className="p-5 md:p-6 flex flex-col flex-1">
-        <div className="icon-box w-10 h-10 rounded-lg bg-gold-500/10 border border-gold-500/20 flex items-center justify-center mb-3">
-          <Icon className="text-gold-500 transition-transform duration-300" size={20} />
+    <div
+      className="sv-hero-slider"
+      aria-hidden="true"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      {SERVICES_BG_SLIDES.map((slide, index) => (
+        <div
+          key={slide.src}
+          className={`sv-hero-slide${index === active ? ' sv-hero-slide--active' : ''}`}
+        >
+          <img
+            src={slide.src}
+            alt=""
+            className="sv-hero-image"
+            loading={index === 0 ? 'eager' : 'lazy'}
+            decoding="async"
+          />
         </div>
-        <p className="text-xs font-semibold uppercase tracking-wider text-gold-500 mb-1 leading-snug">
-          {pillar.label}
-        </p>
-        <h3 className="text-lg md:text-xl font-bold text-white mb-2 leading-snug transition-colors duration-300 group-hover:text-gold-50">
-          {pillar.title}
-        </h3>
-        <p className="text-sm text-gray-400 leading-snug mb-4 transition-colors duration-300 group-hover:text-gray-300">
-          {pillar.description}
-        </p>
-        <ul className="space-y-2 mt-auto pt-4 border-t border-gray-800">
-          {pillar.items.map((item) => (
-            <li key={item} className="flex items-start gap-2 text-sm text-gray-300 leading-snug">
-              <Check className="text-gold-500 flex-shrink-0 mt-0.5" size={14} />
-              {item}
-            </li>
-          ))}
-        </ul>
+      ))}
+      <div className="sv-hero-wash" />
+      <div className="sv-hero-dots">
+        {SERVICES_BG_SLIDES.map((slide, index) => (
+          <button
+            key={slide.src}
+            type="button"
+            className={`sv-hero-dot${index === active ? ' sv-hero-dot--active' : ''}`}
+            onClick={() => setActive(index)}
+            aria-label={`Show background ${index + 1}`}
+          />
+        ))}
       </div>
-    </article>
+    </div>
   );
 };
+
+const ServiceCard = ({ pillar, index }) => (
+  <article className="sv-card">
+    <div className="sv-card-top">
+      <span className="sv-card-label">{pillar.label}</span>
+      <span className="sv-card-num">{String(index + 1).padStart(2, '0')}</span>
+    </div>
+    <h3 className="sv-card-title">{pillar.title}</h3>
+    <p className="sv-card-desc">{pillar.description}</p>
+    <ul className="sv-card-list">
+      {pillar.items.map((item) => (
+        <li key={item}>
+          <Check size={17} />
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
+  </article>
+);
 
 const Services = () => {
   const navigate = useNavigate();
@@ -57,7 +122,6 @@ const Services = () => {
   const servicesPage = content?.servicesPage || defaultSiteContent.servicesPage;
 
   const servicePillars = strategicPillars.map((pillar) => ({
-    icon: getPillarIcon(pillar.id),
     label: pillar.label,
     title: pillar.title,
     description: pillar.description,
@@ -94,72 +158,62 @@ const Services = () => {
         ogImage={`${SITE.url}/images/og-services.svg`}
       />
 
-      <div className="min-h-screen bg-dark-200 flex flex-col">
+      <div className="min-h-screen bg-[#FDF9ED] flex flex-col">
         <Header />
 
         <main className="flex-1">
-          <section className="pt-20 pb-8 md:pb-10 bg-gold-gradient border-b border-gray-800/50">
-            <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-500 mb-2">
-                The Beta-Tech Way
-              </p>
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white font-heading leading-tight mb-3 max-w-3xl">
-                {SITE.brandPromise}
+          <section className="sv-hero">
+            <ServicesHeroSlider />
+            <div className="sv-hero-inner">
+              <p className="sv-eyebrow">The Beta-Tech Way</p>
+              <h1 className="sv-hero-heading">
+                <span className="sv-hero-heading-line">Turning Research into</span>
+                <span className="sv-hero-heading-line">Real-World Solutions</span>
               </h1>
-              <p className="text-sm md:text-base text-gray-400 leading-snug max-w-2xl">
-                {SITE.positioning}. We conduct research, develop products, engineer solutions, and
-                develop talent through The Beta-Tech Way — a disciplined approach that starts with
-                understanding, not assumption.
+              <p className="sv-hero-lead">
+                We conduct research, develop products, engineer solutions, and develop talent
+                through The Beta-Tech Way, a disciplined approach that starts with understanding,
+                not assumption.
               </p>
             </div>
           </section>
 
-          <section className="py-8 md:py-10 bg-dark-100 border-b border-gray-800/50">
-            <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
-              <div className="mb-6 md:mb-8 max-w-2xl">
-                <h2 className="text-2xl md:text-3xl font-bold text-white font-heading mb-2 leading-tight">
-                  Strategic Pillars
-                </h2>
-                <p className="text-sm text-gray-400 leading-snug">
-                  {servicesPage.pillarsSubtitle}
-                </p>
-              </div>
-              <div className="grid md:grid-cols-2 gap-4 md:gap-5">
+          <section className="sv-section sv-section--sand">
+            <div className="sv-inner">
+              <Reveal className="sv-section-header">
+                <p className="sv-eyebrow">What We Offer</p>
+                <h2 className="sv-heading">Strategic Pillars</h2>
+                <p className="sv-intro">{servicesPage.pillarsSubtitle}</p>
+              </Reveal>
+              <div className="sv-pillars-grid">
                 {servicePillars.map((pillar, index) => (
                   <Reveal key={pillar.label} delay={index * 80}>
-                    <ServiceCard pillar={pillar} />
+                    <ServiceCard pillar={pillar} index={index} />
                   </Reveal>
                 ))}
               </div>
             </div>
           </section>
 
-          <section className="py-8 md:py-10 bg-dark-200 border-b border-gray-800/50">
-            <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
-              <div className="mb-6 md:mb-8 max-w-2xl">
-                <h2 className="text-2xl md:text-3xl font-bold text-white font-heading mb-2 leading-tight">
-                  Technologies We Work With
-                </h2>
-                <p className="text-sm text-gray-400 leading-snug">
-                  {servicesPage.techSectionSubtitle}
-                </p>
-              </div>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+          <section className="sv-section sv-section--cream">
+            <div className="sv-inner">
+              <Reveal className="sv-section-header">
+                <p className="sv-eyebrow">Our Stack</p>
+                <h2 className="sv-heading">Technologies We Work With</h2>
+                <p className="sv-intro">{servicesPage.techSectionSubtitle}</p>
+              </Reveal>
+              <div className="sv-tech-grid">
                 {serviceAreas.map((tech, index) => {
                   const Icon = getServiceIcon(tech.icon);
                   return (
                     <Reveal key={tech.id || tech.title} delay={index * 50}>
-                      <div className="group interactive-card-light rounded-xl p-4 h-full">
-                        <div className="icon-box w-9 h-9 rounded-lg bg-gold-500/10 border border-gold-500/20 flex items-center justify-center mb-2.5">
-                          <Icon className="text-gold-500 transition-transform duration-300" size={16} />
+                      <article className="sv-tech-card">
+                        <div className="sv-tech-icon">
+                          <Icon size={22} />
                         </div>
-                        <h3 className="text-sm font-semibold text-white mb-1 leading-snug transition-colors duration-300 group-hover:text-gold-50">
-                          {tech.title}
-                        </h3>
-                        <p className="text-xs text-gray-500 leading-snug transition-colors duration-300 group-hover:text-gray-400">
-                          {tech.description}
-                        </p>
-                      </div>
+                        <h3 className="sv-tech-title">{tech.title}</h3>
+                        <p className="sv-tech-desc">{tech.description}</p>
+                      </article>
                     </Reveal>
                   );
                 })}
@@ -167,57 +221,44 @@ const Services = () => {
             </div>
           </section>
 
-          <section className="py-8 md:py-10 bg-dark-100 border-b border-gray-800/50">
-            <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
-              <div className="mb-6 max-w-2xl">
-                <h2 className="text-2xl md:text-3xl font-bold text-white font-heading mb-2 leading-tight">
-                  The Beta-Tech Innovation Pipeline (BTIP)
-                </h2>
-                <p className="text-sm text-gray-400 leading-snug">
+          <section className="sv-section sv-section--sand">
+            <div className="sv-inner">
+              <Reveal className="sv-section-header">
+                <p className="sv-eyebrow">How We Deliver</p>
+                <h2 className="sv-heading">The Beta-Tech Innovation Pipeline</h2>
+                <p className="sv-intro">
                   How validated research becomes products, solutions, and measurable impact.
                 </p>
-              </div>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-3 md:gap-4">
+              </Reveal>
+              <div className="sv-pipeline-grid">
                 {servicesPage.engagementSteps.map((item, index) => (
                   <Reveal key={item.step} delay={index * 60}>
-                    <div className="group pipeline-step h-full">
-                      <span className="step-number">{item.step}</span>
-                      <h3 className="text-base font-bold text-white mt-1 mb-1 leading-snug transition-colors duration-300 group-hover:text-gold-50">
-                        {item.title}
-                      </h3>
-                      <p className="text-sm text-gray-400 leading-snug transition-colors duration-300 group-hover:text-gray-300">
-                        {item.text}
-                      </p>
-                    </div>
+                    <article className="sv-pipeline-card">
+                      <span className="sv-pipeline-num">{item.step}</span>
+                      <h3 className="sv-pipeline-title">{item.title}</h3>
+                      <p className="sv-pipeline-text">{item.text}</p>
+                    </article>
                   </Reveal>
                 ))}
               </div>
             </div>
           </section>
 
-          <section className="py-8 md:py-10 bg-dark-200">
-            <div className="max-w-3xl mx-auto px-3 sm:px-4 lg:px-5 text-center">
-              <h2 className="text-2xl md:text-3xl font-bold text-white font-heading mb-2 leading-tight">
-                Ready to Start?
-              </h2>
-              <p className="text-sm text-gray-400 leading-snug mb-5">
+          <section className="sv-cta">
+            <div className="sv-cta-inner">
+              <h2 className="sv-cta-heading">Ready to Start?</h2>
+              <p className="sv-cta-lead">
                 Tell us about your project, research idea, or engineering challenge. We respond
-                within one business day and scope work honestly, no inflated promises.
+                within one business day and scope work honestly, with no inflated promises.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <button
-                  onClick={goToContact}
-                  className="btn-primary inline-flex items-center justify-center text-sm"
-                >
-                  <Send className="mr-2" size={16} />
+              <div className="sv-cta-actions">
+                <button type="button" onClick={goToContact} className="sv-btn-primary">
+                  <Send size={18} />
                   Contact Us
                 </button>
-                <button
-                  onClick={() => navigate('/projects')}
-                  className="btn-secondary inline-flex items-center justify-center text-sm"
-                >
+                <button type="button" onClick={() => navigate('/projects')} className="sv-btn-secondary">
                   View Our Work
-                  <ArrowRight className="ml-2" size={16} />
+                  <ArrowRight size={18} />
                 </button>
               </div>
             </div>
