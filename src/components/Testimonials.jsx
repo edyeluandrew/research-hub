@@ -101,7 +101,7 @@ const FeedbackModal = ({ open, onClose, formData, onChange, onSubmit, submitting
                   value={formData.name}
                   onChange={onChange}
                   required
-                  className="w-full pl-10 pr-3 py-3 text-sm bg-[#FDF9ED] border border-[#C2C1BF] rounded-lg focus:outline-none focus:border-[#2563EB] text-[#020201] placeholder:text-[#85867E]"
+                  className="w-full pl-10 pr-3 py-3 text-sm bg-[#FFFFFF] border border-[#C2C1BF] rounded-lg focus:outline-none focus:border-[#2563EB] text-[#020201] placeholder:text-[#85867E]"
                   placeholder="Your name"
                 />
               </div>
@@ -117,7 +117,7 @@ const FeedbackModal = ({ open, onClose, formData, onChange, onSubmit, submitting
                 value={formData.role}
                 onChange={onChange}
                 required
-                className="w-full px-3 py-3 text-sm bg-[#FDF9ED] border border-[#C2C1BF] rounded-lg focus:outline-none focus:border-[#2563EB] text-[#020201] placeholder:text-[#85867E]"
+                className="w-full px-3 py-3 text-sm bg-[#FFFFFF] border border-[#C2C1BF] rounded-lg focus:outline-none focus:border-[#2563EB] text-[#020201] placeholder:text-[#85867E]"
                 placeholder="e.g. Founder, Product Manager"
               />
             </div>
@@ -135,7 +135,7 @@ const FeedbackModal = ({ open, onClose, formData, onChange, onSubmit, submitting
                 value={formData.organization}
                 onChange={onChange}
                 required
-                className="w-full px-3 py-3 text-sm bg-[#FDF9ED] border border-[#C2C1BF] rounded-lg focus:outline-none focus:border-[#2563EB] text-[#020201] placeholder:text-[#85867E]"
+                className="w-full px-3 py-3 text-sm bg-[#FFFFFF] border border-[#C2C1BF] rounded-lg focus:outline-none focus:border-[#2563EB] text-[#020201] placeholder:text-[#85867E]"
                 placeholder="Company or institution"
               />
             </div>
@@ -149,7 +149,7 @@ const FeedbackModal = ({ open, onClose, formData, onChange, onSubmit, submitting
                 name="location"
                 value={formData.location}
                 onChange={onChange}
-                className="w-full px-3 py-3 text-sm bg-[#FDF9ED] border border-[#C2C1BF] rounded-lg focus:outline-none focus:border-[#2563EB] text-[#020201] placeholder:text-[#85867E]"
+                className="w-full px-3 py-3 text-sm bg-[#FFFFFF] border border-[#C2C1BF] rounded-lg focus:outline-none focus:border-[#2563EB] text-[#020201] placeholder:text-[#85867E]"
                 placeholder="e.g. Kampala, Uganda"
               />
             </div>
@@ -167,7 +167,7 @@ const FeedbackModal = ({ open, onClose, formData, onChange, onSubmit, submitting
               required
               minLength={20}
               rows={4}
-              className="w-full px-3 py-3 text-sm bg-[#FDF9ED] border border-[#C2C1BF] rounded-lg focus:outline-none focus:border-[#2563EB] text-[#020201] placeholder:text-[#85867E] resize-none"
+              className="w-full px-3 py-3 text-sm bg-[#FFFFFF] border border-[#C2C1BF] rounded-lg focus:outline-none focus:border-[#2563EB] text-[#020201] placeholder:text-[#85867E] resize-none"
               placeholder="Share your experience working with Beta-Tech Labs..."
             />
           </div>

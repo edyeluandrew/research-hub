@@ -45,7 +45,7 @@ const Home = () => {
         ogImage={`${SITE.url}/images/og-home.svg`}
       />
 
-      <div className="min-h-screen bg-[#FDF9ED] flex flex-col">
+      <div className="min-h-screen bg-[#FFFFFF] flex flex-col">
         <Header />
         <main className="flex-1">
           <Hero />
