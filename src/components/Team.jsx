@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Twitter, Linkedin, Github } from 'lucide-react';
-import { getTeamData } from '../data/dataStore';
+import { getTeamData, defaultTeamData } from '../data/dataStore';
 import Reveal from './Reveal';
 
 const PLATFORMS = {
@@ -69,7 +69,7 @@ const TeamCard = ({ member }) => {
 };
 
 const Team = () => {
-  const [teamData, setTeamData] = useState(null);
+  const [teamData, setTeamData] = useState(defaultTeamData);
 
   useEffect(() => {
     const load = () => getTeamData().then(setTeamData);

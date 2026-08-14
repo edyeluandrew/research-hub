@@ -1,6 +1,22 @@
-import { firebaseSet, firebaseGet } from '../firebase/config';
 import { COMPANY, CORE_VALUES, INNOVATION_PIPELINE, STRATEGIC_PILLARS, SITE } from '../config/site';
 import { FASIRI_SESSION_PHOTOS } from './fasiriSessionPhotos';
+
+// Firebase is loaded on demand so the first paint is not blocked by the SDK.
+let firebaseApi = null;
+const loadFirebase = () => {
+  if (!firebaseApi) firebaseApi = import('../firebase/config');
+  return firebaseApi;
+};
+
+const firebaseGet = async (path) => {
+  const { firebaseGet: get } = await loadFirebase();
+  return get(path);
+};
+
+const firebaseSet = async (path, data) => {
+  const { firebaseSet: set } = await loadFirebase();
+  return set(path, data);
+};
 
 // Default minimal data
 const defaultTeamData = {

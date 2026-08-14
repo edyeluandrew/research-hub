@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Layers } from 'lucide-react';
-import { getProjectsData, PROJECT_LOGOS } from '../data/dataStore';
+import { getProjectsData, PROJECT_LOGOS, defaultProjectsData } from '../data/dataStore';
 import Reveal from './Reveal';
 
 const STATUS_TONE = {
@@ -12,8 +12,12 @@ const STATUS_TONE = {
 
 const rank = (project) => (project.status === 'Launched' ? 0 : 1);
 
+const initialProducts = [...defaultProjectsData]
+  .sort((a, b) => rank(a) - rank(b))
+  .slice(0, 4);
+
 const ProductShowcase = () => {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(initialProducts);
 
   useEffect(() => {
     const load = async () => {

@@ -10,14 +10,17 @@ import Reveal from '../components/Reveal';
 import { SITE } from '../config/site';
 import { navigateToHomeSection } from '../utils/homeNavigation';
 import useSiteContent from '../hooks/useSiteContent';
-import { getServicesData, defaultSiteContent } from '../data/dataStore';
+import { getServicesData, defaultSiteContent, defaultServicesData } from '../data/dataStore';
 import { getServiceIcon } from '../utils/serviceIcons';
 
 const Services = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { content } = useSiteContent();
-  const [technologies, setTechnologies] = useState([]);
+  const [technologies, setTechnologies] = useState([
+    ...(defaultServicesData.core || []),
+    ...(defaultServicesData.additional || []),
+  ]);
 
   const goToContact = () => navigateToHomeSection(navigate, location, 'contact');
 

@@ -7,7 +7,7 @@ import Wordmark from '../components/Wordmark';
 import PageHero from '../components/PageHero';
 import SEO from '../components/SEO';
 import Reveal from '../components/Reveal';
-import { getProjectsData, PROJECT_LOGOS } from '../data/dataStore';
+import { getProjectsData, PROJECT_LOGOS, defaultProjectsData } from '../data/dataStore';
 import { SITE, STATS } from '../config/site';
 import { navigateToHomeSection } from '../utils/homeNavigation';
 
@@ -86,8 +86,8 @@ const ProjectCard = ({ project }) => {
 const Projects = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [projects, setProjects] = useState(defaultProjectsData);
+  const [loading, setLoading] = useState(false);
 
   const goToContact = () => navigateToHomeSection(navigate, location, 'contact');
 

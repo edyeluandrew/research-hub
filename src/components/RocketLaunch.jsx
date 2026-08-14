@@ -66,7 +66,7 @@ const RocketLaunch = () => (
 
     <div className="hero-column">
       <div className="hero-vehicle">
-        <img src={rocket} alt="" className="hero-rocket" decoding="async" />
+        <img src={rocket} alt="" className="hero-rocket" decoding="async" fetchPriority="high" />
         <div className="hero-flame">
           <span className="hero-flame-outer" />
           <span className="hero-flame-core" />

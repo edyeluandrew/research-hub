@@ -205,7 +205,7 @@ const FeedbackModal = ({ open, onClose, formData, onChange, onSubmit, submitting
 
 const Testimonials = () => {
   const [visitorFeedback, setVisitorFeedback] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [formData, setFormData] = useState(EMPTY_FORM);
   const [submitting, setSubmitting] = useState(false);

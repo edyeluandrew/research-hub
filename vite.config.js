@@ -10,10 +10,10 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          // Split vendor code for better caching
           vendor: ['react', 'react-dom', 'react-router-dom'],
           icons: ['lucide-react'],
-          seo: ['react-helmet-async']
+          seo: ['react-helmet-async'],
+          firebase: ['firebase/app', 'firebase/database'],
         },
       },
     },

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { getSiteContent } from '../data/dataStore';
+import { getSiteContent, defaultSiteContent } from '../data/dataStore';
 
 const useSiteContent = () => {
-  const [content, setContent] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [content, setContent] = useState(defaultSiteContent);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let active = true;

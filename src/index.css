@@ -327,6 +327,12 @@ textarea {
   color: var(--accent);
 }
 
+.page-fallback {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--surface);
+}
+
 /* ==========================================================================
    REVEAL ANIMATION
    ========================================================================== */
@@ -335,9 +341,8 @@ textarea {
   opacity: 0;
   transform: translateY(18px);
   transition:
-    opacity 0.7s var(--ease),
-    transform 0.7s var(--ease);
-  will-change: opacity, transform;
+    opacity 0.5s var(--ease),
+    transform 0.5s var(--ease);
 }
 
 .reveal-left {

@@ -44,7 +44,15 @@ const Analytics = () => {
   const location = useLocation();
 
   useEffect(() => {
-    initGA();
+    const start = () => initGA();
+    const idle = window.requestIdleCallback
+      ? window.requestIdleCallback(start, { timeout: 4000 })
+      : window.setTimeout(start, 1200);
+
+    return () => {
+      if (window.cancelIdleCallback) window.cancelIdleCallback(idle);
+      else clearTimeout(idle);
+    };
   }, []);
 
   useEffect(() => {

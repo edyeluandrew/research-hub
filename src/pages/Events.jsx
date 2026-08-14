@@ -23,7 +23,7 @@ import PageHero from '../components/PageHero';
 import Reveal from '../components/Reveal';
 import EventGalleryModal from '../components/EventGalleryModal';
 import NewsletterForm from '../components/NewsletterForm';
-import { getEventsData } from '../data/dataStore';
+import { getEventsData, defaultEventsData } from '../data/dataStore';
 import { SITE, SOCIAL, STATS } from '../config/site';
 import { navigateToHomeSection } from '../utils/homeNavigation';
 
@@ -276,8 +276,8 @@ const FeaturedEvent = ({ event, onOpenGallery, onRequestSeat }) => {
 const Events = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [events, setEvents] = useState(defaultEventsData);
+  const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('upcoming');
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [imageIndex, setImageIndex] = useState(0);
