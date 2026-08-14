@@ -1,22 +1,31 @@
+import React from 'react';
+import { Building2 } from 'lucide-react';
 import { PARTNERS } from '../config/site';
 
+// The marquee loops by translating the track -50%, so the second half of the
+// list must mirror the first half exactly.
+const half = [...PARTNERS, ...PARTNERS];
+const track = [...half, ...half];
+
 const Partners = () => (
-  <section className="py-5 bg-dark-200 border-b border-gray-800/80">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
-        <span className="text-xs font-medium tracking-widest uppercase text-gray-500 whitespace-nowrap section-eyebrow">
-          Trusted by
-        </span>
-        <div className="flex flex-wrap justify-center gap-x-8 gap-y-2">
-          {PARTNERS.map((name) => (
-            <span key={name} className="partner-name text-sm text-gray-400 font-medium">
-              {name}
-            </span>
-          ))}
+  <div className="trust">
+    <div className="shell shell--wide">
+      <div className="trust-inner">
+        <p className="trust-label">Research &amp; delivery partners</p>
+
+        <div className="marquee trust-marquee">
+          <div className="marquee-track">
+            {track.map((name, index) => (
+              <span key={`${name}-${index}`} className="marquee-item">
+                <Building2 size={15} strokeWidth={1.75} />
+                {name}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 );
 
 export default Partners;

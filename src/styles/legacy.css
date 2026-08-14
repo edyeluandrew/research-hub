@@ -1,0 +1,183 @@
+/* ==========================================================================
+   MERIDIAN — compatibility layer
+
+   The admin dashboard and login are back-office screens that keep their dark
+   Tailwind-driven look. These class names are referenced throughout
+   pages/Admin.jsx and pages/AdminLogin.jsx.
+   ========================================================================== */
+
+.card {
+  background: #1d1d1d;
+  border: 1px solid rgba(223, 223, 223, 0.1);
+  border-radius: var(--r);
+  color: var(--text-on-ink);
+}
+
+.glass-card {
+  background: rgba(22, 22, 22, 0.72);
+  border: 1px solid rgba(223, 223, 223, 0.12);
+  border-radius: var(--r-lg);
+  backdrop-filter: blur(14px);
+  color: var(--text-on-ink);
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.625rem;
+  padding: 0.625rem 1.125rem;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--kd-black);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s var(--ease),
+    box-shadow 0.2s var(--ease),
+    opacity 0.2s var(--ease);
+}
+
+.btn-primary:hover {
+  background: #dfdfdf;
+  box-shadow: 0 8px 22px -10px rgba(201, 201, 201, 0.6);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.625rem;
+  padding: 0.625rem 1.125rem;
+  border-radius: var(--r-sm);
+  border: 1px solid rgba(223, 223, 223, 0.18);
+  background: transparent;
+  color: var(--text-on-ink);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s var(--ease),
+    border-color 0.2s var(--ease);
+}
+
+.btn-secondary:hover {
+  background: rgba(223, 223, 223, 0.08);
+  border-color: rgba(223, 223, 223, 0.32);
+}
+
+.btn-primary:disabled,
+.btn-secondary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(223, 223, 223, 0.55);
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  border-radius: var(--r-sm);
+  border: 1px solid rgba(223, 223, 223, 0.14);
+  background: #080808;
+  color: var(--text-on-ink);
+  font-size: 0.9375rem;
+  transition:
+    border-color 0.2s var(--ease),
+    box-shadow 0.2s var(--ease);
+}
+
+.form-input::placeholder {
+  color: rgba(223, 223, 223, 0.35);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(201, 201, 201, 0.16);
+}
+
+.form-input option {
+  background: #1d1d1d;
+  color: var(--text-on-ink);
+}
+
+.icon-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--r-sm);
+  background: rgba(201, 201, 201, 0.14);
+  color: var(--accent);
+}
+
+.section-title {
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.section-subtitle {
+  margin-top: 0.75rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: rgba(223, 223, 223, 0.66);
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, var(--accent) 0%, #dfdfdf 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Entrance helpers still referenced by a few pages */
+.hero-fade-in {
+  animation: legacy-fade-up 0.7s var(--ease) both;
+}
+
+.hero-delay-1 {
+  animation-delay: 0.05s;
+}
+
+.hero-delay-2 {
+  animation-delay: 0.15s;
+}
+
+.hero-delay-3 {
+  animation-delay: 0.25s;
+}
+
+.hero-delay-4 {
+  animation-delay: 0.35s;
+}
+
+.hero-delay-5 {
+  animation-delay: 0.45s;
+}
+
+@keyframes legacy-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

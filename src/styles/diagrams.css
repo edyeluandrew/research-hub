@@ -1,0 +1,366 @@
+/* ==========================================================================
+   DIAGRAM LANGUAGE — node/edge system used across the site
+   Monospace labels, white nodes, solid + dotted routing on near-black.
+   ========================================================================== */
+
+.dg-frame {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--surface-alt);
+  overflow: hidden;
+}
+
+.dg-frame--flat {
+  border-radius: var(--r);
+}
+
+.dg-frame svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.dg-svg {
+  font-family: var(--font-mono);
+}
+
+/* Nodes ------------------------------------------------------------------- */
+
+.dg-node {
+  transition:
+    fill 0.3s var(--ease),
+    stroke 0.3s var(--ease);
+}
+
+/* Solid — the filled chips */
+.dg-node--solid {
+  fill: var(--accent);
+  stroke: none;
+}
+
+/* Outline — quieter supporting nodes */
+.dg-node--outline {
+  fill: var(--surface-raised);
+  stroke: var(--accent-line);
+  stroke-width: 1;
+}
+
+/* Labels ------------------------------------------------------------------ */
+
+.dg-label {
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  letter-spacing: 0.01em;
+  pointer-events: none;
+  user-select: none;
+}
+
+.dg-label--solid {
+  fill: var(--text-on-accent);
+}
+
+.dg-label--outline {
+  fill: #a5a5a5;
+}
+
+/* Edges ------------------------------------------------------------------- */
+
+.dg-edge {
+  fill: none;
+  stroke: #a4a4a4;
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+
+.dg-edge--dotted {
+  stroke-dasharray: 1.5 3;
+}
+
+.dg-edge--faint {
+  stroke: var(--accent-line);
+}
+
+.dg-dot {
+  fill: #a4a4a4;
+}
+
+.dg-arrow {
+  fill: #a4a4a4;
+}
+
+/* Caption under a diagram ------------------------------------------------- */
+
+.dg-caption {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--text-subtle);
+}
+
+.dg-caption::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex: none;
+}
+
+/* --------------------------------------------------------------------------
+   Animated flow — dashes travel along the loop to show iteration
+   -------------------------------------------------------------------------- */
+
+.dg-flow {
+  stroke-dasharray: 3 5;
+  animation: dg-march 1.6s linear infinite;
+}
+
+@keyframes dg-march {
+  to {
+    stroke-dashoffset: -16;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   The master cycle band
+   -------------------------------------------------------------------------- */
+
+.cyc {
+  position: relative;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background:
+    radial-gradient(ellipse 70% 120% at 50% 0%, rgba(201, 201, 201, 0.07), transparent 70%),
+    var(--surface-alt);
+  padding-block: clamp(2.5rem, 5vw, 4rem);
+}
+
+.cyc-svg {
+  width: 100%;
+  height: auto;
+  font-family: var(--font-mono);
+}
+
+.cyc-node {
+  fill: var(--surface-raised);
+  stroke: var(--accent-line);
+  stroke-width: 1;
+  transition:
+    fill 0.35s var(--ease),
+    stroke 0.35s var(--ease);
+}
+
+.cyc-stage:hover .cyc-node,
+.cyc-stage--active .cyc-node {
+  fill: var(--accent);
+  stroke: var(--accent);
+}
+
+.cyc-index {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  fill: var(--text-subtle);
+  transition: fill 0.35s var(--ease);
+}
+
+.cyc-name {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  fill: var(--text);
+  transition: fill 0.35s var(--ease);
+}
+
+.cyc-stage:hover .cyc-index,
+.cyc-stage--active .cyc-index,
+.cyc-stage:hover .cyc-name,
+.cyc-stage--active .cyc-name {
+  fill: var(--text-on-accent);
+}
+
+.cyc-stage {
+  cursor: pointer;
+}
+
+.cyc-return-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  fill: var(--text-subtle);
+}
+
+/* Stacked cycle for narrow screens — the SVG labels get too small to read */
+.cyc-mobile {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.cyc-mobile-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--accent-line);
+  border-radius: var(--r);
+  background: var(--surface-raised);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--text);
+  text-align: left;
+  transition:
+    background-color 0.25s var(--ease),
+    border-color 0.25s var(--ease),
+    color 0.25s var(--ease);
+}
+
+.cyc-mobile-item--active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--text-on-accent);
+}
+
+.cyc-mobile-num {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--text-subtle);
+}
+
+.cyc-mobile-item--active .cyc-mobile-num {
+  color: var(--text-on-accent);
+  opacity: 0.7;
+}
+
+.cyc-mobile-loop {
+  padding: 0.625rem 1rem;
+  border: 1px dashed var(--accent-line);
+  border-radius: var(--r-pill);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--text-subtle);
+  text-align: center;
+}
+
+@media (min-width: 860px) {
+  .cyc-mobile {
+    display: none;
+  }
+}
+
+@media (max-width: 859px) {
+  .cyc-svg {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Pillar tabs (LangChain-style switcher)
+   -------------------------------------------------------------------------- */
+
+.tabs {
+  display: flex;
+  gap: 0.375rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--line);
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  position: relative;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2.75rem;
+  padding-inline: 1rem;
+  font-size: 0.875rem;
+  font-weight: 550;
+  color: var(--text-subtle);
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition:
+    color 0.2s var(--ease),
+    border-color 0.2s var(--ease);
+}
+
+.tab:hover {
+  color: var(--text);
+}
+
+.tab--active {
+  color: var(--text);
+  font-weight: 600;
+  border-bottom-color: var(--accent);
+}
+
+.tab-num {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--text-subtle);
+}
+
+.tab--active .tab-num {
+  color: var(--accent);
+}
+
+.tab-panel {
+  display: grid;
+  gap: clamp(1.75rem, 4vw, 3.5rem);
+  align-items: center;
+  padding-top: clamp(2rem, 4vw, 3.25rem);
+  grid-template-columns: 1fr;
+  animation: tab-in 0.4s var(--ease);
+}
+
+@keyframes tab-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (min-width: 960px) {
+  .tab-panel {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  }
+}
+
+.tab-copy > * + * {
+  margin-top: 1rem;
+}
+
+.tab-list {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.tab-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+}
+
+.tab-list svg {
+  flex: none;
+  margin-top: 0.28rem;
+  color: var(--accent);
+}

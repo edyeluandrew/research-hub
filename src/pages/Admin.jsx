@@ -1759,7 +1759,7 @@ const Admin = () => {
                             : project.status === 'In Development'
                             ? 'bg-blue-500/20 text-blue-400'
                             : project.status === 'In Testing'
-                            ? 'bg-yellow-500/20 text-yellow-400'
+                            ? 'bg-orange-500/20 text-orange-300'
                             : 'bg-gray-500/20 text-gray-400'
                         }`}>
                           {project.status}

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Quote, Send, CheckCircle, AlertCircle, Loader, User, X, MessageSquarePlus } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { AlertCircle, CheckCircle, Loader, MessageSquarePlus, Send, X } from 'lucide-react';
 import { TESTIMONIALS } from '../config/site';
 import { getTestimonialsData, addTestimonial } from '../data/dataStore';
 import Reveal from './Reveal';
@@ -12,30 +12,32 @@ const EMPTY_FORM = {
   quote: '',
 };
 
-const getInitials = (name) =>
+const getInitials = (name = '') =>
   name
     .replace(/^Dr\.\s*/i, '')
     .split(' ')
     .map((part) => part[0])
-    .join('')
+    .filter(Boolean)
     .slice(0, 2)
+    .join('')
     .toUpperCase();
 
 const TestimonialCard = ({ item }) => (
   <article className="ts-card">
-    <Quote className="ts-quote-icon" size={24} />
-    <p className="ts-quote">&ldquo;{item.quote}&rdquo;</p>
+    <span className="ts-mark" aria-hidden="true">
+      &ldquo;
+    </span>
+    <p className="ts-quote">{item.quote}</p>
 
     <div className="ts-author">
-      <div className="ts-avatar">
-        <span>{getInitials(item.name)}</span>
-      </div>
-      <div className="min-w-0">
+      <span className="ts-avatar" aria-hidden="true">
+        {getInitials(item.name)}
+      </span>
+      <div style={{ minWidth: 0 }}>
         <p className="ts-name">{item.name}</p>
-        <p className="ts-role">{item.role}</p>
-        <p className="ts-org">
-          {item.organization}
-          {item.location ? ` · ${item.location}` : ''}
+        <p className="ts-role">
+          {item.role}
+          {item.organization ? `, ${item.organization}` : ''}
         </p>
       </div>
     </div>
@@ -45,9 +47,11 @@ const TestimonialCard = ({ item }) => (
 const FeedbackModal = ({ open, onClose, formData, onChange, onSubmit, submitting, status }) => {
   useEffect(() => {
     if (!open) return undefined;
-    const onKey = (e) => {
-      if (e.key === 'Escape') onClose();
+
+    const onKey = (event) => {
+      if (event.key === 'Escape') onClose();
     };
+
     document.body.style.overflow = 'hidden';
     window.addEventListener('keydown', onKey);
     return () => {
@@ -60,153 +64,135 @@ const FeedbackModal = ({ open, onClose, formData, onChange, onSubmit, submitting
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+      className="ts-modal-backdrop"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
-      aria-labelledby="feedback-modal-title"
+      aria-labelledby="feedback-title"
     >
-      <div
-        className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-xl border border-[#C2C1BF] bg-[#FCFCFB] p-5 md:p-6 shadow-xl animate-modal-in"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <button
-          type="button"
-          onClick={onClose}
-          className="absolute top-4 right-4 text-[#2A2925] hover:text-[#2563EB] transition-colors"
-          aria-label="Close"
-        >
-          <X size={22} />
+      <div className="ts-modal" onClick={(event) => event.stopPropagation()}>
+        <button type="button" onClick={onClose} className="ts-modal-close" aria-label="Close">
+          <X size={20} />
         </button>
 
-        <h3 id="feedback-modal-title" className="text-xl font-medium text-[#020201] mb-1 pr-8" style={{ fontFamily: "'Spectral', Georgia, serif" }}>
+        <h3 id="feedback-title" className="ts-modal-title">
           Share your feedback
         </h3>
-        <p className="text-sm text-[#2A2925] mb-4 leading-snug">
-          Worked with us on a project, workshop, or partnership? Tell others about your experience.
+        <p className="ts-modal-lead">
+          Worked with us on a project, workshop, or partnership? Tell others about it.
         </p>
 
-        <form onSubmit={onSubmit} className="space-y-4">
-          <div className="grid sm:grid-cols-2 gap-3">
-            <div className="form-group">
-              <label htmlFor="feedback-name" className="block text-sm font-semibold text-[#020201] mb-1">
-                Full name *
-              </label>
-              <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 text-[#2A2925]" size={16} />
-                <input
-                  type="text"
-                  id="feedback-name"
-                  name="name"
-                  value={formData.name}
-                  onChange={onChange}
-                  required
-                  className="w-full pl-10 pr-3 py-3 text-sm bg-[#FFFFFF] border border-[#C2C1BF] rounded-lg focus:outline-none focus:border-[#2563EB] text-[#020201] placeholder:text-[#85867E]"
-                  placeholder="Your name"
-                />
-              </div>
-            </div>
-            <div className="form-group">
-              <label htmlFor="feedback-role" className="block text-sm font-semibold text-[#020201] mb-1">
-                Role / title *
+        <form onSubmit={onSubmit} className="ts-modal-form">
+          <div className="ct-form-row">
+            <div className="field">
+              <label className="field-label" htmlFor="feedback-name">
+                Full name
               </label>
               <input
+                id="feedback-name"
+                name="name"
                 type="text"
+                className="control"
+                value={formData.name}
+                onChange={onChange}
+                placeholder="Your name"
+                required
+              />
+            </div>
+
+            <div className="field">
+              <label className="field-label" htmlFor="feedback-role">
+                Role
+              </label>
+              <input
                 id="feedback-role"
                 name="role"
+                type="text"
+                className="control"
                 value={formData.role}
                 onChange={onChange}
+                placeholder="Founder, Lecturer..."
                 required
-                className="w-full px-3 py-3 text-sm bg-[#FFFFFF] border border-[#C2C1BF] rounded-lg focus:outline-none focus:border-[#2563EB] text-[#020201] placeholder:text-[#85867E]"
-                placeholder="e.g. Founder, Product Manager"
               />
             </div>
           </div>
 
-          <div className="grid sm:grid-cols-2 gap-3">
-            <div className="form-group">
-              <label htmlFor="feedback-org" className="block text-sm font-semibold text-[#020201] mb-1">
-                Organization *
+          <div className="ct-form-row">
+            <div className="field">
+              <label className="field-label" htmlFor="feedback-org">
+                Organization
               </label>
               <input
-                type="text"
                 id="feedback-org"
                 name="organization"
+                type="text"
+                className="control"
                 value={formData.organization}
                 onChange={onChange}
-                required
-                className="w-full px-3 py-3 text-sm bg-[#FFFFFF] border border-[#C2C1BF] rounded-lg focus:outline-none focus:border-[#2563EB] text-[#020201] placeholder:text-[#85867E]"
                 placeholder="Company or institution"
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="feedback-location" className="block text-sm font-semibold text-[#020201] mb-1">
+
+            <div className="field">
+              <label className="field-label" htmlFor="feedback-location">
                 Location
               </label>
               <input
-                type="text"
                 id="feedback-location"
                 name="location"
+                type="text"
+                className="control"
                 value={formData.location}
                 onChange={onChange}
-                className="w-full px-3 py-3 text-sm bg-[#FFFFFF] border border-[#C2C1BF] rounded-lg focus:outline-none focus:border-[#2563EB] text-[#020201] placeholder:text-[#85867E]"
-                placeholder="e.g. Kampala, Uganda"
+                placeholder="Kampala, Uganda"
               />
             </div>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="feedback-quote" className="block text-sm font-semibold text-[#020201] mb-1">
-              Your feedback *
+          <div className="field">
+            <label className="field-label" htmlFor="feedback-quote">
+              Your feedback
             </label>
             <textarea
               id="feedback-quote"
               name="quote"
+              className="control"
               value={formData.quote}
               onChange={onChange}
-              required
+              placeholder="What was it like working with us?"
               minLength={20}
-              rows={4}
-              className="w-full px-3 py-3 text-sm bg-[#FFFFFF] border border-[#C2C1BF] rounded-lg focus:outline-none focus:border-[#2563EB] text-[#020201] placeholder:text-[#85867E] resize-none"
-              placeholder="Share your experience working with Beta-Tech Labs..."
+              required
             />
+            <p className="field-note">Minimum 20 characters.</p>
           </div>
 
           {status === 'success' && (
-            <p className="text-green-700 text-sm flex items-center gap-2">
+            <div className="alert alert--success">
               <CheckCircle size={16} />
-              Thank you. Your feedback is now live on this page.
-            </p>
+              <p>Thank you. Your feedback has been submitted.</p>
+            </div>
           )}
           {status === 'error' && (
-            <p className="text-red-700 text-sm flex items-center gap-2">
+            <div className="alert alert--error">
               <AlertCircle size={16} />
-              Could not submit. Check your connection and try again.
-            </p>
+              <p>Something went wrong. Please check your feedback and try again.</p>
+            </div>
           )}
 
-          <div className="flex flex-col-reverse sm:flex-row gap-3 pt-1">
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 py-3 px-4 rounded-lg border border-[#C2C1BF] text-[#020201] font-semibold text-sm hover:border-[#2563EB] hover:text-[#2563EB] transition-colors"
-            >
+          <div className="ts-modal-actions">
+            <button type="button" className="btn btn--outline" onClick={onClose} disabled={submitting}>
               Cancel
             </button>
-            <button
-              type="submit"
-              disabled={submitting}
-              className="flex-1 inline-flex items-center justify-center py-3 px-4 rounded-lg bg-[#2563EB] text-white font-semibold text-sm hover:bg-[#020201] transition-colors disabled:opacity-60"
-            >
+            <button type="submit" className="btn btn--primary" disabled={submitting}>
               {submitting ? (
                 <>
-                  <Loader className="mr-2 animate-spin" size={16} />
-                  Submitting...
+                  <Loader size={16} className="animate-spin" />
+                  Sending
                 </>
               ) : (
                 <>
-                  <Send className="mr-2" size={16} />
-                  Submit Feedback
+                  <Send size={16} />
+                  Submit
                 </>
               )}
             </button>
@@ -243,15 +229,10 @@ const Testimonials = () => {
 
   useEffect(() => {
     loadVisitorFeedback();
-    const handleUpdate = () => loadVisitorFeedback();
-    window.addEventListener('testimonialsDataUpdated', handleUpdate);
-    return () => window.removeEventListener('testimonialsDataUpdated', handleUpdate);
+    const onUpdate = () => loadVisitorFeedback();
+    window.addEventListener('testimonialsDataUpdated', onUpdate);
+    return () => window.removeEventListener('testimonialsDataUpdated', onUpdate);
   }, []);
-
-  const openModal = () => {
-    setStatus(null);
-    setModalOpen(true);
-  };
 
   const closeModal = () => {
     if (submitting) return;
@@ -259,13 +240,14 @@ const Testimonials = () => {
     setStatus(null);
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const handleChange = (event) => {
+    const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
     if (formData.quote.trim().length < 20) {
       setStatus('error');
       setTimeout(() => setStatus(null), 4000);
@@ -298,14 +280,18 @@ const Testimonials = () => {
   };
 
   return (
-    <section id="testimonials" className="ts-section">
-      <div className="ts-inner">
-        <Reveal className="ts-header">
-          <p className="ts-eyebrow">Client Feedback</p>
-          <h2 className="ts-heading">What Partners Say About Us</h2>
-          <p className="ts-intro">
-            Founders, educators, and product teams across Uganda who have worked with us on
-            research, engineering, and delivery.
+    <section id="testimonials" className="section">
+      <div className="shell">
+        <Reveal className="sec-head sec-head--split">
+          <div>
+            <p className="eyebrow">Client feedback</p>
+            <h2 className="display-2" style={{ marginTop: '1rem' }}>
+              What partners say.
+            </h2>
+          </div>
+          <p className="lead">
+            Founders, educators, and product teams who have worked with us on research, engineering,
+            and delivery.
           </p>
         </Reveal>
 
@@ -330,10 +316,17 @@ const Testimonials = () => {
           </div>
         )}
 
-        <Reveal delay={150} className="ts-cta">
-          <button type="button" onClick={openModal} className="ts-feedback-btn">
-            <MessageSquarePlus size={18} />
-            Give Feedback
+        <Reveal delay={120} className="ts-cta">
+          <button
+            type="button"
+            className="btn btn--outline"
+            onClick={() => {
+              setStatus(null);
+              setModalOpen(true);
+            }}
+          >
+            <MessageSquarePlus size={17} />
+            Give feedback
           </button>
         </Reveal>
       </div>

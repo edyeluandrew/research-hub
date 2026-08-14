@@ -1,72 +1,69 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import SEO from '../components/SEO';
+import Header from '../components/Header';
 import HashLink from '../components/HashLink';
-import { Home, ArrowLeft, Search } from 'lucide-react';
+import { ArrowLeft, Home } from 'lucide-react';
+
+const LINKS = [
+  { name: 'What we do', href: '/services' },
+  { name: 'Our work', href: '/projects' },
+  { name: 'Events', href: '/events' },
+  { name: 'Research', href: '/research' },
+];
 
 const NotFound = () => {
   const navigate = useNavigate();
 
   return (
     <>
-      <SEO 
+      <SEO
         title="404 - Page Not Found"
-        description="The page you're looking for doesn't exist. Return to Beta Tech Labs homepage to explore our AI and Blockchain research hub."
+        description="The page you are looking for does not exist. Return to the Beta-Tech Labs homepage."
         ogUrl="https://www.beta-techlabs.com/404"
       />
 
-      <div className="min-h-screen bg-dark-200 flex items-center justify-center px-4">
-        <div className="text-center max-w-lg">
-          {/* 404 Number */}
-          <h1 className="text-9xl font-bold text-gold-500 mb-4">404</h1>
-          
-          {/* Error Message */}
-          <h2 className="text-2xl font-bold text-white mb-4">Page Not Found</h2>
-          <p className="text-gray-400 mb-8 text-lg">
-            Oops! The page you're looking for seems to have wandered off into the digital void. 
-            Don't worry, even the best researchers sometimes hit dead ends.
-          </p>
+      <div className="page">
+        <Header />
 
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={() => navigate('/')}
-              className="btn-primary flex items-center justify-center"
-            >
-              <Home className="mr-2" size={18} />
-              Back to Home
-            </button>
-            <button
-              onClick={() => navigate(-1)}
-              className="btn-secondary flex items-center justify-center"
-            >
-              <ArrowLeft className="mr-2" size={18} />
-              Go Back
-            </button>
-          </div>
+        <main className="nf">
+          <div>
+            <p className="nf-code">404</p>
+            <h1 className="nf-title">Page not found</h1>
+            <p className="nf-lead">
+              The page you are looking for has moved or never existed. Here is the way back.
+            </p>
 
-          {/* Helpful Links */}
-          <div className="mt-12 pt-8 border-t border-gray-700">
-            <p className="text-gray-400 mb-4">Here are some helpful links:</p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <a href="/services" className="text-gold-400 hover:text-gold-300 transition-colors">
-                Our Services
-              </a>
-              <span className="text-gray-600">•</span>
-              <a href="/research" className="text-gold-400 hover:text-gold-300 transition-colors">
-                Research
-              </a>
-              <span className="text-gray-600">•</span>
-              <a href="/events" className="text-gold-400 hover:text-gold-300 transition-colors">
-                Events
-              </a>
-              <span className="text-gray-600">•</span>
-              <HashLink to="/#contact" className="text-gold-400 hover:text-gold-300 transition-colors">
-                Contact Us
+            <div className="nf-actions">
+              <button type="button" className="btn btn--accent" onClick={() => navigate('/')}>
+                <Home size={17} />
+                Back to home
+              </button>
+              <button
+                type="button"
+                className="btn btn--ghost-ink"
+                onClick={() => navigate(-1)}
+              >
+                <ArrowLeft size={17} />
+                Go back
+              </button>
+            </div>
+
+            <div
+              className="btn-row"
+              style={{ marginTop: '2.5rem', justifyContent: 'center', gap: '1.25rem' }}
+            >
+              {LINKS.map((link) => (
+                <Link key={link.name} to={link.href} className="btn-text">
+                  {link.name}
+                </Link>
+              ))}
+              <HashLink to="/#contact" className="btn-text">
+                Contact
               </HashLink>
             </div>
           </div>
-        </div>
+        </main>
       </div>
     </>
   );

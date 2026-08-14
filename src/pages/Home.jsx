@@ -3,14 +3,18 @@ import { useLocation } from 'react-router-dom';
 import SEO from '../components/SEO';
 import Header from '../components/Header';
 import Hero from '../components/Hero';
+import Partners from '../components/Partners';
 import MissionVision from '../components/MissionVision';
+import IterativeProcess from '../components/IterativeProcess';
 import About from '../components/About';
-import OurFocus from '../components/OurFocus';
+import ProductShowcase from '../components/ProductShowcase';
+import ImpactStats from '../components/ImpactStats';
 import CoreValues from '../components/CoreValues';
 import Team from '../components/Team';
 import Testimonials from '../components/Testimonials';
-import Newsletter from '../components/Newsletter';
 import Contact from '../components/Contact';
+import Newsletter from '../components/Newsletter';
+import Wordmark from '../components/Wordmark';
 import Footer from '../components/Footer';
 import { SITE } from '../config/site';
 import { scrollToSection } from '../utils/homeNavigation';
@@ -22,7 +26,7 @@ const Home = () => {
     const fromState = location.state?.scrollTo;
     const fromHash = (location.hash || window.location.hash || '').replace('#', '');
     const sectionId = fromState || fromHash;
-    if (!sectionId) return;
+    if (!sectionId) return undefined;
 
     let tries = 0;
     const tryScroll = () => {
@@ -45,20 +49,26 @@ const Home = () => {
         ogImage={`${SITE.url}/images/og-home.svg`}
       />
 
-      <div className="min-h-screen bg-[#FFFFFF] flex flex-col">
+      <div className="page">
         <Header />
-        <main className="flex-1">
+
+        <main className="page-main">
           <Hero />
+          <Partners />
           <MissionVision />
+          <IterativeProcess />
           <About />
-          <OurFocus />
+          <ProductShowcase />
+          <ImpactStats />
           <CoreValues />
           <Team />
           <Testimonials />
-          <Newsletter />
           <Contact />
+          <Newsletter />
         </main>
-        <Footer className="footer-fix" />
+
+        <Wordmark />
+        <Footer />
       </div>
     </>
   );

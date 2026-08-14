@@ -1,30 +1,28 @@
 import React, { useState } from 'react';
-import { Mail, Send, CheckCircle, AlertCircle, Loader } from 'lucide-react';
+import { AlertCircle, CheckCircle, Loader, Mail, Send } from 'lucide-react';
 import { addNewsletterSubscriber } from '../data/dataStore';
 
-// Reusable newsletter subscribe form. Saves the email to Firebase and syncs
-// it to the email service (Brevo) via /api/subscribe. Used by the homepage
-// Newsletter section and the Events page callout.
+// Reusable newsletter subscribe form. Saves the email to Firebase and syncs it
+// to the email service (Brevo) via /api/subscribe.
 //
 // Props:
 //   layout: 'stacked' (input above button) | 'inline' (input beside button)
 //   buttonLabel: text on the submit button
 //   showPrivacyNote: whether to render the small privacy line
-//   align: 'left' | 'center' (affects the note + message alignment)
+//   theme: 'light' (on a light surface) | 'dark' (on an ink surface)
 const NewsletterForm = ({
   layout = 'stacked',
   buttonLabel = 'Subscribe',
   showPrivacyNote = true,
-  align = 'left',
-  theme = 'dark',
+  theme = 'light',
   className = '',
 }) => {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState(null);
   const [message, setMessage] = useState('');
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     const value = email.trim();
     if (!value || status === 'loading') return;
 
@@ -40,8 +38,8 @@ const NewsletterForm = ({
       return;
     }
 
-    // Sync to the email service (Brevo). Non-blocking: the email is already
-    // saved in Firebase, so we still show success even if this fails.
+    // Non-blocking: the address is already stored in Firebase, so a failed sync
+    // should not surface as an error to the visitor.
     try {
       await fetch('/api/subscribe', {
         method: 'POST',
@@ -49,63 +47,58 @@ const NewsletterForm = ({
         body: JSON.stringify({ email: value }),
       });
     } catch {
-      /* ignore, subscriber is already stored */
+      /* ignore */
     }
 
     setStatus('success');
     setMessage(
       result.reason === 'exists'
-        ? "You're already on the list. Thank you!"
-        : "You're in! Watch your inbox for updates."
+        ? "You're already on the list. Thank you."
+        : "You're in. Watch your inbox for updates."
     );
     setEmail('');
     setTimeout(() => setStatus(null), 6000);
   };
 
   const inline = layout === 'inline';
-  const centered = align === 'center';
-  const light = theme === 'light';
+  const buttonClass = theme === 'dark' ? 'btn btn--accent' : 'btn btn--primary';
 
   return (
-    <form onSubmit={handleSubmit} className={className}>
-      <div className={inline ? 'flex flex-col sm:flex-row gap-2' : 'space-y-3'}>
-        <div className="relative flex-1">
-          <Mail
-            className={`absolute left-3 top-1/2 -translate-y-1/2 ${
-              light ? 'text-[#020201]' : 'text-gold-500/70'
-            }`}
-            size={18}
-          />
+    <form onSubmit={handleSubmit} className={className} noValidate={false}>
+      <div
+        style={
+          inline
+            ? { display: 'flex', flexWrap: 'wrap', gap: '0.625rem' }
+            : { display: 'flex', flexDirection: 'column', gap: '0.75rem' }
+        }
+      >
+        <div className="control-icon" style={{ flex: '1 1 14rem', minWidth: 0 }}>
+          <Mail size={17} />
           <input
             type="email"
+            className="control"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(event) => setEmail(event.target.value)}
             placeholder="you@example.com"
+            aria-label="Email address"
             required
             disabled={status === 'loading'}
-            className={
-              light
-                ? 'w-full pl-11 pr-3 py-3.5 text-base bg-[#FCFCFB] border border-[#C2C1BF] rounded-lg focus:outline-none focus:border-[#2563EB] text-[#020201] placeholder:text-[#2A2925] disabled:opacity-60 transition-colors'
-                : 'w-full pl-10 pr-3 py-3 text-sm bg-dark-200 border border-gray-700 rounded-lg focus:outline-none focus:border-gold-500 text-white placeholder-gray-500 disabled:opacity-60 transition-colors'
-            }
           />
         </div>
 
         <button
           type="submit"
+          className={`${buttonClass}${inline ? '' : ' btn--block'}`}
           disabled={status === 'loading'}
-          className={`btn-primary flex items-center justify-center py-3 disabled:opacity-60 disabled:cursor-not-allowed ${
-            inline ? 'sm:w-auto whitespace-nowrap' : 'w-full'
-          }`}
         >
           {status === 'loading' ? (
             <>
-              <Loader className="mr-2 animate-spin" size={16} />
-              Subscribing...
+              <Loader size={16} className="animate-spin" />
+              Subscribing
             </>
           ) : (
             <>
-              <Send className="mr-2" size={16} />
+              <Send size={16} />
               {buttonLabel}
             </>
           )}
@@ -113,49 +106,22 @@ const NewsletterForm = ({
       </div>
 
       {status === 'success' && (
-        <div
-          className={`mt-3 rounded-lg border p-3 flex items-start gap-2 text-left ${
-            light
-              ? 'border-green-700/25 bg-green-700/10'
-              : 'border-green-500/30 bg-green-500/10'
-          }`}
-        >
-          <CheckCircle
-            className={`flex-shrink-0 mt-0.5 ${light ? 'text-green-700' : 'text-green-400'}`}
-            size={16}
-          />
-          <p
-            className={`text-sm leading-snug ${
-              light ? 'text-green-800' : 'text-green-300/90'
-            }`}
-          >
-            {message}
-          </p>
+        <div className="alert alert--success" style={{ marginTop: '0.75rem' }}>
+          <CheckCircle size={16} />
+          <p>{message}</p>
         </div>
       )}
+
       {status === 'error' && (
-        <div
-          className={`mt-3 rounded-lg border p-3 flex items-start gap-2 text-left ${
-            light ? 'border-red-700/25 bg-red-700/10' : 'border-red-500/30 bg-red-500/10'
-          }`}
-        >
-          <AlertCircle
-            className={`flex-shrink-0 mt-0.5 ${light ? 'text-red-700' : 'text-red-400'}`}
-            size={16}
-          />
-          <p className={`text-sm leading-snug ${light ? 'text-red-800' : 'text-red-300/90'}`}>
-            {message}
-          </p>
+        <div className="alert alert--error" style={{ marginTop: '0.75rem' }}>
+          <AlertCircle size={16} />
+          <p>{message}</p>
         </div>
       )}
 
       {showPrivacyNote && (
-        <p
-          className={`text-sm leading-snug mt-3 ${
-            light ? 'text-[#020201]' : 'text-gray-600'
-          } ${centered ? 'text-center' : ''}`}
-        >
-          We respect your privacy and never share your email.
+        <p className="field-note" style={{ marginTop: '0.75rem' }}>
+          No spam. Unsubscribe anytime.
         </p>
       )}
     </form>

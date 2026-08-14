@@ -1,75 +1,46 @@
 import React from 'react';
-import { Mail, Calendar, Rocket, Lightbulb } from 'lucide-react';
+import { Calendar, Lightbulb, Rocket } from 'lucide-react';
 import Reveal from './Reveal';
 import NewsletterForm from './NewsletterForm';
 
-const BENEFITS = [
-  {
-    icon: Calendar,
-    title: 'Event invites',
-    text: 'Be the first to know about workshops, bootcamps, and meetups.',
-  },
-  {
-    icon: Rocket,
-    title: 'Product launches',
-    text: 'Get notified when we ship new products and features.',
-  },
-  {
-    icon: Lightbulb,
-    title: 'Research insights',
-    text: 'Occasional deep-dives on AI, blockchain, and what we are building.',
-  },
+const META = [
+  { icon: Calendar, label: 'Event invites' },
+  { icon: Rocket, label: 'Product launches' },
+  { icon: Lightbulb, label: 'Research notes' },
 ];
 
-const Newsletter = () => {
-  return (
-    <section id="newsletter" className="nl-section">
-      <div className="nl-inner">
-        <Reveal>
-          <div className="nl-box">
-            <div className="nl-grid">
-              <div>
-                <div className="nl-badge">
-                  <Mail size={14} />
-                  <span>Newsletter</span>
-                </div>
-                <h2 className="nl-heading">
-                  Stay in the loop with Beta-Tech Labs
-                </h2>
-                <p className="nl-lead">
-                  Join our list for occasional updates on events, new products, and research from the
-                  team. No spam, unsubscribe anytime.
-                </p>
+const Newsletter = () => (
+  <section id="newsletter" className="section section--ink section--tight">
+    <div className="shell">
+      <Reveal>
+        <div className="nl-band">
+          <div>
+            <p className="eyebrow">Newsletter</p>
+            <h2 className="nl-heading" style={{ marginTop: '1rem' }}>
+              Stay close to what we are building.
+            </h2>
+            <p className="nl-lead">
+              Occasional updates on events, new products, and research from the team.
+            </p>
 
-                <ul className="nl-benefits">
-                  {BENEFITS.map((benefit) => {
-                    const Icon = benefit.icon;
-                    return (
-                      <li key={benefit.title} className="nl-benefit">
-                        <div className="nl-benefit-icon">
-                          <Icon size={16} strokeWidth={2} />
-                        </div>
-                        <div>
-                          <p className="nl-benefit-title">{benefit.title}</p>
-                          <p className="nl-benefit-text">{benefit.text}</p>
-                        </div>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-
-              <div className="nl-form-panel">
-                <h3 className="nl-form-title">Subscribe for updates</h3>
-                <p className="nl-form-lead">Drop your email below, that is all it takes.</p>
-                <NewsletterForm theme="light" />
-              </div>
+            <div className="nl-meta">
+              {META.map(({ icon: Icon, label }) => (
+                <span key={label} className="nl-meta-item">
+                  <Icon size={15} strokeWidth={1.75} />
+                  {label}
+                </span>
+              ))}
             </div>
           </div>
-        </Reveal>
-      </div>
-    </section>
-  );
-};
+
+          <div className="nl-form-card">
+            <p className="nl-form-title">Subscribe for updates</p>
+            <NewsletterForm theme="dark" buttonLabel="Subscribe" />
+          </div>
+        </div>
+      </Reveal>
+    </div>
+  </section>
+);
 
 export default Newsletter;

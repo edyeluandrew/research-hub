@@ -1,50 +1,55 @@
 import React from 'react';
-import { SITE } from '../config/site';
-import { Target, Eye, Compass } from 'lucide-react';
+import { COMPANY } from '../config/site';
 import Reveal from './Reveal';
 import useSiteContent from '../hooks/useSiteContent';
 import { defaultSiteContent } from '../data/dataStore';
+
+const IDENTITY = [
+  { key: 'Our tool', value: COMPANY.identity.technology },
+  { key: 'Our methodology', value: COMPANY.identity.research },
+  { key: 'Our purpose', value: COMPANY.identity.impact },
+];
 
 const MissionVision = () => {
   const { content } = useSiteContent();
   const mission = content?.mission || defaultSiteContent.mission;
 
-  const cards = [
-    { icon: Compass, label: 'Our Purpose', text: mission.purpose },
-    { icon: Eye, label: 'Our Vision', text: mission.vision },
-    { icon: Target, label: 'Our Mission', text: mission.mission },
+  const pillars = [
+    { label: 'Purpose', text: mission.purpose },
+    { label: 'Vision', text: mission.vision },
+    { label: 'Mission', text: mission.mission },
   ];
 
   return (
-    <section className="mv-section border-b border-[#C2C1BF]/70">
-      <div className="mv-inner">
-        <Reveal className="mv-header">
-          <h2 className="mv-heading">{mission.sectionEyebrow}</h2>
-          <p className="mv-positioning">{mission.positioningStatement}</p>
+    <section id="who-we-are" className="section">
+      <div className="shell">
+        <Reveal className="sec-head sec-head--split">
+          <div>
+            <p className="eyebrow">Who we are</p>
+            <h2 className="st-statement" style={{ marginTop: '1rem' }}>
+              A research company that ships.
+            </h2>
+          </div>
+          <p className="lead st-lead">{mission.positioningStatement}</p>
         </Reveal>
 
-        <div className="mv-cards">
-          {cards.map(({ icon: Icon, label, text }, index) => (
-            <Reveal key={label} delay={index * 80} className="h-full">
-              <article className="mv-card h-full">
-                <div className="mv-card-icon">
-                  <Icon size={22} strokeWidth={2} />
-                </div>
-                <h3 className="mv-card-label">{label}</h3>
-                <p className="mv-card-text">{text}</p>
-              </article>
+        <div className="st-pillars">
+          {pillars.map(({ label, text }, index) => (
+            <Reveal key={label} delay={index * 90} className="st-pillar">
+              <p className="st-pillar-label">{label}</p>
+              <p className="st-pillar-text">{text}</p>
             </Reveal>
           ))}
         </div>
 
-        <Reveal delay={200}>
-          <div className="mv-philosophy">
-            <p className="mv-philosophy-eyebrow">Our Philosophy</p>
-            <p className="mv-philosophy-quote">&ldquo;{mission.philosophy}&rdquo;</p>
-            <p className="mv-philosophy-practice">{mission.philosophyPractice}</p>
-            <p className="mv-philosophy-guide">
-              Guiding principle: &ldquo;{SITE.guidingQuestion}&rdquo;
-            </p>
+        <Reveal delay={120}>
+          <div className="st-identity">
+            {IDENTITY.map(({ key, value }) => (
+              <div key={key} className="st-identity-item">
+                <p className="st-identity-key">{key}</p>
+                <p className="st-identity-value">{value}</p>
+              </div>
+            ))}
           </div>
         </Reveal>
       </div>

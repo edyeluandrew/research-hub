@@ -18,10 +18,10 @@ const Privacy = () => {
         ogUrl="https://www.beta-techlabs.com/privacy"
       />
 
-      <div className="min-h-screen bg-dark-200 flex flex-col">
+      <div className="page">
         <Header />
         
-        <main className="flex-1 pt-20 pb-12">
+        <main className="page-main lg-page">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Back Button */}
             <button 

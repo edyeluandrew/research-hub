@@ -1,66 +1,58 @@
 import React from 'react';
-import { RESEARCH_FRAMEWORK, COMPANY } from '../config/site';
-import { Search, BookOpen, FileText, CheckCircle, Rocket } from 'lucide-react';
-import ResearchImageSlider from './ResearchImageSlider';
+import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
+import { RESEARCH_FRAMEWORK, COMPANY, SITE } from '../config/site';
+import FrameworkDiagram from './diagrams/FrameworkDiagram';
 import Reveal from './Reveal';
 
-const STEP_ICONS = [Search, BookOpen, FileText, CheckCircle, Rocket];
-
 const About = () => (
-  <section id="about" className="ab-section">
-    <div className="ab-inner">
-      <div className="ab-layout">
-        <Reveal className="ab-story">
-          <p className="ab-eyebrow">The Beta-Tech Way</p>
-          <h2 className="ab-heading">How We Work</h2>
-
-          <div className="ab-copy">
-            <p>
-              Many technology initiatives ask, &ldquo;What can we build?&rdquo; We begin with a
-              different question: &ldquo;What problem are we solving?&rdquo; Before designing a product
-              or writing code, we invest time in understanding the challenge through community
-              engagement and research.
-            </p>
-            <p>
-              Whether developing our own products or partnering with organizations, our commitment
-              remains the same: understand first, then innovate with purpose. The result is not
-              simply technology. It is purposeful, practical, and sustainable solutions built to
-              solve real problems.
-            </p>
-            <p className="ab-story-note">{COMPANY.foundingStory}</p>
-          </div>
-
-          <ResearchImageSlider />
-
-          <p className="ab-quote">&ldquo;{COMPANY.storyQuote}&rdquo;</p>
-        </Reveal>
-
-        <div className="ab-steps">
-          <Reveal>
-            <p className="ab-steps-label">Beta-Tech Research Framework (BTRF)</p>
-          </Reveal>
-          {RESEARCH_FRAMEWORK.map((step, index) => {
-            const Icon = STEP_ICONS[index] || Search;
-            return (
-              <Reveal key={step.phase} delay={index * 70}>
-                <article className="ab-step">
-                  <div className="ab-step-meta">
-                    <div className="ab-step-icon">
-                      <Icon size={22} />
-                    </div>
-                    <span className="ab-step-num">{String(index + 1).padStart(2, '0')}</span>
-                  </div>
-                  <div className="ab-step-body">
-                    <span className="ab-step-phase">{step.phase}</span>
-                    <h3 className="ab-step-title">{step.title}</h3>
-                    <p className="ab-step-desc">{step.description}</p>
-                  </div>
-                </article>
-              </Reveal>
-            );
-          })}
+  <section id="approach" className="section">
+    <div className="shell">
+      <Reveal className="sec-head sec-head--split">
+        <div>
+          <p className="eyebrow">How we work</p>
+          <h2 className="display-2" style={{ marginTop: '1rem' }}>
+            We begin with the problem, not the product.
+          </h2>
         </div>
+        <div>
+          <p className="lead">
+            Most technology projects ask what they can build. We ask what needs solving, then let
+            the evidence decide the rest.
+          </p>
+          <Link to="/services" className="btn-text" style={{ marginTop: '1.25rem' }}>
+            The Beta-Tech Way
+            <ArrowRight size={15} />
+          </Link>
+        </div>
+      </Reveal>
+
+      <div className="ap-steps">
+        {RESEARCH_FRAMEWORK.map((step, index) => (
+          <Reveal key={step.phase} delay={index * 70} className="ap-step">
+            <span className="ap-step-num">{String(index + 1).padStart(2, '0')}</span>
+            <p className="ap-step-phase">{step.phase}</p>
+            <h3 className="ap-step-title">{step.title}</h3>
+          </Reveal>
+        ))}
       </div>
+
+      <Reveal className="ap-media">
+        <FrameworkDiagram />
+      </Reveal>
+
+      <Reveal className="ap-note">
+        <p className="ap-note-label">How we started</p>
+        <p className="ap-note-text">{COMPANY.foundingStory}</p>
+      </Reveal>
+
+      <Reveal className="ap-quote">
+        <span className="ap-quote-mark" aria-hidden="true">
+          &ldquo;
+        </span>
+        <p className="quote">{COMPANY.storyQuote}</p>
+        <p className="ap-quote-attr">{SITE.name}</p>
+      </Reveal>
     </div>
   </section>
 );
