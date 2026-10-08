@@ -56,11 +56,11 @@
 }
 
 .nav-logo {
-  width: 2rem;
-  height: 2rem;
+  width: 1.85rem;
+  height: 1.85rem;
   object-fit: contain;
   flex: none;
-  filter: grayscale(1) contrast(1.15);
+  background: transparent;
 }
 
 .nav-wordmark {
@@ -440,10 +440,11 @@
 }
 
 .ft-logo {
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 2.15rem;
+  height: 2.15rem;
   object-fit: contain;
   flex: none;
+  background: transparent;
 }
 
 .ft-brand-name {

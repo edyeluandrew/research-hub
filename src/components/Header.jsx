@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ArrowUpRight, Github, Linkedin, Menu, X } from 'lucide-react';
-import logo from '../assets/logo.png';
+import logo from '../assets/logo-mark.png';
 import { SITE, SOCIAL, CONTACT } from '../config/site';
 import HashLink from './HashLink';
 import { getHashId } from '../utils/homeNavigation';
@@ -86,7 +86,7 @@ const Header = () => {
       <header className={`nav-bar ${overlay ? 'nav-bar--overlay' : 'nav-bar--solid'}`}>
         <div className="nav-inner">
           <Link to="/" className="nav-brand" onClick={closeMenu} aria-label={`${SITE.name} home`}>
-            <img src={logo} alt="" className="nav-logo" width="32" height="32" decoding="async" fetchPriority="high" />
+            <img src={logo} alt="" className="nav-logo" width="30" height="30" decoding="async" fetchPriority="high" />
             <span className="nav-wordmark">
               <span className="nav-name">{SITE.name}</span>
               <span className="nav-tag">{SITE.tagline}</span>

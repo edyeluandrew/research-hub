@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronUp, Clock, Github, Linkedin, Mail, MapPin, Phone, Twitter } from 'lucide-react';
-import logo from '../assets/logo.png';
+import logo from '../assets/logo-mark.png';
 import { SITE, CONTACT, SOCIAL } from '../config/site';
 import HashLink from './HashLink';
 

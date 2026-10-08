@@ -2,33 +2,21 @@ import React from 'react';
 import robot from '../assets/hero-robot.webp';
 import chalk from '../assets/hero-chalk.webp';
 
-const DUST = [
-  { x: '62%', y: '68%', s: '3px', d: '0s' },
-  { x: '70%', y: '74%', s: '2px', d: '1.2s' },
-  { x: '78%', y: '71%', s: '4px', d: '0.4s' },
-  { x: '84%', y: '80%', s: '2px', d: '2.1s' },
-  { x: '58%', y: '82%', s: '3px', d: '1.6s' },
-  { x: '90%', y: '76%', s: '2px', d: '0.8s' },
-  { x: '74%', y: '86%', s: '3px', d: '2.6s' },
-  { x: '66%', y: '78%', s: '2px', d: '3.1s' },
+const PLATE_DUST = [
+  { x: '46%', y: '42%', s: '2px', d: '0s' },
+  { x: '54%', y: '48%', s: '3px', d: '1.6s' },
+  { x: '40%', y: '56%', s: '2px', d: '3.1s' },
+  { x: '58%', y: '38%', s: '2px', d: '4.4s' },
 ];
 
-/**
- * Hero stage: the chalk classroom loops right-to-left as a marquee; the robot
- * swings in on a cable toward a cursor. Both plates are stills; motion is CSS
- * so the first paint stays cheap.
- */
-const HeroScene = () => (
-  <div className="hero-scene" aria-hidden="true">
-    <div className="hero-chalk">
-      <div className="hero-chalk-track">
-        <img src={chalk} alt="" className="hero-chalk-img" decoding="async" />
-        <img src={chalk} alt="" className="hero-chalk-img" decoding="async" />
-      </div>
-    </div>
-
-    <div className="hero-dust">
-      {DUST.map((speck, index) => (
+const ChalkPlate = ({ delay = '0s', lead = false }) => (
+  <div
+    className={`hero-chalk-plate${lead ? ' hero-chalk-plate--lead' : ''}`}
+    style={{ '--plate-delay': delay }}
+  >
+    <img src={chalk} alt="" className="hero-chalk-img" decoding="async" />
+    <div className="hero-chalk-dust">
+      {PLATE_DUST.map((speck, index) => (
         <span
           key={index}
           className="hero-speck"
@@ -37,10 +25,26 @@ const HeroScene = () => (
             top: speck.y,
             width: speck.s,
             height: speck.s,
-            animationDelay: speck.d,
+            animationDelay: `calc(${speck.d} + ${delay})`,
           }}
         />
       ))}
+    </div>
+  </div>
+);
+
+/**
+ * Hero stage as a title sequence: the classroom is the world, drifting and
+ * slowly looking in on the figures. The robot is the product, arriving on a
+ * cable. Stills plus CSS, so the first paint stays cheap.
+ */
+const HeroScene = () => (
+  <div className="hero-scene" aria-hidden="true">
+    <div className="hero-chalk">
+      <div className="hero-chalk-track">
+        <ChalkPlate lead />
+        <ChalkPlate delay="-4s" />
+      </div>
     </div>
 
     <div className="hero-robot-rig">

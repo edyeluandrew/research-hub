@@ -32,7 +32,10 @@
   right: 0;
   bottom: 0;
   left: 0;
-  background: radial-gradient(ellipse 55% 60% at 12% 8%,rgba(201,201,201,.16),transparent 62%),radial-gradient(ellipse 60% 70% at 88% 92%,rgba(121,121,121,.2),transparent 68%);
+  background:
+    linear-gradient(90deg, rgba(11, 11, 11, 0.88) 0%, rgba(11, 11, 11, 0.42) 26%, transparent 46%),
+    radial-gradient(ellipse 55% 60% at 12% 8%, rgba(201, 201, 201, 0.14), transparent 62%),
+    radial-gradient(ellipse 60% 70% at 88% 92%, rgba(121, 121, 121, 0.18), transparent 68%);
 }
 
 /* Scroll dust — thickens as the hero leaves the frame. Driven by --sy. */
@@ -61,36 +64,72 @@
 }
 
 .hero-chalk {
-  --chalk-start: 38vw;
+  --chalk-start: 42vw;
+  --chalk-pace: 36s;
   position: absolute;
   left: 0;
   right: 0;
-  bottom: clamp(4rem, 9vw, 7.25rem);
+  bottom: clamp(4.5rem, 10vw, 7.5rem);
   overflow: hidden;
-  mask-image: linear-gradient(to right, transparent 0%, #000 18%, #000 88%, transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 18%, #000 88%, transparent);
+  mask-image: linear-gradient(to right, transparent 0%, transparent 24%, #000 40%, #000 80%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 24%, #000 40%, #000 80%, transparent);
 }
 
 .hero-chalk-track {
   display: flex;
   width: max-content;
   will-change: transform;
-  animation: hero-chalk-marquee 28s linear infinite;
+  animation: hero-chalk-marquee var(--chalk-pace) linear infinite;
+}
+
+.hero-chalk-plate {
+  position: relative;
+  flex: none;
+  margin-right: 52vw;
+  will-change: transform;
+  animation: hero-chalk-float 9s ease-in-out infinite;
+  animation-delay: var(--plate-delay, 0s);
+}
+
+.hero-chalk-plate::after {
+  content: '';
+  display: none;
+}
+
+.hero-chalk-plate--lead::after {
+  display: block;
+  position: absolute;
+  inset: -6%;
+  background: linear-gradient(
+    118deg,
+    transparent 42%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 58%
+  );
+  mix-blend-mode: screen;
+  pointer-events: none;
+  opacity: 0;
+  animation: hero-chalk-sheen var(--chalk-pace) linear infinite;
 }
 
 .hero-chalk-img {
   box-sizing: content-box;
-  width: clamp(22rem, 42vw, 34rem);
+  width: clamp(20rem, 36vw, 30rem);
   height: auto;
   display: block;
-  flex: none;
-  margin-right: 40vw;
-  filter: grayscale(1) contrast(1.08) brightness(0.92);
+  filter: grayscale(1) contrast(1.06) brightness(0.9) drop-shadow(0 18px 32px rgba(0, 0, 0, 0.5));
 }
 
-.hero-dust {
+.hero-chalk-plate--lead .hero-chalk-img {
+  transform-origin: 46% 40%;
+  will-change: transform;
+  animation: hero-chalk-look var(--chalk-pace) linear infinite;
+}
+
+.hero-chalk-dust {
   position: absolute;
   inset: 0;
+  pointer-events: none;
 }
 
 .hero-speck {
@@ -98,16 +137,16 @@
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.55);
   opacity: 0;
-  animation: hero-speck 7s ease-in-out infinite;
+  animation: hero-speck 8s ease-in-out infinite;
 }
 
 .hero-robot-rig {
   position: absolute;
-  right: clamp(-2rem, 4vw, 3rem);
-  top: clamp(4.5rem, 10vw, 7.5rem);
-  width: clamp(16rem, 40vw, 32rem);
-  transform-origin: 88% 18%;
-  animation: hero-swing 6.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  right: clamp(-1.5rem, 3vw, 2.5rem);
+  top: clamp(5rem, 11vw, 8rem);
+  width: clamp(14rem, 34vw, 26rem);
+  transform-origin: 88% 16%;
+  animation: hero-swing 8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
 }
 
 .hero-robot {
@@ -119,27 +158,29 @@
 
 .hero-cursor {
   position: absolute;
-  right: clamp(3.5rem, 12vw, 9rem);
-  bottom: clamp(9rem, 22vw, 16rem);
-  width: 2.15rem;
-  height: 2.15rem;
+  right: clamp(3.25rem, 11vw, 8rem);
+  bottom: clamp(10rem, 24vw, 17rem);
+  width: 1.85rem;
+  height: 1.85rem;
   overflow: visible;
   filter: drop-shadow(2px 3px 0 rgba(0, 0, 0, 0.55));
-  animation: hero-cursor 3.4s ease-in-out infinite;
+  animation: hero-cursor 4.4s ease-in-out infinite;
 }
 
 @media (max-width: 860px) {
   .hero-chalk {
-    --chalk-start: 6vw;
+    --chalk-start: 8vw;
     bottom: 5.25rem;
-    opacity: 0.55;
+    opacity: 0.42;
+    mask-image: linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent);
   }
 
   .hero-robot-rig {
-    width: 46%;
-    right: -16%;
-    top: 5.25rem;
-    opacity: 0.4;
+    width: 42%;
+    right: -14%;
+    top: 5.5rem;
+    opacity: 0.34;
   }
 
   .hero-cursor {
@@ -150,13 +191,13 @@
 @keyframes hero-swing {
   0%,
   100% {
-    transform: rotate(-12deg) translate(0, 0);
+    transform: rotate(-7deg) translate(0, 0);
   }
-  40% {
-    transform: rotate(9deg) translate(1.5%, 2%);
+  45% {
+    transform: rotate(4deg) translate(0.6%, 1%);
   }
-  70% {
-    transform: rotate(-4deg) translate(-0.5%, 1%);
+  72% {
+    transform: rotate(-2deg) translate(-0.3%, 0.4%);
   }
 }
 
@@ -169,18 +210,63 @@
   }
 }
 
+@keyframes hero-chalk-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes hero-chalk-look {
+  0% {
+    transform: scale(1);
+  }
+  22% {
+    transform: scale(1.08);
+  }
+  40% {
+    transform: scale(1.2);
+  }
+  52% {
+    transform: scale(1.14);
+  }
+  64%,
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes hero-chalk-sheen {
+  0%,
+  18% {
+    transform: translateX(-80%);
+    opacity: 0;
+  }
+  28% {
+    opacity: 0.7;
+  }
+  38%,
+  100% {
+    transform: translateX(80%);
+    opacity: 0;
+  }
+}
+
 @keyframes hero-speck {
   0%,
   100% {
     opacity: 0;
-    transform: translateY(8px) scale(0.6);
+    transform: translate3d(4px, 10px, 0) scale(0.55);
   }
-  30% {
-    opacity: 0.7;
+  28% {
+    opacity: 0.85;
   }
   70% {
-    opacity: 0.25;
-    transform: translateY(-28px) scale(1);
+    opacity: 0.2;
+    transform: translate3d(-10px, -36px, 0) scale(1);
   }
 }
 
@@ -188,26 +274,35 @@
   0%,
   100% {
     transform: translate(0, 0);
-    opacity: 0.9;
+    opacity: 0.85;
   }
   50% {
-    transform: translate(-10px, 8px);
+    transform: translate(-7px, 6px);
     opacity: 1;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-robot-rig,
-  .hero-cursor {
-    animation-duration: 6.5s !important;
+  .hero-robot-rig {
+    animation-duration: 8s !important;
   }
 
-  .hero-chalk-track {
-    animation-duration: 28s !important;
+  .hero-cursor {
+    animation-duration: 4.4s !important;
+  }
+
+  .hero-chalk-track,
+  .hero-chalk-plate--lead .hero-chalk-img,
+  .hero-chalk-plate--lead::after {
+    animation-duration: 36s !important;
+  }
+
+  .hero-chalk-plate {
+    animation-duration: 9s !important;
   }
 
   .hero-speck {
-    animation-duration: 7s !important;
+    animation-duration: 8s !important;
   }
 }
 
@@ -233,6 +328,7 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-on-ink-subtle);
+  text-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
 }
 
 .hero-title {
@@ -246,6 +342,7 @@
   color: var(--text-on-ink);
   text-wrap: balance;
   hyphens: none;
+  text-shadow: 0 0 42px rgba(0, 0, 0, 0.55), 0 14px 28px rgba(0, 0, 0, 0.35);
 }
 
 .hero-lead {
@@ -254,6 +351,7 @@
   font-size: 1.0625rem;
   line-height: 1.55;
   color: var(--text-on-ink-muted);
+  text-shadow: 0 10px 24px rgba(0, 0, 0, 0.5);
 }
 
 .hero-actions {
