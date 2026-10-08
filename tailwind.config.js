@@ -74,8 +74,8 @@ module.exports = {
       },
       fontFamily: {
         'sans': ['Space Grotesk', 'Inter', 'Segoe UI', 'sans-serif'],
-        'heading': ['Unbounded', 'Space Grotesk', 'sans-serif'],
-        'mono': ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+        'heading': ['Space Grotesk', 'Inter', 'Segoe UI', 'sans-serif'],
+        'mono': ['Space Grotesk', 'Inter', 'Segoe UI', 'sans-serif'],
       },
       backgroundImage: {
         'gold-gradient': 'linear-gradient(135deg, #060606 0%, #272727 100%)',

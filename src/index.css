@@ -66,11 +66,11 @@
   --err: #ffffff;
   --err-wash: rgba(255, 255, 255, 0.12);
 
-  /* Type — Unbounded for the blocky display headlines, Space Grotesk for UI */
-  --font-display: 'Unbounded', 'Space Grotesk', system-ui, sans-serif;
+  /* Type — Space Grotesk throughout */
   --font-sans: 'Space Grotesk', 'Inter', 'Segoe UI', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --font-serif: 'Spectral', Georgia, 'Times New Roman', serif;
+  --font-display: var(--font-sans);
+  --font-mono: var(--font-sans);
+  --font-serif: var(--font-sans);
 
   /* Radii */
   --r-sm: 8px;
