@@ -1,6 +1,6 @@
 import React from 'react';
 import robot from '../assets/hero-robot.webp';
-import chalk from '../assets/hero-chalk.webp';
+import chalk from '../assets/hero-chalk-plain.webp';
 
 const PLATE_DUST = [
   { x: '46%', y: '42%', s: '2px', d: '0s' },
