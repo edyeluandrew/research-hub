@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { STATS } from '../config/site';
 import { navigateToHomeSection } from '../utils/homeNavigation';
-import RocketLaunch from './RocketLaunch';
+import HeroScene from './HeroScene';
 
 const HERO_STATS = [
   { value: STATS.projects, label: 'Products shipped' },
@@ -71,8 +71,8 @@ const Hero = () => {
   const heroRef = useRef(null);
 
   /**
-   * Publish scroll progress through the hero as --sy (0 to 1) so the smoke veil
-   * can thicken and swallow the section as it leaves the viewport.
+   * Publish scroll progress through the hero as --sy (0 to 1) so the dust veil
+   * can thicken as the section leaves the viewport.
    */
   useEffect(() => {
     const el = heroRef.current;
@@ -106,40 +106,32 @@ const Hero = () => {
     <section id="home" className="hero" ref={heroRef}>
       <div className="hero-stage" aria-hidden="true">
         <div className="hero-glow" />
-        <RocketLaunch />
+        <HeroScene />
       </div>
 
       <div className="hero-body">
         <div className="shell shell--wide">
           <div className="hero-content">
-            <p className="hero-kicker">
-              <span className="hero-kicker-dot" />
-              Community research-driven technology
-            </p>
+            <p className="hero-kicker">Driven by research</p>
 
-            <h1 className="display-1 hero-title">
-              Turning research into
-              <br />
-              <span className="hero-title-accent">real-world solutions</span>
-            </h1>
+            <h1 className="hero-title">Turning research into products that last.</h1>
 
             <p className="hero-lead">
-              We start with the problem, not the technology. Then we research, build, and ship
-              products that hold up in the real world.
+              We start with the problem, not the technology. Then we build, test, and ship.
             </p>
 
             <div className="btn-row hero-actions">
               <button
                 type="button"
-                className="btn btn--lg btn--primary"
+                className="btn btn--primary"
                 onClick={() => navigateToHomeSection(navigate, location, 'contact')}
               >
                 Start a project
-                <ArrowRight size={18} />
+                <ArrowRight size={16} />
               </button>
               <button
                 type="button"
-                className="btn btn--lg btn--ghost-ink"
+                className="btn btn--ghost-ink"
                 onClick={() => navigate('/projects')}
               >
                 See our work
